@@ -15,7 +15,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${nunito.className} h-screen`}>
+      <body className={`${nunito.className} h-screen overflow-hidden`}>
         <Navbar />
         {children}
       </body>
