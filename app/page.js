@@ -1,6 +1,6 @@
 import Link from "next/link";
-import heroImageLight from "./../public/hero-illustration-light.png";
-import heroImageDark from "./../public/hero-illustration-dark.png";
+import heroImageLight from "@/public/hero-illustration-light.png";
+import heroImageDark from "@/public/hero-illustration-dark.png";
 import Image from "next/image";
 
 export default function Home() {
