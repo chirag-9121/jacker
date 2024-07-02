@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
+// Function to connect to the MongoDB database
 async function connectDb() {
+  // If already connected return true
   if (mongoose.connections[0].readyState) {
     return true;
   }

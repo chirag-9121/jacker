@@ -6,6 +6,7 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    // Extending the tailwind class properties
     extend: {
       height: {
         "9v": "9vh",
@@ -29,6 +30,7 @@ module.exports = {
         cardcolor: "#212121",
         darkgrey: "#888888",
         forminput: "#F5F5F6",
+        error: "#D11A2A",
       },
     },
   },

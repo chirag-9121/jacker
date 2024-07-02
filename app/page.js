@@ -1,7 +1,7 @@
-import Link from "next/link";
+import Link from "next/link"; // Works as <a> tag and used for client-side navigation
 import heroImageLight from "@/public/hero-illustration-light.png";
 import heroImageDark from "@/public/hero-illustration-dark.png";
-import Image from "next/image";
+import Image from "next/image"; //<img> tag
 
 export default function Home() {
   return (
