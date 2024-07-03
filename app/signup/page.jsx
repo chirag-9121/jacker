@@ -4,16 +4,58 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios"; // Used for making requests to server from browser
+import Image from "next/image";
+import openEye from "@/public/open-eye.png";
+import closedEye from "@/public/closed-eye.png";
 
 function Signup() {
   const router = useRouter();
-  const [confirm_password, setConfirmPassword] = useState("");
+  const [validated, setValidated] = useState(true); // validating flag for the passwords
+  const [passwordType, setPasswordType] = useState("password");
+  const [showPassword, setShowPassword] = useState(true);
   const [user, setUser] = useState({
     fname: "",
     lname: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
+
+  const showPasswordToggler = () => {
+    setPasswordType((prev) => (prev === "password" ? "text" : "password"));
+    setShowPassword(!showPassword);
+  };
+
+  // function to check if password and confirm_password matches, sets validated flag accordingly
+  const validatePassword = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "password":
+        if (!value) break;
+        else if (user.confirmPassword && value !== user.confirmPassword)
+          setValidated(false);
+        else if (user.confirmPassword && value === user.confirmPassword)
+          setValidated(true);
+        break;
+      case "confirmPassword":
+        if (!value) break;
+        else if (user.password && value !== user.password) setValidated(false);
+        else if (user.password && value === user.password) setValidated(true);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // function to set password attributes of user object and then validate it
+  const onPasswordChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+    validatePassword(e);
+  };
 
   // Signup form submit handler function. Sends the user object to the server for processing.
   const singupHandler = async (e) => {
@@ -106,18 +148,35 @@ function Signup() {
                 >
                   Password
                 </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
-                  }
-                  value={user.password}
-                  placeholder="••••••••"
-                  className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
-                  required="true"
-                />
+                <div className="relative">
+                  <input
+                    type={passwordType}
+                    name="password"
+                    id="password"
+                    onChange={onPasswordChange}
+                    value={user.password}
+                    placeholder="••••••••"
+                    className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
+                    required="true"
+                  />
+                  <Image
+                    className="absolute end-0 top-0 m-2.5"
+                    style={{ display: showPassword ? "block" : "none" }}
+                    onClick={showPasswordToggler}
+                    src={openEye}
+                    width={20}
+                    height={20}
+                  />
+
+                  <Image
+                    className="absolute end-0 top-0 m-2.5"
+                    style={{ display: !showPassword ? "block" : "none" }}
+                    onClick={showPasswordToggler}
+                    src={closedEye}
+                    width={20}
+                    height={20}
+                  />
+                </div>
               </div>
               <div>
                 <label
@@ -128,15 +187,15 @@ function Signup() {
                 </label>
                 <input
                   type="password"
-                  name="confirm-password"
+                  name="confirmPassword"
                   id="confirm-password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  value={confirm_password}
+                  onChange={onPasswordChange}
+                  value={user.confirmPassword}
                   placeholder="••••••••"
                   className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
                   required="true"
                 />
-                {!(user.password === confirm_password) && (
+                {!validated && (
                   // will-change-transform is applied as the color of this p tag was changing based on whether the above input
                   // fields are focused or not
                   <p className="text-error text-end text-sm font-semibold will-change-transform">
@@ -147,7 +206,7 @@ function Signup() {
 
               <button
                 type="submit"
-                disabled={user.password !== confirm_password}
+                disabled={!validated}
                 className="w-full rounded-lg bg-black px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cardcolor focus:border focus:border-primary focus:outline-none dark:hover:bg-black/50 dark:focus:border-white"
               >
                 Create an account
@@ -165,6 +224,10 @@ function Signup() {
           </div>
         </div>
       </div>
+      <script
+        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
+        defer
+      ></script>
     </section>
   );
 }
