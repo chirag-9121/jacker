@@ -8,6 +8,7 @@ import { useState } from "react";
 function Signup() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   // Signup form submit handler function. Sends the user object to the server for processing.
   const signupHandler = async (e, user) => {
@@ -20,13 +21,19 @@ function Signup() {
         router.push("/");
       }
     } catch (err) {
-      console.log("Signup", err);
+      setError(err.response.data.error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  return <SignupForm signupHandler={signupHandler} isLoading={isLoading} />;
+  return (
+    <SignupForm
+      signupHandler={signupHandler}
+      isLoading={isLoading}
+      error={error}
+    />
+  );
 }
 
 export default Signup;

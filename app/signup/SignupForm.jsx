@@ -6,7 +6,7 @@ import closedEye from "@/public/closed-eye.png";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-function SignupForm({ signupHandler, isLoading }) {
+function SignupForm({ signupHandler, isLoading, error }) {
   const [validated, setValidated] = useState(true); // validating flag for the passwords
   const [passwordType, setPasswordType] = useState("password");
   const [showPassword, setShowPassword] = useState(true);
@@ -63,6 +63,11 @@ function SignupForm({ signupHandler, isLoading }) {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
               Create an account
             </h1>
+            {error && (
+              <p className="rounded-lg bg-error/10 p-1 text-center text-sm font-semibold text-error">
+                {error}
+              </p>
+            )}
             <form
               className="space-y-4 md:space-y-6"
               onSubmit={(e) => signupHandler(e, user)}
@@ -153,6 +158,7 @@ function SignupForm({ signupHandler, isLoading }) {
                     src={openEye}
                     width={20}
                     height={20}
+                    alt="Toggle password button"
                   />
 
                   <Image
@@ -162,6 +168,7 @@ function SignupForm({ signupHandler, isLoading }) {
                     src={closedEye}
                     width={20}
                     height={20}
+                    alt="Toggle password button"
                   />
                 </div>
               </div>
@@ -190,6 +197,7 @@ function SignupForm({ signupHandler, isLoading }) {
                     src={openEye}
                     width={20}
                     height={20}
+                    alt="Toggle password button"
                   />
 
                   <Image
@@ -199,6 +207,7 @@ function SignupForm({ signupHandler, isLoading }) {
                     src={closedEye}
                     width={20}
                     height={20}
+                    alt="Toggle password button"
                   />
                 </div>
                 {!validated && (
