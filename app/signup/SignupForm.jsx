@@ -85,7 +85,7 @@ function SignupForm({ signupHandler }) {
                     value={user.fname}
                     className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
                     placeholder="John"
-                    required="true"
+                    required={true}
                   />
                 </div>
 
@@ -106,7 +106,7 @@ function SignupForm({ signupHandler }) {
                     value={user.lname}
                     className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
                     placeholder="Doe"
-                    required="true"
+                    required={true}
                   />
                 </div>
               </div>
@@ -125,7 +125,7 @@ function SignupForm({ signupHandler }) {
                   value={user.email}
                   className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
                   placeholder="johndoe@gmail.com"
-                  required="true"
+                  required={true}
                 />
               </div>
               <div>
@@ -144,7 +144,7 @@ function SignupForm({ signupHandler }) {
                     value={user.password}
                     placeholder="••••••••"
                     className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
-                    required="true"
+                    required={true}
                   />
                   <Image
                     className="absolute end-0 top-0 m-2.5 cursor-pointer"
@@ -181,7 +181,7 @@ function SignupForm({ signupHandler }) {
                     value={user.confirmPassword}
                     placeholder="••••••••"
                     className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
-                    required="true"
+                    required={true}
                   />
                   <Image
                     className="absolute end-0 top-0 m-2.5 cursor-pointer"

@@ -12,12 +12,12 @@ function Signup() {
     e.preventDefault();
     try {
       const response = await axios.post("/api/signup", user);
-      if (response.status === 201) {
+      if (response.status === 200) {
         router.refresh();
         router.push("/");
       }
     } catch (err) {
-      console.log("Signup failed", err.message);
+      console.log("Signup", err);
     }
   };
 
