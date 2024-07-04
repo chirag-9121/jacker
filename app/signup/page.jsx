@@ -21,6 +21,7 @@ function Signup() {
     confirmPassword: "",
   });
 
+  // Toggle f:n between input type text and password
   const showPasswordToggler = () => {
     setPasswordType((prev) => (prev === "password" ? "text" : "password"));
     setShowPassword(!showPassword);
@@ -160,7 +161,7 @@ function Signup() {
                     required="true"
                   />
                   <Image
-                    className="absolute end-0 top-0 m-2.5"
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
                     style={{ display: showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
                     src={openEye}
@@ -169,7 +170,7 @@ function Signup() {
                   />
 
                   <Image
-                    className="absolute end-0 top-0 m-2.5"
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
                     style={{ display: !showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
                     src={closedEye}
@@ -185,16 +186,35 @@ function Signup() {
                 >
                   Confirm password
                 </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  id="confirm-password"
-                  onChange={onPasswordChange}
-                  value={user.confirmPassword}
-                  placeholder="••••••••"
-                  className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
-                  required="true"
-                />
+                <div className="relative">
+                  <input
+                    type={passwordType}
+                    name="confirmPassword"
+                    id="confirm-password"
+                    onChange={onPasswordChange}
+                    value={user.confirmPassword}
+                    placeholder="••••••••"
+                    className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
+                    required="true"
+                  />
+                  <Image
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
+                    style={{ display: showPassword ? "block" : "none" }}
+                    onClick={showPasswordToggler}
+                    src={openEye}
+                    width={20}
+                    height={20}
+                  />
+
+                  <Image
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
+                    style={{ display: !showPassword ? "block" : "none" }}
+                    onClick={showPasswordToggler}
+                    src={closedEye}
+                    width={20}
+                    height={20}
+                  />
+                </div>
                 {!validated && (
                   // will-change-transform is applied as the color of this p tag was changing based on whether the above input
                   // fields are focused or not

@@ -5,7 +5,7 @@ import Image from "next/image"; //<img> tag
 
 export default function Home() {
   return (
-    <main>
+    <main className="relative h-91v overflow-hidden">
       <div className="flex flex-col items-center justify-center gap-10 p-12">
         <p className="text-center text-4xl font-bold dark:text-white">
           Track all your job applications <br /> in
