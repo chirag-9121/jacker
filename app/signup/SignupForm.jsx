@@ -6,7 +6,7 @@ import closedEye from "@/public/closed-eye.png";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-function SignupForm({ signupHandler }) {
+function SignupForm({ signupHandler, isLoading }) {
   const [validated, setValidated] = useState(true); // validating flag for the passwords
   const [passwordType, setPasswordType] = useState("password");
   const [showPassword, setShowPassword] = useState(true);
@@ -204,7 +204,7 @@ function SignupForm({ signupHandler }) {
                 {!validated && (
                   // will-change-transform is applied as the color of this p tag was changing based on whether the above input
                   // fields are focused or not
-                  <p className="text-error text-end text-sm font-semibold will-change-transform">
+                  <p className="text-end text-sm font-semibold text-error will-change-transform">
                     Passwords do not match
                   </p>
                 )}
@@ -212,10 +212,11 @@ function SignupForm({ signupHandler }) {
 
               <button
                 type="submit"
-                disabled={!validated}
+                disabled={!validated && isLoading}
                 className="w-full rounded-lg bg-black px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cardcolor focus:border focus:border-primary focus:outline-none dark:hover:bg-black/50 dark:focus:border-white"
               >
-                Create an account
+                {!isLoading && "Create an account"}
+                {isLoading && "Signing in.."}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
