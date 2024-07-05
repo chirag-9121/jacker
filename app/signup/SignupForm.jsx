@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import openEye from "@/public/open-eye.png";
-import closedEye from "@/public/closed-eye.png";
+import OpenEye from "@/app/components/OpenEye";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import ClosedEye from "../components/ClosedEye";
 
 function SignupForm({ signupHandler, isLoading, error }) {
   const [validated, setValidated] = useState(true); // validating flag for the passwords
@@ -151,25 +150,27 @@ function SignupForm({ signupHandler, isLoading, error }) {
                     className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
                     required={true}
                   />
-                  <Image
-                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
                     style={{ display: showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
-                    src={openEye}
-                    width={20}
-                    height={20}
-                    alt="Toggle password button"
-                  />
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+                  >
+                    <OpenEye />
+                  </svg>
 
-                  <Image
-                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
                     style={{ display: !showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
-                    src={closedEye}
-                    width={20}
-                    height={20}
-                    alt="Toggle password button"
-                  />
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+                  >
+                    <ClosedEye />
+                  </svg>
                 </div>
               </div>
               <div>
@@ -190,25 +191,27 @@ function SignupForm({ signupHandler, isLoading, error }) {
                     className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
                     required={true}
                   />
-                  <Image
-                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
                     style={{ display: showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
-                    src={openEye}
-                    width={20}
-                    height={20}
-                    alt="Toggle password button"
-                  />
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+                  >
+                    <OpenEye />
+                  </svg>
 
-                  <Image
-                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
                     style={{ display: !showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
-                    src={closedEye}
-                    width={20}
-                    height={20}
-                    alt="Toggle password button"
-                  />
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+                  >
+                    <ClosedEye />
+                  </svg>
                 </div>
                 {!validated && (
                   // will-change-transform is applied as the color of this p tag was changing based on whether the above input

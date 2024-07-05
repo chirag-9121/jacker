@@ -1,5 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jp(e*)g|svg|gif)$/,
+        type: "asset/resource",
+      },
+    ],
+  },
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",

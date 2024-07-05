@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import openEye from "@/public/open-eye.png";
-import closedEye from "@/public/closed-eye.png";
+import OpenEye from "../components/OpenEye";
+import ClosedEye from "../components/ClosedEye";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -76,25 +75,27 @@ function LoginForm({ loginHandler, isLoading, error }) {
                     required={true}
                   />
 
-                  <Image
-                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
                     style={{ display: showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
-                    src={openEye}
-                    width={20}
-                    height={20}
-                    alt="Toggle password button"
-                  />
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+                  >
+                    <OpenEye />
+                  </svg>
 
-                  <Image
-                    className="absolute end-0 top-0 m-2.5 cursor-pointer"
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
                     style={{ display: !showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
-                    src={closedEye}
-                    width={20}
-                    height={20}
-                    alt="Toggle password button"
-                  />
+                    className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+                  >
+                    <ClosedEye />
+                  </svg>
                 </div>
               </div>
 
