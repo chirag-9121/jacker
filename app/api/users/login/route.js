@@ -8,9 +8,11 @@ connectDb();
 
 export async function POST(request) {
   try {
+    // Extracting values from post request
     const reqBody = await request.json();
     const { email, password } = reqBody;
 
+    // Checking if user exists
     const user = await User.findOne({ email });
 
     if (!user)
@@ -32,6 +34,7 @@ export async function POST(request) {
       email: user.email,
     };
 
+    // Generating token
     const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET, {
       expiresIn: "1d",
     });

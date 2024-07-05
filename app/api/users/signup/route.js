@@ -2,6 +2,7 @@ import connectDb from "@/config/connectDB";
 import User from "@/models/UserModel";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 connectDb();
 
@@ -34,11 +35,29 @@ export async function POST(request) {
 
     const savedUser = await newUser.save();
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       message: "New user created.",
       success: true,
-      savedUser,
+      // savedUser,
     });
+
+    // Creating token data to store user info (user id,fname,lname and email).
+    const tokenData = {
+      id: savedUser._id,
+      fname: savedUser.fname,
+      lname: savedUser.lname,
+      email: savedUser.email,
+    };
+
+    const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET, {
+      expiresIn: "1d",
+    });
+
+    response.cookies.set("token", token, {
+      httpOnly: true, // Ensures that the cookie is only accessible on the server side
+    });
+
+    return response;
   } catch (err) {
     return NextResponse.json({ error: err }, { status: 500 });
   }

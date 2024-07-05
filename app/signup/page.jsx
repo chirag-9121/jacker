@@ -15,7 +15,7 @@ function Signup() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await axios.post("/api/signup", user);
+      const response = await axios.post("/api/users/signup", user);
       if (response.status === 200) {
         router.refresh();
         router.push("/");
