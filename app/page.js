@@ -23,12 +23,14 @@ export default function Home() {
           width={500}
           height={500}
           src={heroImageLight}
+          alt="hero image"
         />
         <Image
           className="hidden dark:block"
           width={500}
           height={500}
           src={heroImageDark}
+          alt="hero image"
         />
       </div>
 

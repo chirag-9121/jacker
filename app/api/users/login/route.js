@@ -40,11 +40,12 @@ export async function POST(request) {
     });
 
     const response = NextResponse.json({
+      data: tokenData,
       message: "Login successful",
       success: true,
     });
 
-    response.cookies.set("token", token, {
+    response.cookies.set("userAuthToken", token, {
       httpOnly: true, // Ensures that the cookie is only accessible on the server side
     });
 

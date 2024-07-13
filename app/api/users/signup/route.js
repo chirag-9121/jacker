@@ -53,7 +53,7 @@ export async function POST(request) {
       expiresIn: "1d",
     });
 
-    response.cookies.set("token", token, {
+    response.cookies.set("userAuthToken", token, {
       httpOnly: true, // Ensures that the cookie is only accessible on the server side
     });
 

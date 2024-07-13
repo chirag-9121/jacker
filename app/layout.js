@@ -3,7 +3,7 @@ import "./globals.css";
 
 // Components
 import Navbar from "./components/Navbar";
-import DarkTheme from "./components/DarkTheme";
+import UserProvider from "./components/UserProvider";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -17,9 +17,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${nunito.className} h-screen`}>
-        <Navbar />
-        {children}
+      <body
+        suppressHydrationWarning={true}
+        className={`${nunito.className} h-screen`}
+      >
+        <UserProvider>
+          <Navbar />
+          {children}
+        </UserProvider>
       </body>
     </html>
   );

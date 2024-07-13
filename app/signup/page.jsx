@@ -18,7 +18,7 @@ function Signup() {
       const response = await axios.post("/api/users/signup", user);
       if (response.status === 200) {
         router.refresh();
-        router.push("/");
+        router.push("/job-tracker");
       }
     } catch (err) {
       setError(err.response.data.error);
