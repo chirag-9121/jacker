@@ -1,20 +1,52 @@
 "use client";
 
+import { useUserContext } from "./UserProvider";
+import axios from "axios";
+
+// next.js functions
+import { useRouter } from "next/navigation";
+
+// next.js components
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "@/public/jacker-logo.png";
-import { useUserContext } from "./UserProvider";
+
+// ui components
 import ProfileIconLoading from "./loaders/ProfileIconLoading";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/app/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/app/components/ui/dropdown-menu";
+
+// public assets and icons
+import Logo from "@/public/jacker-logo.png";
+import { Half2Icon } from "@radix-ui/react-icons";
+import { PersonIcon } from "@radix-ui/react-icons";
+import { ExitIcon } from "@radix-ui/react-icons";
 
 function Navbar() {
-  const { user, userLoading } = useUserContext();
+  const { user, setUser, userLoading } = useUserContext();
   const href = () => {
     return user ? "/job-tracker" : "/";
+  };
+
+  const router = useRouter();
+  const logoutHandler = async () => {
+    try {
+      const response = await axios.get("/api/users/logout");
+      console.log(response.data.message);
+      setUser(null);
+      router.refresh();
+      router.push("/");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -48,13 +80,32 @@ function Navbar() {
               fill="white"
             />
           </svg>
-          <Avatar>
-            <AvatarImage src="" alt="PFP" />
-            <AvatarFallback className="dark:text-white">
-              {user.fname[0]}
-              {user.lname[0]}
-            </AvatarFallback>
-          </Avatar>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar>
+                <AvatarImage src="" alt="PFP" />
+                <AvatarFallback className="dark:text-white">
+                  {user.fname[0]}
+                  {user.lname[0]}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent className="p-3 font-semibold">
+              <DropdownMenuItem className="gap-2">
+                <PersonIcon />
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem className="gap-2">
+                <Half2Icon />
+                Dark Theme
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={logoutHandler} className="gap-2">
+                <ExitIcon />
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       ) : (
         <div className="flex items-center justify-end gap-5">
