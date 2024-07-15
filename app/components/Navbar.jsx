@@ -5,6 +5,11 @@ import Image from "next/image";
 import Logo from "@/public/jacker-logo.png";
 import { useUserContext } from "./UserProvider";
 import ProfileIconLoading from "./loaders/ProfileIconLoading";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/app/components/ui/avatar";
 
 function Navbar() {
   const { user, userLoading } = useUserContext();
@@ -43,7 +48,13 @@ function Navbar() {
               fill="white"
             />
           </svg>
-          <div className="h-10 w-10 rounded-full bg-darkbackground"></div>
+          <Avatar>
+            <AvatarImage src="" alt="PFP" />
+            <AvatarFallback className="dark:text-white">
+              {user.fname[0]}
+              {user.lname[0]}
+            </AvatarFallback>
+          </Avatar>
         </div>
       ) : (
         <div className="flex items-center justify-end gap-5">
