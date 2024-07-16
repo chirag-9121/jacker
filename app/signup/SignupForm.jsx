@@ -5,6 +5,9 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import ClosedEye from "../components/ClosedEye";
 
+import { IoMdEye } from "react-icons/io";
+import { IoMdEyeOff } from "react-icons/io";
+
 function SignupForm({ signupHandler, isLoading, error }) {
   const [validated, setValidated] = useState(true); // validating flag for the passwords
   const [passwordType, setPasswordType] = useState("password");
@@ -57,9 +60,9 @@ function SignupForm({ signupHandler, isLoading, error }) {
   return (
     <section className="h-91v">
       <div className="mx-auto flex h-full flex-col items-center justify-center px-6 py-8 lg:py-0">
-        <div className="w-full rounded-lg bg-white shadow-md sm:max-w-md md:mt-0 xl:p-0 dark:bg-cardcolor">
+        <div className="w-full rounded-lg bg-white shadow-md dark:bg-cardcolor sm:max-w-md md:mt-0 xl:p-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-black dark:text-white md:text-2xl">
               Create an account
             </h1>
             {error && (
@@ -150,27 +153,19 @@ function SignupForm({ signupHandler, isLoading, error }) {
                     className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
                     required={true}
                   />
-                  <svg
-                    width="20"
-                    height="21"
-                    viewBox="0 0 20 21"
+                  <IoMdEye
+                    size={20}
                     style={{ display: showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
                     className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
-                  >
-                    <OpenEye />
-                  </svg>
+                  />
 
-                  <svg
-                    width="20"
-                    height="21"
-                    viewBox="0 0 20 21"
+                  <IoMdEyeOff
+                    size={20}
                     style={{ display: !showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
                     className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
-                  >
-                    <ClosedEye />
-                  </svg>
+                  />
                 </div>
               </div>
               <div>
@@ -191,27 +186,19 @@ function SignupForm({ signupHandler, isLoading, error }) {
                     className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
                     required={true}
                   />
-                  <svg
-                    width="20"
-                    height="21"
-                    viewBox="0 0 20 21"
+                  <IoMdEye
+                    size={20}
                     style={{ display: showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
                     className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
-                  >
-                    <OpenEye />
-                  </svg>
+                  />
 
-                  <svg
-                    width="20"
-                    height="21"
-                    viewBox="0 0 20 21"
+                  <IoMdEyeOff
+                    size={20}
                     style={{ display: !showPassword ? "block" : "none" }}
                     onClick={showPasswordToggler}
                     className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
-                  >
-                    <ClosedEye />
-                  </svg>
+                  />
                 </div>
                 {!validated && (
                   // will-change-transform is applied as the color of this p tag was changing based on whether the above input
