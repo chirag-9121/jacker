@@ -5,9 +5,10 @@ import { IoMdEyeOff } from "react-icons/io";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
+// Props coming from Login page component (isLoading is used to disable and update login button once the user clicks Login)
 function LoginForm({ loginHandler, isLoading, error }) {
-  const [passwordType, setPasswordType] = useState("password");
-  const [showPassword, setShowPassword] = useState(true);
+  const [passwordType, setPasswordType] = useState("password"); // To show/hide password
+  const [showPassword, setShowPassword] = useState(true); // To switch b/w open eye and closed eye icon
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -27,6 +28,8 @@ function LoginForm({ loginHandler, isLoading, error }) {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-black dark:text-white md:text-2xl">
               Sign in to your account
             </h1>
+
+            {/* Errors from LoginForm displayed here on top */}
             {error && (
               <p className="rounded-lg bg-error/10 p-1 text-center text-sm font-semibold text-error">
                 {error}
@@ -34,9 +37,10 @@ function LoginForm({ loginHandler, isLoading, error }) {
             )}
             <form
               className="space-y-4 md:space-y-6"
-              onSubmit={(e) => loginHandler(e, user)}
+              onSubmit={(e) => loginHandler(e, user)} // Callback to page component function on submit
             >
               <div>
+                {/* Email Input Field */}
                 <label
                   htmlFor="email"
                   className="mb-2 block text-sm font-medium text-black dark:text-white"
@@ -55,6 +59,7 @@ function LoginForm({ loginHandler, isLoading, error }) {
                 />
               </div>
               <div>
+                {/* Password Input Field */}
                 <label
                   htmlFor="password"
                   className="mb-2 block text-sm font-medium text-black dark:text-white"
@@ -91,6 +96,7 @@ function LoginForm({ loginHandler, isLoading, error }) {
                 </div>
               </div>
 
+              {/* Forgot Password */}
               <div className="flex items-center justify-end">
                 <Link
                   href="#"
@@ -105,6 +111,7 @@ function LoginForm({ loginHandler, isLoading, error }) {
                 disabled={isLoading}
                 className="w-full rounded-lg bg-black px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cardcolor focus:border focus:border-primary focus:outline-none dark:hover:bg-black/50 dark:focus:border-white"
               >
+                {/* Updating text in button based on isLoading value */}
                 {!isLoading && "Login"} {isLoading && "Logging in.."}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">

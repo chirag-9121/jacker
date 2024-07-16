@@ -32,12 +32,17 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { IoNotifications } from "react-icons/io5";
 
 function Navbar() {
+  // Extracting global context vars to dynamically update navbar on login/logout
   const { user, setUser, userLoading } = useUserContext();
+
+  // Function to dynamically render the homepage link set on the logo
   const href = () => {
     return user ? "/job-tracker" : "/";
   };
 
   const router = useRouter();
+
+  // Logout handler
   const logoutHandler = async () => {
     try {
       const response = await axios.get("/api/users/logout");
@@ -52,6 +57,7 @@ function Navbar() {
 
   return (
     <nav className="flex h-9v justify-between bg-primary px-24 py-1.5">
+      {/* Jacker Logo  */}
       <Link href={href()}>
         <Image
           src={Logo}
@@ -63,13 +69,17 @@ function Navbar() {
         />
       </Link>
 
+      {/* To dynamically display skeleton/profile picture/login buttons  */}
       {userLoading ? (
-        <ProfileIconLoading />
+        <ProfileIconLoading /> // Circle skeleton
       ) : user ? (
         <div className="flex items-center justify-end gap-10">
+          {/* Notification icon */}
           <IoNotifications size={20} className="fill-white" />
 
+          {/* Actions on profile click */}
           <DropdownMenu>
+            {/* Setting the trigger on the PFP */}
             <DropdownMenuTrigger>
               <Avatar>
                 <AvatarImage src="" alt="PFP" />
@@ -80,9 +90,10 @@ function Navbar() {
               </Avatar>
             </DropdownMenuTrigger>
 
+            {/* The actual dropdown containing action buttons */}
             <DropdownMenuContent
               className="p-3 font-semibold"
-              onCloseAutoFocus={(e) => e.preventDefault()}
+              onCloseAutoFocus={(e) => e.preventDefault()} // To remove border when clicked away from dropdown
             >
               <DropdownMenuItem className="gap-2">
                 <LuUser2 size={16} />
@@ -100,6 +111,7 @@ function Navbar() {
           </DropdownMenu>
         </div>
       ) : (
+        // Login/sigup buttons
         <div className="flex items-center justify-end gap-5">
           <Link href="/signup">
             <button className="h-9 w-20 rounded-lg border border-primary-light text-sm font-semibold text-white hover:bg-primary-light hover:text-primary">

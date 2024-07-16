@@ -21,6 +21,7 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning={true}
         className={`${nunito.className} h-screen`}
       >
+        {/* Navbar and children components wrapped around global context provider */}
         <UserProvider>
           <Navbar />
           {children}

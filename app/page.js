@@ -18,6 +18,7 @@ export default function Home() {
           </button>
         </Link>
 
+        {/* Hero image */}
         <Image
           className="block dark:hidden"
           width={500}
@@ -34,6 +35,7 @@ export default function Home() {
         />
       </div>
 
+      {/* Blobs */}
       <svg
         className="absolute bottom-0 left-0 h-64 w-64 fill-current text-primary-light dark:text-cardcolor"
         viewBox="0 0 434 424"

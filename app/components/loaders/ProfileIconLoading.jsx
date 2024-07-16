@@ -1,3 +1,5 @@
+// User profile loading skeleton (Circle)
+
 function ProfileIconLoading() {
   return (
     <div className="flex items-center justify-end gap-8">

@@ -12,7 +12,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  // Signup form submit handler function. Sends the user object to the server for processing.
+  // Login form submit handler function. Sends the user object to the server for processing.
   const loginHandler = async (e, user) => {
     e.preventDefault();
     setIsLoading(true);

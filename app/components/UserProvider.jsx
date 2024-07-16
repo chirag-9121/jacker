@@ -1,5 +1,7 @@
 "use client";
 
+// Global Context Provider Setup (Manages user state for deeply nested components)
+
 import { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 import axios from "axios";
@@ -14,6 +16,7 @@ function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [userLoading, setUserLoading] = useState(true);
 
+  // Calling API to check if user is authenticated and passing global user state accordingly
   useEffect(() => {
     const fetchData = async () => {
       try {

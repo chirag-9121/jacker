@@ -1,17 +1,15 @@
 "use client";
 
-import OpenEye from "@/app/components/OpenEye";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import ClosedEye from "../components/ClosedEye";
 
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 
 function SignupForm({ signupHandler, isLoading, error }) {
-  const [validated, setValidated] = useState(true); // validating flag for the passwords
-  const [passwordType, setPasswordType] = useState("password");
-  const [showPassword, setShowPassword] = useState(true);
+  const [validated, setValidated] = useState(true); // validating flag for the password and confirm password
+  const [passwordType, setPasswordType] = useState("password"); // To show/hide password
+  const [showPassword, setShowPassword] = useState(true); // To switch b/w open eye and closed eye
   const [user, setUser] = useState({
     fname: "",
     lname: "",
@@ -65,6 +63,7 @@ function SignupForm({ signupHandler, isLoading, error }) {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-black dark:text-white md:text-2xl">
               Create an account
             </h1>
+            {/* Displaying form errors on top */}
             {error && (
               <p className="rounded-lg bg-error/10 p-1 text-center text-sm font-semibold text-error">
                 {error}
@@ -72,7 +71,7 @@ function SignupForm({ signupHandler, isLoading, error }) {
             )}
             <form
               className="space-y-4 md:space-y-6"
-              onSubmit={(e) => signupHandler(e, user)}
+              onSubmit={(e) => signupHandler(e, user)} // Callback to page component function
             >
               <div className="flex justify-between">
                 <div>
@@ -147,7 +146,7 @@ function SignupForm({ signupHandler, isLoading, error }) {
                     type={passwordType}
                     name="password"
                     id="password"
-                    onChange={onPasswordChange}
+                    onChange={onPasswordChange} // Start validating both password fields when user starts typing
                     value={user.password}
                     placeholder="••••••••"
                     className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
@@ -214,6 +213,7 @@ function SignupForm({ signupHandler, isLoading, error }) {
                 disabled={!validated && isLoading}
                 className="w-full rounded-lg bg-black px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cardcolor focus:border focus:border-primary focus:outline-none dark:hover:bg-black/50 dark:focus:border-white"
               >
+                {/* Updating text in button based on isLoading value */}
                 {!isLoading && "Create an account"}
                 {isLoading && "Signing in.."}
               </button>
@@ -230,10 +230,6 @@ function SignupForm({ signupHandler, isLoading, error }) {
           </div>
         </div>
       </div>
-      <script
-        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
-        defer
-      ></script>
     </section>
   );
 }

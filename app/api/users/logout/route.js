@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+// Deleting the user cookie from browser, thus logging out
 export async function GET(request) {
   try {
     const response = NextResponse.json({
