@@ -1,5 +1,5 @@
 function JobTracker() {
-  return "Job Tracker";
+  return "Job-Tracker";
 }
 
 export default JobTracker;
