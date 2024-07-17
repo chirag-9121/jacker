@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 // ui components
 import {
   Avatar,
@@ -41,10 +43,12 @@ function UserPfp({ logoutHandler, user }) {
           className="p-3 font-semibold"
           onCloseAutoFocus={(e) => e.preventDefault()} // To remove border when clicked away from dropdown
         >
-          <DropdownMenuItem className="gap-2">
-            <LuUser2 size={16} />
-            Profile
-          </DropdownMenuItem>
+          <Link href="/profile">
+            <DropdownMenuItem className="gap-2">
+              <LuUser2 size={16} />
+              Profile
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem className="gap-2">
             <Half2Icon />
             Dark Theme

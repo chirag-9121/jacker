@@ -19,5 +19,5 @@ export function middleware(request) {
 
 // It specifies the paths for which this middleware should be executed.
 export const config = {
-  matcher: ["/", "/job-tracker", "/profile", "/login", "/signup"],
+  matcher: ["/", "/contacts", "/job-tracker", "/profile", "/login", "/signup"],
 };
