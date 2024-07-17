@@ -12,7 +12,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // ui components
-import ProfileIconLoading from "./loaders/ProfileIconLoading";
+import { Skeleton } from "./ui/skeleton";
 
 // public assets and icons
 import Logo from "@/public/jacker-logo.png";
@@ -57,7 +57,11 @@ function Navbar() {
 
       {/* To dynamically display skeleton/profile picture/login buttons  */}
       {userLoading ? (
-        <ProfileIconLoading /> // Circle skeleton
+        // Circle skeleton
+        <div className="flex items-center justify-end gap-8">
+          <Skeleton className="h-10 w-10 rounded-full bg-white/60 dark:bg-white/65" />
+          <Skeleton className="h-10 w-10 rounded-full bg-white/60 dark:bg-white/65" />
+        </div>
       ) : user ? (
         <UserPfp logoutHandler={logoutHandler} user={user} />
       ) : (

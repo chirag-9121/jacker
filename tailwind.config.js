@@ -46,6 +46,7 @@ module.exports = {
         darkbackground: "#161616",
         cardcolor: "#212121",
         darkgrey: "#888888",
+        grey: "#848D9D",
         forminput: "#F5F5F6",
         error: "#D11A2A",
       },
