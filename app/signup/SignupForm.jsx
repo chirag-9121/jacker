@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
+import { LoadingSpinner } from "@/app/components/ui/spinner";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 
@@ -58,9 +59,9 @@ function SignupForm({ signupHandler, isLoading, error }) {
   return (
     <section className="h-91v">
       <div className="mx-auto flex h-full flex-col items-center justify-center px-6 py-8 lg:py-0">
-        <div className="w-full rounded-lg bg-white shadow-md dark:bg-cardcolor sm:max-w-md md:mt-0 xl:p-0">
+        <div className="w-full rounded-lg bg-white shadow-md sm:max-w-md md:mt-0 xl:p-0 dark:bg-cardcolor">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-black dark:text-white md:text-2xl">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
               Create an account
             </h1>
             {/* Displaying form errors on top */}
@@ -215,7 +216,12 @@ function SignupForm({ signupHandler, isLoading, error }) {
               >
                 {/* Updating text in button based on isLoading value */}
                 {!isLoading && "Create an account"}
-                {isLoading && "Signing in.."}
+
+                {isLoading && (
+                  <div className="flex items-center justify-center gap-2">
+                    <LoadingSpinner /> Signing in...
+                  </div>
+                )}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}

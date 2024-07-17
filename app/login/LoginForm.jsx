@@ -4,6 +4,7 @@ import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { LoadingSpinner } from "@/app/components/ui/spinner";
 
 // Props coming from Login page component (isLoading is used to disable and update login button once the user clicks Login)
 function LoginForm({ loginHandler, isLoading, error }) {
@@ -23,9 +24,9 @@ function LoginForm({ loginHandler, isLoading, error }) {
   return (
     <section className="h-91v">
       <div className="mx-auto flex h-full flex-col items-center justify-center px-6 py-8 lg:py-0">
-        <div className="w-full rounded-lg bg-white shadow-md dark:bg-cardcolor sm:max-w-md md:mt-0 xl:p-0">
+        <div className="w-full rounded-lg bg-white shadow-md sm:max-w-md md:mt-0 xl:p-0 dark:bg-cardcolor">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-black dark:text-white md:text-2xl">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
 
@@ -112,7 +113,12 @@ function LoginForm({ loginHandler, isLoading, error }) {
                 className="w-full rounded-lg bg-black px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cardcolor focus:border focus:border-primary focus:outline-none dark:hover:bg-black/50 dark:focus:border-white"
               >
                 {/* Updating text in button based on isLoading value */}
-                {!isLoading && "Login"} {isLoading && "Logging in.."}
+                {!isLoading && "Login"}{" "}
+                {isLoading && (
+                  <div className="flex items-center justify-center gap-2">
+                    <LoadingSpinner /> Logging in...
+                  </div>
+                )}
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don't have an account yet?{" "}
