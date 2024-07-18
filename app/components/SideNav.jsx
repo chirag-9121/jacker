@@ -23,8 +23,8 @@ function SideNav() {
   const { user, userLoading } = useUserContext();
 
   return (
-    <nav className="flex h-91v w-56 flex-col justify-between bg-white p-5 dark:bg-black">
-      <div className="flex w-fit flex-col gap-5 pt-5">
+    <nav className="flex h-91v min-w-56 max-w-56 flex-col justify-between bg-white p-5 dark:bg-black">
+      <div className="flex w-fit flex-col gap-5 pl-4 pt-5">
         <Link href="/job-tracker">
           <div className="flex items-center gap-4">
             <FaBriefcase
@@ -86,13 +86,13 @@ function SideNav() {
             </AvatarFallback>
           </Avatar>
 
-          <div className="flex w-full flex-col justify-between">
-            <div className="font-semibold dark:text-white">
+          <div className="flex w-full flex-col justify-between overflow-hidden">
+            <div className="text-sm font-semibold dark:text-white">
               <span>
                 {user.fname} {user.lname}
               </span>
             </div>
-            <div className="text-grey">{user.email}</div>
+            <div className="text-xs text-grey">{user.email}</div>
           </div>
         </div>
       ) : null}
