@@ -1,26 +1,22 @@
 "use client";
 
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useUserContext } from "@/app/components/UserProvider";
 
-import { LoadingSpinner } from "@/app/components/ui/spinner";
+// public assets and icons
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 
 // ui components
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/app/components/ui/avatar";
-import { useUserContext } from "@/app/components/UserProvider";
+import { LoadingSpinner } from "@/app/components/ui/spinner";
+import { UserAvatar } from "@/app/components/ui/user-avatar";
 
 function Profile() {
-  const { user: authuser, userLoading } = useUserContext();
+  const { user: authuser, userLoading } = useUserContext(); // Global context user to display preloaded data in form
   const [validated, setValidated] = useState(true); // validating flag for the password and confirm password
   const [passwordType, setPasswordType] = useState("password"); // To show/hide password
   const [showPassword, setShowPassword] = useState(true); // To switch b/w open eye and closed eye
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // To change button text to Saving...
   const [user, setUser] = useState({
     fname: "",
     lname: "",
@@ -69,20 +65,18 @@ function Profile() {
     <section className="flex w-full flex-col items-center p-7 pl-10">
       <p className="self-start text-2xl font-bold dark:text-white">Profile</p>
 
+      {/* Profile banner and avatar */}
       <div className="flex h-full w-3/4 flex-col items-center gap-4">
         <div className="relative h-1/3 w-full rounded-b-lg bg-grey">
           {authuser ? (
-            <Avatar className="absolute -bottom-9 left-14 h-20 w-20 border-8 border-lightbackground dark:border-darkbackground">
-              <AvatarImage src="" alt="PFP" />
-
-              <AvatarFallback className="dark:text-white">
-                {authuser.fname[0]}
-                {authuser.lname[0]}
-              </AvatarFallback>
-            </Avatar>
+            <UserAvatar
+              className="absolute -bottom-9 left-14 h-20 w-20 border-8 border-lightbackground dark:border-darkbackground"
+              user={authuser}
+            />
           ) : null}
         </div>
 
+        {/* Profile Update Form */}
         <form
           className="flex h-full w-2/3 flex-col justify-between self-end pt-3"
           action=""
@@ -217,6 +211,7 @@ function Profile() {
               </div>
             </div>
 
+            {/* Password validation error */}
             {!validated && (
               // will-change-transform is applied as the color of this p tag was changing based on whether the above input
               // fields are focused or not
@@ -226,6 +221,7 @@ function Profile() {
             )}
           </div>
 
+          {/* Form action buttons */}
           <div className="flex items-center justify-end gap-5">
             <input
               type="reset"

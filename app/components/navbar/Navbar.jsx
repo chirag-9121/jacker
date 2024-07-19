@@ -1,7 +1,7 @@
 "use client";
 
-import { useUserContext } from "./UserProvider";
-import UserPfp from "./navbar/UserPfp";
+import { useUserContext } from "@/app/components/UserProvider";
+import UserPfp from "./UserPfp";
 import axios from "axios";
 
 // next.js functions
@@ -12,7 +12,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 // ui components
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "@/app/components/ui/skeleton";
 
 // public assets and icons
 import Logo from "@/public/jacker-logo.png";

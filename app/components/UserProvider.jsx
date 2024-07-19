@@ -23,7 +23,7 @@ function UserProvider({ children }) {
         const res = await axios.get("/api/users/authCheck");
         setUser(res.data.data);
       } catch (err) {
-        console.log("User not authenticated");
+        console.log("User not authenticated", err);
       } finally {
         setUserLoading(false);
       }

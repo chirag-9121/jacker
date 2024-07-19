@@ -1,11 +1,7 @@
 import Link from "next/link";
 
 // ui components
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/app/components/ui/avatar";
+import { UserAvatar } from "../ui/user-avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,13 +25,7 @@ function UserPfp({ logoutHandler, user }) {
       <DropdownMenu>
         {/* Setting the trigger on the PFP */}
         <DropdownMenuTrigger>
-          <Avatar>
-            <AvatarImage src="" alt="PFP" />
-            <AvatarFallback className="dark:text-white">
-              {user.fname[0]}
-              {user.lname[0]}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar user={user} />
         </DropdownMenuTrigger>
 
         {/* The actual dropdown containing action buttons */}

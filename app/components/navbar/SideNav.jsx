@@ -1,29 +1,27 @@
 "use client";
 
-import { useUserContext } from "./UserProvider";
+import { useUserContext } from "@/app/components/UserProvider";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import Link from "next/link";
 
 // public assets and icons
 import { FaBriefcase } from "react-icons/fa6";
-import { MdAnalytics } from "react-icons/md";
+// import { MdAnalytics } from "react-icons/md";
 import { FaUserGroup } from "react-icons/fa6";
 
 // ui components
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/app/components/ui/avatar";
 import { Skeleton } from "@/app/components/ui/skeleton";
+import { UserAvatar } from "@/app/components/ui/user-avatar";
 
 function SideNav() {
   const pathName = usePathname();
   const { user, userLoading } = useUserContext();
 
   return (
+    // Whole side nav
     <nav className="flex h-91v min-w-56 max-w-56 flex-col justify-between bg-white p-5 dark:bg-black">
+      {/* Side Nav actions */}
       <div className="flex w-fit flex-col gap-5 pl-4 pt-5">
         <Link href="/job-tracker">
           <div className="flex items-center gap-4">
@@ -67,6 +65,7 @@ function SideNav() {
         </Link>
       </div>
 
+      {/* User Profile Details Display */}
       {userLoading ? (
         <div className="flex items-center gap-3 pb-2">
           <Skeleton className="min-h-10 min-w-10 rounded-full" />
@@ -77,14 +76,7 @@ function SideNav() {
         </div>
       ) : user ? (
         <div className="flex items-center gap-3 pb-2">
-          <Avatar>
-            <AvatarImage src="" alt="PFP" />
-
-            <AvatarFallback className="dark:text-white">
-              {user.fname[0]}
-              {user.lname[0]}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar user={user} />
 
           <div className="flex w-full flex-col justify-between overflow-hidden">
             <div className="text-sm font-semibold dark:text-white">
