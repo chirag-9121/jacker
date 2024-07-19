@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // public assets and icons
 import { IoMdEye } from "react-icons/io";
@@ -9,7 +9,7 @@ import { IoMdEyeOff } from "react-icons/io";
 // ui components
 import { LoadingSpinner } from "@/app/components/ui/spinner";
 
-function ProfileUpdateForm({ autuser, isLoading, userLoading, error }) {
+function ProfileUpdateForm({ authuser, isLoading, error }) {
   const [validated, setValidated] = useState(true); // validating flag for the password and confirm password
   const [passwordType, setPasswordType] = useState("password"); // To show/hide password
   const [showPassword, setShowPassword] = useState(true); // To switch b/w open eye and closed eye
@@ -21,6 +21,28 @@ function ProfileUpdateForm({ autuser, isLoading, userLoading, error }) {
     password: "",
     confirmPassword: "",
   });
+
+  // Utility function to set user details fetched from token
+  function setUserHandler() {
+    setUser({
+      fname: authuser.fname,
+      lname: authuser.lname,
+      email: authuser.email,
+    });
+  }
+
+  useEffect(() => {
+    // Updating user state when authuser data is fetched
+    if (authuser) {
+      setUserHandler();
+    }
+  }, [authuser]);
+
+  // Cancel button handler (Setting user to initial state)
+  const cancelFormHandler = (e) => {
+    e.preventDefault();
+    setUserHandler();
+  };
 
   // Toggle f:n between input type text and password
   const showPasswordToggler = () => {
@@ -206,11 +228,12 @@ function ProfileUpdateForm({ autuser, isLoading, userLoading, error }) {
 
       {/* Form action buttons */}
       <div className="flex items-center justify-end gap-5">
-        <input
-          type="reset"
-          value="Cancel"
+        <button
+          onClick={cancelFormHandler}
           className="h-9 w-20 cursor-pointer rounded-lg bg-primary/20 text-sm font-semibold text-primary dark:bg-primary/20 dark:text-primary-light/80"
-        />
+        >
+          Cancel
+        </button>
         <button
           type="submit"
           disabled={!validated && isLoading}
