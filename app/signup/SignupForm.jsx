@@ -211,7 +211,7 @@ function SignupForm({ signupHandler, isLoading, error }) {
 
               <button
                 type="submit"
-                disabled={!validated && isLoading}
+                disabled={!validated || isLoading}
                 className="w-full rounded-lg bg-black px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-cardcolor focus:border focus:border-primary focus:outline-none dark:hover:bg-black/50 dark:focus:border-white"
               >
                 {/* Updating text in button based on isLoading value */}

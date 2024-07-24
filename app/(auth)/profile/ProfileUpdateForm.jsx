@@ -9,15 +9,20 @@ import { IoMdEyeOff } from "react-icons/io";
 // ui components
 import { LoadingSpinner } from "@/app/components/ui/spinner";
 
-function ProfileUpdateForm({ authuser, isLoading, error }) {
+function ProfileUpdateForm({
+  authuser,
+  isLoading,
+  error,
+  profileUpdateHandler,
+}) {
   const [validated, setValidated] = useState(true); // validating flag for the password and confirm password
   const [passwordType, setPasswordType] = useState("password"); // To show/hide password
   const [showPassword, setShowPassword] = useState(true); // To switch b/w open eye and closed eye
 
   const [user, setUser] = useState({
+    id: "",
     fname: "",
     lname: "",
-    email: "",
     password: "",
     confirmPassword: "",
   });
@@ -25,9 +30,9 @@ function ProfileUpdateForm({ authuser, isLoading, error }) {
   // Utility function to set user details fetched from token
   function setUserHandler() {
     setUser({
+      id: authuser.id,
       fname: authuser.fname,
       lname: authuser.lname,
-      email: authuser.email,
     });
   }
 
@@ -38,9 +43,15 @@ function ProfileUpdateForm({ authuser, isLoading, error }) {
     }
   }, [authuser]);
 
+  // If the user clears both the password field's text, set form validation to true (Was showing Passwords do not match)
+  useEffect(() => {
+    if (user.password === "" && user.confirmPassword === "") setValidated(true);
+  }, [user.password, user.confirmPassword]);
+
   // Cancel button handler (Setting user to initial state)
   const cancelFormHandler = (e) => {
     e.preventDefault();
+    setValidated(true);
     setUserHandler();
   };
 
@@ -84,8 +95,7 @@ function ProfileUpdateForm({ authuser, isLoading, error }) {
   return (
     <form
       className="flex h-full w-2/3 flex-col justify-between self-end pt-3"
-      action=""
-      // onSubmit={(e) => signupHandler(e, user)} // Callback to page component function
+      onSubmit={(e) => profileUpdateHandler(e, user)}
     >
       <div className="flex flex-col space-y-4 md:space-y-6">
         <div className="flex justify-between gap-4">
@@ -130,89 +140,69 @@ function ProfileUpdateForm({ authuser, isLoading, error }) {
 
         <div>
           <label
-            htmlFor="email"
+            htmlFor="password"
             className="mb-2 block text-xs font-medium text-darkgrey"
           >
-            Email
+            New password
           </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            onChange={(e) => setUser({ ...user, email: e.target.value })}
-            value={user.email}
-            className="block w-full rounded-lg border-2 border-transparent bg-darkgrey/10 p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
-            placeholder="johndoe@gmail.com"
-            required={true}
-          />
+          <div className="relative">
+            <input
+              type={passwordType}
+              name="password"
+              id="password"
+              onChange={onPasswordChange} // Start validating both password fields when user starts typing
+              value={user.password}
+              placeholder="••••••••"
+              required={user.confirmPassword} // If there is a value in confirm password, only then make this field required
+              className="block w-full rounded-lg border-2 border-transparent bg-darkgrey/10 p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
+            />
+            <IoMdEye
+              size={20}
+              style={{ display: showPassword ? "block" : "none" }}
+              onClick={showPasswordToggler}
+              className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+            />
+
+            <IoMdEyeOff
+              size={20}
+              style={{ display: !showPassword ? "block" : "none" }}
+              onClick={showPasswordToggler}
+              className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+            />
+          </div>
         </div>
 
-        <div className="flex justify-between gap-4">
-          <div className="w-full">
-            <label
-              htmlFor="password"
-              className="mb-2 block text-xs font-medium text-darkgrey"
-            >
-              New password
-            </label>
-            <div className="relative">
-              <input
-                type={passwordType}
-                name="password"
-                id="password"
-                onChange={onPasswordChange} // Start validating both password fields when user starts typing
-                value={user.password}
-                placeholder="••••••••"
-                className="block w-full rounded-lg border-2 border-transparent bg-darkgrey/10 p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
-                required={true}
-              />
-              <IoMdEye
-                size={20}
-                style={{ display: showPassword ? "block" : "none" }}
-                onClick={showPasswordToggler}
-                className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
-              />
+        <div>
+          <label
+            htmlFor="confirm-password"
+            className="mb-2 block text-xs font-medium text-darkgrey"
+          >
+            Confirm password
+          </label>
+          <div className="relative">
+            <input
+              type={passwordType}
+              name="confirmPassword"
+              id="confirm-password"
+              onChange={onPasswordChange}
+              value={user.confirmPassword}
+              placeholder="••••••••"
+              required={user.password} // If there is a value in new password, only then make this field required
+              className="block w-full rounded-lg border-2 border-transparent bg-darkgrey/10 p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
+            />
+            <IoMdEye
+              size={20}
+              style={{ display: showPassword ? "block" : "none" }}
+              onClick={showPasswordToggler}
+              className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+            />
 
-              <IoMdEyeOff
-                size={20}
-                style={{ display: !showPassword ? "block" : "none" }}
-                onClick={showPasswordToggler}
-                className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
-              />
-            </div>
-          </div>
-          <div className="w-full">
-            <label
-              htmlFor="confirm-password"
-              className="mb-2 block text-xs font-medium text-darkgrey"
-            >
-              Confirm password
-            </label>
-            <div className="relative">
-              <input
-                type={passwordType}
-                name="confirmPassword"
-                id="confirm-password"
-                onChange={onPasswordChange}
-                value={user.confirmPassword}
-                placeholder="••••••••"
-                className="block w-full rounded-lg border-2 border-transparent bg-darkgrey/10 p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
-                required={true}
-              />
-              <IoMdEye
-                size={20}
-                style={{ display: showPassword ? "block" : "none" }}
-                onClick={showPasswordToggler}
-                className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
-              />
-
-              <IoMdEyeOff
-                size={20}
-                style={{ display: !showPassword ? "block" : "none" }}
-                onClick={showPasswordToggler}
-                className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
-              />
-            </div>
+            <IoMdEyeOff
+              size={20}
+              style={{ display: !showPassword ? "block" : "none" }}
+              onClick={showPasswordToggler}
+              className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
+            />
           </div>
         </div>
 
@@ -236,17 +226,12 @@ function ProfileUpdateForm({ authuser, isLoading, error }) {
         </button>
         <button
           type="submit"
-          disabled={!validated && isLoading}
+          disabled={!validated || isLoading}
           className="h-9 w-20 rounded-lg bg-primary text-sm font-semibold text-white hover:bg-primary/80"
         >
           {/* Updating text in button based on isLoading value */}
           {!isLoading && "Save"}
-
-          {isLoading && (
-            <div className="flex items-center justify-center gap-2">
-              <LoadingSpinner /> Saving...
-            </div>
-          )}
+          {isLoading && "Saving..."}
         </button>
       </div>
     </form>

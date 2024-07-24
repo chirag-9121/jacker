@@ -12,6 +12,7 @@ export async function GET(request) {
 
     // Extract user data from the authentication token
     const user = {
+      id: decodedToken.id,
       fname: decodedToken.fname,
       lname: decodedToken.lname,
       email: decodedToken.email,
