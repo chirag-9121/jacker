@@ -23,8 +23,7 @@ function Profile() {
     try {
       const response = await axios.post("/api/users/profile-update", user);
       if (response.status === 200) {
-        console.log("success");
-        // setUser(response.data.data);
+        setUser(response.data.data);
         router.refresh();
       }
     } catch (err) {

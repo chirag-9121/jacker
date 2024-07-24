@@ -101,7 +101,7 @@ function ProfileUpdateForm({
         <div className="flex justify-between gap-4">
           <div className="w-full">
             <label
-              htmlFor="first-name"
+              htmlFor="fname"
               className="mb-2 block text-xs font-medium text-darkgrey"
             >
               First name
@@ -120,7 +120,7 @@ function ProfileUpdateForm({
 
           <div className="w-full">
             <label
-              htmlFor="last-name"
+              htmlFor="lname"
               className="mb-2 block text-xs font-medium text-darkgrey"
             >
               Last name

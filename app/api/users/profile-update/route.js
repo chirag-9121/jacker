@@ -2,7 +2,7 @@ import connectDb from "@/config/connectDB";
 import User from "@/models/UserModel";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { ReturnDocument } from "mongodb";
+import jwt from "jsonwebtoken";
 
 connectDb();
 
@@ -33,30 +33,31 @@ export async function POST(request) {
       { $set: update },
       { returnDocument: "after" },
     );
+
     if (updatedUser) {
-      return NextResponse.json({
+      const data = {
+        id: updatedUser._id,
+        fname: updatedUser.fname,
+        lname: updatedUser.lname,
+        email: updatedUser.email,
+      };
+
+      // Generating token
+      const token = await jwt.sign(data, process.env.TOKEN_SECRET, {
+        expiresIn: "1d",
+      });
+
+      const response = NextResponse.json({
         message: "Profile updated!",
         success: true,
-        updatedUser,
+        data,
       });
-      // const data = {
-      //   fname: updatedUser.fname,
-      //   lname: updatedUser.lname,
-      //   email: updatedUser.email,
-      // };
-      // const response = NextResponse.json({
-      //   message: "Profile updated!",
-      //   success: true,
-      //   data,
-      // });
 
-      // const token = createToken(reqBody.userId, fname, lname, email);
+      response.cookies.set("userAuthToken", token, {
+        httpOnly: true, // Ensures that the cookie is only accessible on the server side
+      });
 
-      // response.cookies.set("userAuthToken", token, {
-      //   httpOnly: true, // Ensures that the cookie is only accessible on the server side
-      // });
-
-      // return response;
+      return response;
     }
   } catch (err) {
     console.log(err);
