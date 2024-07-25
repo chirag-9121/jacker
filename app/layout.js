@@ -4,6 +4,7 @@ import "./globals.css";
 // Components
 import Navbar from "@/app/components/navbar/Navbar";
 import UserProvider from "@/app/components/UserProvider";
+import ThemeProvider from "@/app/components/ThemeProvider";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -19,13 +20,15 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={`${nunito.className} h-screen`}
+        className={`${nunito.className} h-screen bg-lightbackground dark:bg-darkbackground`}
       >
-        {/* Navbar and children components wrapped around global context provider */}
-        <UserProvider>
-          <Navbar />
-          {children}
-        </UserProvider>
+        {/* Navbar and children components wrapped around global context providers */}
+        <ThemeProvider>
+          <UserProvider>
+            <Navbar />
+            {children}
+          </UserProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

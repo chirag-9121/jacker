@@ -33,6 +33,8 @@ function ProfileUpdateForm({
       id: authuser.id,
       fname: authuser.fname,
       lname: authuser.lname,
+      password: "",
+      confirmPassword: "",
     });
   }
 

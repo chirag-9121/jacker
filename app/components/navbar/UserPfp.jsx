@@ -8,9 +8,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
+import ToggleThemeButton from "@/app/components/navbar/ToggleThemeButton";
 
 // public assets and icons
-import { Half2Icon } from "@radix-ui/react-icons";
 import { LuUser2 } from "react-icons/lu";
 import { AiOutlineLogout } from "react-icons/ai";
 import { IoNotifications } from "react-icons/io5";
@@ -39,10 +39,9 @@ function UserPfp({ logoutHandler, user }) {
               Profile
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem className="gap-2">
-            <Half2Icon />
-            Dark Theme
-          </DropdownMenuItem>
+
+          <ToggleThemeButton />
+
           <DropdownMenuItem onClick={logoutHandler} className="gap-2">
             <AiOutlineLogout size={16} />
             Logout
