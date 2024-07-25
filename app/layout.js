@@ -17,7 +17,7 @@ export const metadata = {
 // App starts here in the root layout and children pages gets appended
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       {/* To avoid initial flash of default theme, fetching localstorage theme if available or system theme */}
       <head>
         <script

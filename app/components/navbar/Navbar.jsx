@@ -52,6 +52,7 @@ function Navbar() {
           height={50}
           placeholder="blur"
           quality={100}
+          className="h-auto"
         />
       </Link>
 
