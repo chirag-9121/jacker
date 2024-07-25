@@ -12,14 +12,19 @@ export function useThemeContext() {
 // Theme Global Context Provider for toggling between light/dark theme
 function ThemeProvider({ children }) {
   // Extracting system theme to set initial value for theme
-  const prefersDarkMode = window.matchMedia(
-    "(prefers-color-scheme: dark)",
-  ).matches;
-  const systemTheme = prefersDarkMode ? "dark" : "light";
+  // Checking if window is available (typeof window !== "undefined"), only then performing window actions like setting localstorage, otherwise there is an initial flash
+  if (typeof window !== "undefined") {
+    const prefersDarkMode = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    var systemTheme = prefersDarkMode ? "dark" : "light";
+  }
 
   // If localstorage variable exists, assign that, otherwise assign defualt system theme
   const [theme, setTheme] = useState(
-    localStorage.theme ? localStorage.theme : systemTheme,
+    typeof window !== "undefined" && localStorage.theme
+      ? localStorage.theme
+      : systemTheme,
   );
 
   // This variable contains theme oppposite from current theme so that we can remove it from root and add new theme
@@ -32,7 +37,7 @@ function ThemeProvider({ children }) {
     root.classList.remove(colorTheme);
     root.classList.add(theme);
 
-    localStorage.setItem("theme", theme);
+    if (typeof window !== "undefined") localStorage.setItem("theme", theme);
   }, [theme]);
 
   return (
