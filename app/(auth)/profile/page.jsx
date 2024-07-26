@@ -46,7 +46,7 @@ function Profile() {
   };
 
   return (
-    <section className="flex w-full flex-col items-center p-7 pl-10">
+    <section className="flex w-full flex-col items-center p-7 pl-12">
       <p className="self-start text-2xl font-bold dark:text-white">Profile</p>
 
       {/* Profile banner and avatar */}
