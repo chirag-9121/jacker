@@ -1,4 +1,6 @@
+import AddJob from "@/app/components/modals/AddJobModal";
 import AddButton from "@/app/components/ui/add-button";
+import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
 
 function JobTracker() {
   return (
@@ -10,7 +12,12 @@ function JobTracker() {
         </p>
         {/* Search and Add Job */}
         <div>
-          <AddButton btnText=" Job" />
+          <Dialog>
+            <DialogTrigger>
+              <AddButton btnText=" Job" />
+            </DialogTrigger>
+            <AddJob />
+          </Dialog>
         </div>
       </div>
     </div>
