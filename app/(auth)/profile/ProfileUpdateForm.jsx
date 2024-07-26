@@ -6,15 +6,7 @@ import { useState, useEffect } from "react";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 
-// ui components
-import { LoadingSpinner } from "@/app/components/ui/spinner";
-
-function ProfileUpdateForm({
-  authuser,
-  isLoading,
-  error,
-  profileUpdateHandler,
-}) {
+function ProfileUpdateForm({ authuser, isLoading, profileUpdateHandler }) {
   const [validated, setValidated] = useState(true); // validating flag for the password and confirm password
   const [passwordType, setPasswordType] = useState("password"); // To show/hide password
   const [showPassword, setShowPassword] = useState(true); // To switch b/w open eye and closed eye

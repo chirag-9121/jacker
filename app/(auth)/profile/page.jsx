@@ -1,20 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useUserContext } from "@/app/components/UserProvider";
 import axios from "axios";
+import { toast } from "sonner";
 
 // ui components
 import { UserAvatar } from "@/app/components/ui/user-avatar";
 import ProfileUpdateForm from "./ProfileUpdateForm";
 import { Skeleton } from "@/app/components/ui/skeleton";
+import { Toaster } from "@/app/components/ui/sonner";
 
 function Profile() {
   const { user: authuser, setUser, userLoading } = useUserContext(); // Global context user to display preloaded data in form
   const [isLoading, setIsLoading] = useState(false); // To change button text to Saving...
-  const [error, setError] = useState();
-  const router = useRouter();
 
   // Profile update form submit handler function. Sends the user object to the server for processing.
   const profileUpdateHandler = async (e, user) => {
@@ -23,12 +22,24 @@ function Profile() {
     try {
       const response = await axios.post("/api/users/profile-update", user);
       if (response.status === 200) {
+        // Update global context user and display success sonner
         setUser(response.data.data);
-        router.refresh();
+        toast.success("Profile Updated", {
+          action: {
+            label: "OK",
+            onClick: () => toast.dismiss(),
+          },
+        });
       }
     } catch (err) {
-      // setError(err.response.data.error);
-      console.log(err);
+      // Displaying error sonner
+      toast.error("Profile Update Failed", {
+        description: "Try again later",
+        action: {
+          label: "OK",
+          onClick: () => toast.dismiss(),
+        },
+      });
     } finally {
       setIsLoading(false);
     }
@@ -53,13 +64,16 @@ function Profile() {
           ) : null}
         </div>
 
+        {/* The update form component */}
         <ProfileUpdateForm
           authuser={authuser}
           isLoading={isLoading}
-          error={error}
           profileUpdateHandler={profileUpdateHandler}
         />
       </div>
+
+      {/* Sonner to display the update status */}
+      <Toaster richColors />
     </section>
   );
 }
