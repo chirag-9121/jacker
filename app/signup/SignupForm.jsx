@@ -74,8 +74,8 @@ function SignupForm({ signupHandler, isLoading, error }) {
               className="space-y-4 md:space-y-6"
               onSubmit={(e) => signupHandler(e, user)} // Callback to page component function
             >
-              <div className="flex justify-between">
-                <div>
+              <div className="flex justify-between gap-4">
+                <div className="w-full">
                   <label
                     htmlFor="first-name"
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
@@ -96,7 +96,7 @@ function SignupForm({ signupHandler, isLoading, error }) {
                   />
                 </div>
 
-                <div>
+                <div className="w-full">
                   <label
                     htmlFor="last-name"
                     className="mb-2 block text-sm font-medium text-black dark:text-white"
@@ -219,7 +219,7 @@ function SignupForm({ signupHandler, isLoading, error }) {
 
                 {isLoading && (
                   <div className="flex items-center justify-center gap-2">
-                    <LoadingSpinner /> Signing in...
+                    <LoadingSpinner className="stroke-white" /> Signing in...
                   </div>
                 )}
               </button>

@@ -116,7 +116,7 @@ function LoginForm({ loginHandler, isLoading, error }) {
                 {!isLoading && "Login"}{" "}
                 {isLoading && (
                   <div className="flex items-center justify-center gap-2">
-                    <LoadingSpinner /> Logging in...
+                    <LoadingSpinner className="stroke-white" /> Logging in...
                   </div>
                 )}
               </button>
