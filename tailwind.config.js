@@ -49,6 +49,7 @@ module.exports = {
         grey: "#848D9D",
         forminput: "#F5F5F6",
         error: "#D11A2A",
+        iconblue: "#4285F4",
       },
 
       keyframes: {

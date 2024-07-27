@@ -1,21 +1,34 @@
+"use client";
+
 import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
-  DialogClose,
+  DialogTrigger,
 } from "@/app/components/ui/dialog";
-import CrossButton from "../ui/cross-button";
-import { IoMdEye } from "react-icons/io";
+import CrossButton from "@/app/components/ui/cross-button";
+import { IoCalendar } from "react-icons/io5";
+import { format } from "date-fns";
+import { Calendar } from "@/app/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { isDateAfterType } from "react-day-picker";
 
 function AddJobModal() {
+  const [date, setDate] = useState(new Date());
+
   return (
     <DialogContent>
       <DialogHeader className="flex-row items-center justify-between">
         <DialogTitle>Add a new job</DialogTitle>
-        <DialogClose asChild>
+        <DialogTrigger>
           <CrossButton />
-        </DialogClose>
+        </DialogTrigger>
       </DialogHeader>
 
       <form className="space-y-4 md:space-y-6">
@@ -76,22 +89,39 @@ function AddJobModal() {
               htmlFor="application-date"
               className="mb-2 block text-xs font-medium text-black dark:text-white"
             >
-              Application Date <span className="text-sm text-error">*</span>
+              Application Date{" "}
+              {/* text-sm gives a certain line height to element, input fields were not aligned properly */}
+              <span style={{ lineHeight: 0 }} className="text-sm text-error">
+                *
+              </span>
             </label>
-            <div className="relative">
-              <input
-                type="text"
-                name="application-date"
-                id="application-date"
-                placeholder="30/2/2024"
-                className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
-                required={true}
-              />
-              <IoMdEye
-                size={20}
-                className="absolute end-0 top-0 m-2.5 cursor-pointer dark:fill-white"
-              />
-            </div>
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  className={cn(
+                    "flex w-full justify-between rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70",
+                    !date && "text-muted-foreground",
+                  )}
+                >
+                  {date ? (
+                    format(date, "PPP")
+                  ) : (
+                    <span className="text-grey">February 30th, 2024</span>
+                  )}
+                  <IoCalendar className="text-iconblue h-4 w-4" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  toDate={new Date()}
+                  initialFocus
+                  required="true"
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="w-full">
@@ -120,13 +150,15 @@ function AddJobModal() {
 
         {/* Form action buttons */}
         <div className="flex items-center justify-end gap-5">
-          <button
-            type="reset"
-            // onClick={cancelFormHandler}
-            className="h-9 w-20 cursor-pointer rounded-lg bg-primary/20 text-sm font-semibold text-primary dark:bg-primary/20 dark:text-primary-light/80"
-          >
-            Cancel
-          </button>
+          <DialogTrigger>
+            <button
+              type="reset"
+              // onClick={cancelFormHandler}
+              className="h-9 w-20 cursor-pointer rounded-lg bg-primary/20 text-sm font-semibold text-primary dark:bg-primary/20 dark:text-primary-light/80"
+            >
+              Cancel
+            </button>
+          </DialogTrigger>
           <button
             type="submit"
             // disabled={!validated || isLoading}
