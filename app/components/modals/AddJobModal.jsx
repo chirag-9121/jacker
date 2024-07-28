@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { format } from "date-fns";
 
 // public assets and icons
@@ -22,15 +22,27 @@ import {
   PopoverTrigger,
 } from "@/app/components/ui/popover";
 
-function AddJobModal({ addJobHandler }) {
+function AddJobModal({ jobIsLoading, addJobHandler, open }) {
   const [date, setDate] = useState(new Date());
   const [job, setJob] = useState({
     jobTitle: "",
-    companyName: "",
+    company: "",
     jobUrl: "",
     applicationDate: date,
     salary: undefined,
   });
+
+  useEffect(() => {
+    if (!open) {
+      setJob({
+        jobTitle: "",
+        company: "",
+        jobUrl: "",
+        applicationDate: date,
+        salary: undefined,
+      });
+    }
+  }, [open]);
 
   return (
     <DialogContent>
@@ -75,8 +87,8 @@ function AddJobModal({ addJobHandler }) {
             type="text"
             name="company-name"
             id="companyname"
-            onChange={(e) => setJob({ ...job, companyName: e.target.value })}
-            value={job.companyName}
+            onChange={(e) => setJob({ ...job, company: e.target.value })}
+            value={job.company}
             className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
             placeholder="Jacker"
             required={true}
@@ -186,9 +198,9 @@ function AddJobModal({ addJobHandler }) {
             className="h-9 w-20 rounded-lg bg-primary text-sm font-semibold text-white hover:bg-primary/80"
           >
             {/* Updating text in button based on isLoading value */}
-            Add
-            {/* {!isLoading && "Save"} */}
-            {/* {isLoading && "Saving..."} */}
+
+            {!jobIsLoading && "Add"}
+            {jobIsLoading && "Adding..."}
           </button>
         </div>
       </form>
