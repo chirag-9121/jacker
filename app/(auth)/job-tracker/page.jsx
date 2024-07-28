@@ -1,8 +1,22 @@
-import AddJob from "@/app/components/modals/AddJobModal";
+"use client";
+
+import AddJobModal from "@/app/components/modals/AddJobModal";
 import AddButton from "@/app/components/ui/add-button";
 import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
+import axios from "axios";
 
 function JobTracker() {
+  const addJobHandler = async (e, job) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/jobs/add-job", job);
+      if (response.status === 200) {
+        console.log(response);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div className="w-full p-7 pl-12 pr-12">
       {/* Header */}
@@ -16,7 +30,7 @@ function JobTracker() {
             <DialogTrigger>
               <AddButton btnText=" Job" />
             </DialogTrigger>
-            <AddJob />
+            <AddJobModal addJobHandler={addJobHandler} />
           </Dialog>
         </div>
       </div>
