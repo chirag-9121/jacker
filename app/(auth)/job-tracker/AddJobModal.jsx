@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import { useState } from "react";
 
 // public assets and icons
 import { IoCalendar } from "react-icons/io5";
@@ -22,27 +22,8 @@ import {
   PopoverTrigger,
 } from "@/app/components/ui/popover";
 
-function AddJobModal({ jobIsLoading, addJobHandler, open }) {
-  const [date, setDate] = useState(new Date());
-  const [job, setJob] = useState({
-    jobTitle: "",
-    company: "",
-    jobUrl: "",
-    applicationDate: date,
-    salary: undefined,
-  });
-
-  useEffect(() => {
-    if (!open) {
-      setJob({
-        jobTitle: "",
-        company: "",
-        jobUrl: "",
-        applicationDate: date,
-        salary: undefined,
-      });
-    }
-  }, [open]);
+function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false); // To delay the popover calendar from closing
 
   return (
     <DialogContent>
@@ -126,16 +107,16 @@ function AddJobModal({ jobIsLoading, addJobHandler, open }) {
                 *
               </span>
             </label>
-            <Popover>
+            <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
               <PopoverTrigger asChild>
                 <button
                   className={cn(
                     "flex w-full justify-between rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70",
-                    !date && "text-muted-foreground",
+                    !job.applicationDate && "text-muted-foreground",
                   )}
                 >
-                  {date ? (
-                    format(date, "PPP")
+                  {job.applicationDate ? (
+                    format(job.applicationDate, "PPP")
                   ) : (
                     <span className="text-grey">February 30th, 2024</span>
                   )}
@@ -145,9 +126,14 @@ function AddJobModal({ jobIsLoading, addJobHandler, open }) {
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  toDate={new Date()}
+                  selected={job.applicationDate}
+                  onSelect={(e) => {
+                    setJob({ ...job, applicationDate: e });
+                    setTimeout(() => {
+                      setIsCalendarOpen(false);
+                    }, 200);
+                  }}
+                  toDate={new Date()} // disables all future dates
                   initialFocus
                   required="true"
                 />
@@ -172,13 +158,6 @@ function AddJobModal({ jobIsLoading, addJobHandler, open }) {
               className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
             />
           </div>
-          {/* {!validated && (
-            // will-change-transform is applied as the color of this p tag was changing based on whether the above input
-            // fields are focused or not
-            <p className="text-end text-sm font-semibold text-error will-change-transform">
-              Passwords do not match
-            </p>
-          )} */}
         </div>
 
         {/* Form action buttons */}
@@ -186,7 +165,6 @@ function AddJobModal({ jobIsLoading, addJobHandler, open }) {
           <DialogTrigger>
             <button
               type="reset"
-              // onClick={cancelFormHandler}
               className="h-9 w-20 cursor-pointer rounded-lg bg-primary/20 text-sm font-semibold text-primary dark:bg-primary/20 dark:text-primary-light/80"
             >
               Cancel
@@ -194,10 +172,9 @@ function AddJobModal({ jobIsLoading, addJobHandler, open }) {
           </DialogTrigger>
           <button
             type="submit"
-            // disabled={!validated || isLoading}
             className="h-9 w-20 rounded-lg bg-primary text-sm font-semibold text-white hover:bg-primary/80"
           >
-            {/* Updating text in button based on isLoading value */}
+            {/* Updating text in button based on jobIsLoading value */}
 
             {!jobIsLoading && "Add"}
             {jobIsLoading && "Adding..."}

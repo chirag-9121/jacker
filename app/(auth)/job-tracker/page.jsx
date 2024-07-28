@@ -1,29 +1,57 @@
 "use client";
 
-import AddJobModal from "@/app/components/modals/AddJobModal";
-import AddButton from "@/app/components/ui/add-button";
-import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "sonner";
+
+// ui components
+import { Toaster } from "@/app/components/ui/sonner";
+import AddJobModal from "@/app/(auth)/job-tracker/AddJobModal";
+import AddButton from "@/app/components/ui/add-button";
+import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
 
 function JobTracker() {
   const [jobIsLoading, setJobIsLoading] = useState(false); // to update button text while job is being added
-  const [open, setOpen] = useState(false); // To close dialog after job is added and to clear previous form content
+  const [open, setOpen] = useState(false); // To close dialog after job is added
+
+  const [job, setJob] = useState({
+    jobTitle: "",
+    company: "",
+    jobUrl: "",
+    applicationDate: new Date(),
+    salary: undefined,
+  });
 
   const addJobHandler = async (e, job) => {
     e.preventDefault();
     setJobIsLoading(true);
-    console.log(job);
     try {
       const response = await axios.post("/api/jobs/add-job", job);
       if (response.status === 200) {
-        console.log(response.data);
+        toast("Job application added", {
+          action: {
+            label: "OK",
+            onClick: () => toast.dismiss(),
+          },
+        });
       }
     } catch (err) {
-      console.log(err);
+      toast.error("Oops! That didn't work", {
+        action: {
+          label: "OK",
+          onClick: () => toast.dismiss(),
+        },
+      });
     } finally {
       setJobIsLoading(false);
       setOpen(false);
+      setJob({
+        jobTitle: "",
+        company: "",
+        jobUrl: "",
+        applicationDate: new Date(),
+        salary: undefined,
+      });
     }
   };
   return (
@@ -43,13 +71,17 @@ function JobTracker() {
               <AddButton btnText=" Job" />
             </DialogTrigger>
             <AddJobModal
+              job={job}
+              setJob={setJob}
               jobIsLoading={jobIsLoading}
               addJobHandler={addJobHandler}
-              open={open}
             />
           </Dialog>
         </div>
       </div>
+
+      {/* Sonner to display api related updates */}
+      <Toaster richColors />
     </div>
   );
 }
