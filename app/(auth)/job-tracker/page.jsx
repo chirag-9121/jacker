@@ -1,8 +1,6 @@
 "use client";
 
-import axios from "axios";
-import { useState } from "react";
-import { toast } from "sonner";
+import useAddJobManager from "@/app/hooks/useAddJobManager";
 
 // ui components
 import { Toaster } from "@/app/components/ui/sonner";
@@ -11,49 +9,8 @@ import AddButton from "@/app/components/ui/add-button";
 import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
 
 function JobTracker() {
-  const [jobIsLoading, setJobIsLoading] = useState(false); // to update button text while job is being added
-  const [open, setOpen] = useState(false); // To close dialog after job is added
-
-  const [job, setJob] = useState({
-    jobTitle: "",
-    company: "",
-    jobUrl: "",
-    applicationDate: new Date(),
-    salary: undefined,
-  });
-
-  const addJobHandler = async (e, job) => {
-    e.preventDefault();
-    setJobIsLoading(true);
-    try {
-      const response = await axios.post("/api/jobs/add-job", job);
-      if (response.status === 200) {
-        toast("Job application added", {
-          action: {
-            label: "OK",
-            onClick: () => toast.dismiss(),
-          },
-        });
-      }
-    } catch (err) {
-      toast.error("Oops! That didn't work", {
-        action: {
-          label: "OK",
-          onClick: () => toast.dismiss(),
-        },
-      });
-    } finally {
-      setJobIsLoading(false);
-      setOpen(false);
-      setJob({
-        jobTitle: "",
-        company: "",
-        jobUrl: "",
-        applicationDate: new Date(),
-        salary: undefined,
-      });
-    }
-  };
+  const { job, setJob, open, setOpen, jobIsLoading, addJobHandler } =
+    useAddJobManager();
   return (
     <div className="w-full p-7 pl-12 pr-12">
       {/* Header */}

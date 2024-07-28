@@ -25,6 +25,17 @@ import {
 function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false); // To delay the popover calendar from closing
 
+  // To clear form fields or job state on cancel
+  const clearStateHandler = () => {
+    setJob({
+      jobTitle: "",
+      company: "",
+      jobUrl: "",
+      applicationDate: new Date(),
+      salary: undefined,
+    });
+  };
+
   return (
     <DialogContent>
       <DialogHeader className="flex-row items-center justify-between">
@@ -163,12 +174,12 @@ function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
         {/* Form action buttons */}
         <div className="flex items-center justify-end gap-5">
           <DialogTrigger>
-            <button
-              type="reset"
-              className="h-9 w-20 cursor-pointer rounded-lg bg-primary/20 text-sm font-semibold text-primary dark:bg-primary/20 dark:text-primary-light/80"
+            <div
+              onClick={clearStateHandler}
+              className="flex h-9 w-20 cursor-pointer items-center justify-center rounded-lg bg-primary/20 text-sm font-semibold text-primary dark:bg-primary/20 dark:text-primary-light/80"
             >
               Cancel
-            </button>
+            </div>
           </DialogTrigger>
           <button
             type="submit"
