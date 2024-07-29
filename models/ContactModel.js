@@ -25,6 +25,6 @@ const contactSchema = new mongoose.Schema({
 
 // If Contact model already exists, dont create a new one
 const Contact =
-  mongoose.models.jobs || mongoose.model("contacts", contactSchema);
+  mongoose.models.jobs || mongoose.model("Contact", contactSchema);
 
 export default Contact;

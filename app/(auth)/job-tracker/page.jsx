@@ -1,6 +1,8 @@
 "use client";
 
 import useAddJobManager from "@/app/hooks/useAddJobManager";
+import axios from "axios";
+import useSWR from "swr";
 
 // ui components
 import { Toaster } from "@/app/components/ui/sonner";
@@ -8,9 +10,12 @@ import AddJobModal from "@/app/(auth)/job-tracker/AddJobModal";
 import AddButton from "@/app/components/ui/add-button";
 import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
 
+const fetcher = (url) => axios.get(url).then((res) => res.data);
+
 function JobTracker() {
   const { job, setJob, open, setOpen, jobIsLoading, addJobHandler } =
     useAddJobManager();
+  // const { data, error, isLoading } = useSWR("/api/jobs/get-jobs", fetcher);
   return (
     <div className="w-full p-7 pl-12 pr-12">
       {/* Header */}

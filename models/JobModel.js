@@ -1,7 +1,10 @@
-import { mongoose } from "mongoose";
-import Contact from "./ContactModel";
+import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   jobTitle: {
     type: String,
     required: [true, "Please provide a job title"],
@@ -24,8 +27,8 @@ const jobSchema = new mongoose.Schema({
     required: [true, "Please provide an application date"],
   },
   contact: {
-    type: Object,
-    ref: Contact,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Contact",
   },
   response: {
     type: String,
@@ -38,6 +41,6 @@ const jobSchema = new mongoose.Schema({
 });
 
 // If Job model already exists, dont create a new one
-const Job = mongoose.models.jobs || mongoose.model("jobs", jobSchema);
+const Job = mongoose.models.jobs || mongoose.model("Job", jobSchema);
 
 export default Job;

@@ -1,25 +1,16 @@
 import connectDb from "@/config/connectDB";
 import Job from "@/models/JobModel";
 import { NextResponse } from "next/server";
-import mongoose from "mongoose";
 
 connectDb();
 
-export async function POST(request) {
+export async function GET(request) {
   try {
     const reqBody = await request.json();
-    const userId = reqBody.userId;
-    const { jobTitle, company, jobUrl, applicationDate, salary } = reqBody.job;
+    // const { jobTitle, companyName, jobUrl, applicationDate, salary } = reqBody;
 
     // Creating and Saving new job
-    const newJob = new Job({
-      userId: userId,
-      jobTitle: jobTitle,
-      company: company,
-      jobUrl: jobUrl,
-      applicationDate: applicationDate,
-      salary: salary,
-    });
+    const newJob = new Job(reqBody);
 
     const savedJob = await newJob.save();
 

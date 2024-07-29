@@ -3,10 +3,12 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useUserContext } from "@/app/components/UserProvider";
 
 const useAddJobManager = () => {
   const [jobIsLoading, setJobIsLoading] = useState(false); // to update button text while job is being added
   const [open, setOpen] = useState(false); // To close dialog after job is added
+  const { user } = useUserContext();
 
   const [job, setJob] = useState({
     jobTitle: "",
@@ -20,7 +22,10 @@ const useAddJobManager = () => {
     e.preventDefault();
     setJobIsLoading(true);
     try {
-      const response = await axios.post("/api/jobs/add-job", job);
+      const response = await axios.post("/api/jobs/add-job", {
+        userId: user.id,
+        job: job,
+      });
       if (response.status === 200) {
         toast("Job application added", {
           action: {
@@ -30,7 +35,6 @@ const useAddJobManager = () => {
         });
       }
     } catch (err) {
-      console.log(err);
       toast.error("Oops! That didn't work", {
         action: {
           label: "OK",
