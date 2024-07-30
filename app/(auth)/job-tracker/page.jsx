@@ -3,17 +3,21 @@
 import useAddJobManager from "@/app/hooks/useAddJobManager";
 import axios from "axios";
 import { useUserContext } from "@/app/components/UserProvider";
+import { useEffect, useState } from "react";
+
+// Data Table components
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
 
 // ui components
 import { Toaster } from "@/app/components/ui/sonner";
 import AddJobModal from "@/app/(auth)/job-tracker/AddJobModal";
 import AddButton from "@/app/components/ui/add-button";
 import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
-import { useEffect, useState } from "react";
 
 function JobTracker() {
   const { user } = useUserContext();
-  // Add job props importing from AddJobManager to pass to AddJobModal
+  // Add job props importing from AddJobManager hook to pass to AddJobModal
   const {
     job,
     setJob,
@@ -68,7 +72,13 @@ function JobTracker() {
           </Dialog>
         </div>
       </div>
-      {jobs && jobs.map((job) => <li key={job._id}>{job.jobTitle}</li>)}
+
+      {/* Job application Table */}
+      {jobs && (
+        <div className="container mx-auto py-10">
+          <DataTable columns={columns} data={jobs} />
+        </div>
+      )}
 
       {/* Sonner to display api related updates */}
       <Toaster richColors />
