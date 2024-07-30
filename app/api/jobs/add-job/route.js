@@ -1,7 +1,6 @@
 import connectDb from "@/config/connectDB";
 import Job from "@/models/JobModel";
 import { NextResponse } from "next/server";
-import mongoose from "mongoose";
 
 connectDb();
 

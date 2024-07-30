@@ -6,21 +6,26 @@ connectDb();
 
 export async function GET(request) {
   try {
-    const reqBody = await request.json();
-    // const { jobTitle, companyName, jobUrl, applicationDate, salary } = reqBody;
+    // Parsing userId from search parameter
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
 
-    // Creating and Saving new job
-    const newJob = new Job(reqBody);
+    // Fetching all jobs associated with a specific user
+    const jobs = await Job.find({ userId: userId });
 
-    const savedJob = await newJob.save();
+    // Returning 404 response if there are no jobs
+    if (!jobs)
+      return NextResponse.json(
+        { error: "No jobs to display" },
+        { status: 404 },
+      );
 
+    // Returning 200 response with jobs object
     return NextResponse.json({
-      message: "Added new job application.",
       success: true,
-      savedJob,
+      jobs,
     });
   } catch (err) {
-    console.log(err);
     return NextResponse.json({ error: err }, { status: 500 });
   }
 }

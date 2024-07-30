@@ -2,20 +2,47 @@
 
 import useAddJobManager from "@/app/hooks/useAddJobManager";
 import axios from "axios";
-import useSWR from "swr";
+import { useUserContext } from "@/app/components/UserProvider";
 
 // ui components
 import { Toaster } from "@/app/components/ui/sonner";
 import AddJobModal from "@/app/(auth)/job-tracker/AddJobModal";
 import AddButton from "@/app/components/ui/add-button";
 import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
-
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+import { useEffect, useState } from "react";
 
 function JobTracker() {
-  const { job, setJob, open, setOpen, jobIsLoading, addJobHandler } =
-    useAddJobManager();
-  // const { data, error, isLoading } = useSWR("/api/jobs/get-jobs", fetcher);
+  const { user } = useUserContext();
+  // Add job props importing from AddJobManager to pass to AddJobModal
+  const {
+    job,
+    setJob,
+    open,
+    setOpen,
+    jobIsLoading,
+    addJobHandler,
+    newJobAddedFlag,
+  } = useAddJobManager();
+
+  const [jobs, setJobs] = useState(); // Jobs state to render all jobs
+
+  // Getter function to retrieve jobs from backend
+  const getJobs = async () => {
+    try {
+      const response = await axios.get("/api/jobs/get-jobs", {
+        params: { userId: user.id }, // Passing user id to fetch all jobs added by current user
+      });
+      if (response.status === 200) {
+        setJobs(response.data.jobs);
+      }
+    } catch (err) {}
+  };
+
+  // Retrieving jobs when user is loaded and when new job is added
+  useEffect(() => {
+    if (user) getJobs();
+  }, [user, newJobAddedFlag]);
+
   return (
     <div className="w-full p-7 pl-12 pr-12">
       {/* Header */}
@@ -41,6 +68,7 @@ function JobTracker() {
           </Dialog>
         </div>
       </div>
+      {jobs && jobs.map((job) => <li key={job._id}>{job.jobTitle}</li>)}
 
       {/* Sonner to display api related updates */}
       <Toaster richColors />

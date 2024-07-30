@@ -38,7 +38,7 @@ export async function POST(request) {
     const response = NextResponse.json({
       message: "New user created.",
       success: true,
-      // savedUser,
+      savedUser,
     });
 
     // Creating token data to store user info (user id,fname,lname and email).

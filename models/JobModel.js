@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import { mongoose } from "mongoose";
 
 const jobSchema = new mongoose.Schema({
   userId: {
@@ -41,6 +41,6 @@ const jobSchema = new mongoose.Schema({
 });
 
 // If Job model already exists, dont create a new one
-const Job = mongoose.models.jobs || mongoose.model("Job", jobSchema);
+const Job = mongoose.models.Job || mongoose.model("Job", jobSchema);
 
 export default Job;

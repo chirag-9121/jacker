@@ -8,7 +8,8 @@ import { useUserContext } from "@/app/components/UserProvider";
 const useAddJobManager = () => {
   const [jobIsLoading, setJobIsLoading] = useState(false); // to update button text while job is being added
   const [open, setOpen] = useState(false); // To close dialog after job is added
-  const { user } = useUserContext();
+  const { user, userLoading } = useUserContext();
+  const [newJobAddedFlag, setNewJobAddedFlag] = useState(false);
 
   const [job, setJob] = useState({
     jobTitle: "",
@@ -22,17 +23,21 @@ const useAddJobManager = () => {
     e.preventDefault();
     setJobIsLoading(true);
     try {
-      const response = await axios.post("/api/jobs/add-job", {
-        userId: user.id,
-        job: job,
-      });
-      if (response.status === 200) {
-        toast("Job application added", {
-          action: {
-            label: "OK",
-            onClick: () => toast.dismiss(),
-          },
+      if (!userLoading) {
+        const response = await axios.post("/api/jobs/add-job", {
+          userId: user.id,
+          job: job,
         });
+
+        if (response.status === 200) {
+          setNewJobAddedFlag((prev) => !prev);
+          toast("Job application added", {
+            action: {
+              label: "OK",
+              onClick: () => toast.dismiss(),
+            },
+          });
+        }
       }
     } catch (err) {
       toast.error("Oops! That didn't work", {
@@ -53,7 +58,15 @@ const useAddJobManager = () => {
       });
     }
   };
-  return { job, setJob, open, setOpen, jobIsLoading, addJobHandler };
+  return {
+    job,
+    setJob,
+    open,
+    setOpen,
+    jobIsLoading,
+    addJobHandler,
+    newJobAddedFlag,
+  };
 };
 
 export default useAddJobManager;
