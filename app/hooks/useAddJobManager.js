@@ -30,6 +30,7 @@ const useAddJobManager = () => {
         });
 
         if (response.status === 200) {
+          setJob(response.data.savedJob);
           setNewJobAddedFlag((prev) => !prev);
           toast("Job application added", {
             action: {
@@ -49,13 +50,6 @@ const useAddJobManager = () => {
     } finally {
       setJobIsLoading(false);
       setOpen(false);
-      setJob({
-        jobTitle: "",
-        company: "",
-        jobUrl: "",
-        applicationDate: new Date(),
-        salary: undefined,
-      });
     }
   };
   return {

@@ -3,7 +3,7 @@
 import useAddJobManager from "@/app/hooks/useAddJobManager";
 import axios from "axios";
 import { useUserContext } from "@/app/components/UserProvider";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 // Data Table components
 import { columns } from "./columns";
@@ -28,7 +28,8 @@ function JobTracker() {
     newJobAddedFlag,
   } = useAddJobManager();
 
-  const [jobs, setJobs] = useState(); // Jobs state to render all jobs
+  const [jobs, setJobs] = useState([]); // Jobs state to render all jobs
+  const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
 
   // Getter function to retrieve jobs from backend
   const getJobs = async () => {
@@ -42,10 +43,27 @@ function JobTracker() {
     } catch (err) {}
   };
 
-  // Retrieving jobs when user is loaded and when new job is added
+  // Updating jobs state when new job is added and resetting form fields to null
+  useEffect(() => {
+    // Bypasses initial run
+    if (hasPageBeenRendered.current) {
+      setJobs((prevJobs) => [...prevJobs, job]);
+
+      setJob({
+        jobTitle: "",
+        company: "",
+        jobUrl: "",
+        applicationDate: new Date(),
+        salary: undefined,
+      });
+    }
+    hasPageBeenRendered.current = true;
+  }, [newJobAddedFlag]);
+
+  // Retrieving jobs when user is loaded
   useEffect(() => {
     if (user) getJobs();
-  }, [user, newJobAddedFlag]);
+  }, [user]);
 
   return (
     <div className="w-full p-7 pl-12 pr-12">
