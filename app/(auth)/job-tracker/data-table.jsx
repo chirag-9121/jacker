@@ -23,7 +23,7 @@ export function DataTable({ columns, data }) {
   });
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -48,6 +48,7 @@ export function DataTable({ columns, data }) {
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
+                className="bg-white dark:bg-cardcolor"
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
@@ -60,7 +61,7 @@ export function DataTable({ columns, data }) {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                No job applications added yet.
               </TableCell>
             </TableRow>
           )}

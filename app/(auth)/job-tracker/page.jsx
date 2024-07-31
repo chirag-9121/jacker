@@ -93,7 +93,7 @@ function JobTracker() {
 
       {/* Job application Table */}
       {jobs && (
-        <div className="container mx-auto py-10">
+        <div className="mx-auto py-10">
           <DataTable columns={columns} data={jobs} />
         </div>
       )}
