@@ -49,6 +49,8 @@ module.exports = {
         grey: "#848D9D",
         forminput: "#F5F5F6",
         error: "#D11A2A",
+        success: "#3A974C",
+        warning: "#FF9129",
         iconblue: "#4285F4",
       },
 
