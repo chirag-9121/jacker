@@ -3,16 +3,20 @@
 import { format } from "date-fns";
 import Link from "next/link";
 import { toast } from "sonner";
-
-// Icons and ui components
-import { IoCalendar } from "react-icons/io5";
-import EditDeletePopup from "@/app/components/ui/edit-delete-popup";
 import axios from "axios";
 
-// import { ColumnDef } from "@tanstack/react-table";
+// Icons and ui components
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from "@/app/components/ui/dropdown-menu";
+import EditResponse from "@/app/components/ui/edit-response";
+import EditDeletePopup from "@/app/components/ui/edit-delete-popup";
 
-// setJobs is taken as parameter from the main component to update the state of rendered jobs, this function returns an array of column definitions
-export const getColumns = (setJobs) => [
+import { IoCalendar } from "react-icons/io5";
+
+// jobs and setJobs is taken as parameter from the main component to update the state of rendered jobs, this function returns an array of column definitions
+export const getColumns = (jobs, setJobs) => [
   {
     accessorKey: "jobTitle",
     header: "Job Title",
@@ -86,13 +90,54 @@ export const getColumns = (setJobs) => [
     accessorKey: "response",
     header: "Response",
     cell: ({ row }) => {
+      // Extracting the current response from row and its job id
       const response = row.getValue("response");
       const jobId = row.original._id;
 
+      // Creating a map object to update tailwind class based on the value of response
+      const responseToClassColorMap = {
+        Positive: "success",
+        Pending: "warning",
+        Rejection: "error",
+      };
+      let classColor = responseToClassColorMap[response];
+
+      // The response handler function makes a post request to backend to update response of a specific job
+      const editResponseHandler = async (updatedResponse) => {
+        try {
+          // Sending job id and new response set by user
+          const res = await axios.post("/api/jobs/edit-job/response", {
+            jobId: jobId,
+            updatedResponse: updatedResponse,
+          });
+
+          // If the update is successfull, update the classColor variable and job state
+          if (res.status === 200) {
+            classColor = responseToClassColorMap[updatedResponse];
+
+            setJobs((prevJobs) =>
+              prevJobs.map((job) =>
+                job._id === jobId ? { ...job, response: updatedResponse } : job,
+              ),
+            );
+          }
+        } catch (err) {}
+      };
+
       return (
-        <button className="w-fit rounded-full bg-warning/10 p-2 px-4 text-xs text-warning">
-          {response}
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className={`w-fit rounded-full bg-${classColor}/10 p-2 px-4 text-xs text-${classColor}`}
+            >
+              {response}
+              <span className="sr-only">Job Response Actions</span>
+            </button>
+          </DropdownMenuTrigger>
+
+          {/* UI component to select new response */}
+          <EditResponse editResponseHandler={editResponseHandler} />
+        </DropdownMenu>
       );
     },
   },
