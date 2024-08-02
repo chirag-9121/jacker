@@ -6,7 +6,7 @@ import { useUserContext } from "@/app/components/UserProvider";
 import { useEffect, useState, useRef } from "react";
 
 // Data Table components
-import { columns } from "./columns";
+import { getColumns } from "./columns";
 import { DataTable } from "./data-table";
 
 // ui components
@@ -30,6 +30,7 @@ function JobTracker() {
 
   const [jobs, setJobs] = useState([]); // Jobs state to render all jobs
   const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
+  const columns = getColumns(setJobs); // Calling the getColumns function that takes setJobs as param to update state of jobs, the returned array of column definitions is then passed in the data table component
 
   // Getter function to retrieve jobs from backend
   const getJobs = async () => {

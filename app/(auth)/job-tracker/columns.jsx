@@ -11,7 +11,8 @@ import axios from "axios";
 
 // import { ColumnDef } from "@tanstack/react-table";
 
-export const columns = [
+// setJobs is taken as parameter from the main component to update the state of rendered jobs, this function returns an array of column definitions
+export const getColumns = (setJobs) => [
   {
     accessorKey: "jobTitle",
     header: "Job Title",
@@ -89,7 +90,7 @@ export const columns = [
       const jobId = row.original._id;
 
       return (
-        <button className="bg-warning/10 text-warning w-fit rounded-full p-2 px-4 text-xs">
+        <button className="w-fit rounded-full bg-warning/10 p-2 px-4 text-xs text-warning">
           {response}
         </button>
       );
@@ -113,6 +114,8 @@ export const columns = [
             jobId: job._id,
           });
           if (response.status === 200) {
+            // Once the job is deleted from backend, simply filtering it from the state
+            setJobs((prevJobs) => prevJobs.filter((j) => j._id !== job._id));
             toast("Job application deleted", {
               action: {
                 label: "OK",
