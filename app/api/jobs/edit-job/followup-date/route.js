@@ -6,12 +6,12 @@ connectDb();
 
 export async function POST(request) {
   try {
-    // Extracting job id and the updated response (eg. positive || rejection)
+    // Extracting job id and the updated follow up date
     const reqBody = await request.json();
     const jobId = reqBody.jobId;
     const followUpDate = reqBody.followUpDate;
 
-    // Finding by job id and updating the response property of it
+    // Finding by job id and updating the respective property of it
     const updatedJob = await Job.findOneAndUpdate(
       { _id: jobId },
       { $set: { followUpDate: followUpDate } },

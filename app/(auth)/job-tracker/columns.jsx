@@ -162,14 +162,16 @@ export const getColumns = (jobs, setJobs) => [
     accessorKey: "followUpDate",
     header: "Follow-up Date",
     cell: ({ row }) => {
+      // Extracting follow up date from from and the job object
       const followUpDate = row.getValue("followUpDate");
       const job = row.original;
       let colorToDisplay;
       let formatted;
 
+      // If there is a date, format it and caclculate the time since last follow up to update tailwind class
       if (followUpDate) {
         formatted = format(followUpDate, "PPP");
-        // Calculating the difference between followup date and application date to indicate the time since last follow up
+        // Calculating the difference between today's date and follow-up date to indicate the time since last follow up
         const daysDiff = Math.round(
           (new Date() - new Date(followUpDate)) / (24 * 60 * 60 * 1000),
         );
@@ -179,6 +181,7 @@ export const getColumns = (jobs, setJobs) => [
         else colorToDisplay = "text-error";
       }
 
+      // Sending post request to update follow-up date
       const followUpDateHandler = async (e) => {
         try {
           console.log(e);
@@ -191,6 +194,7 @@ export const getColumns = (jobs, setJobs) => [
         }
       };
 
+      // Returning an editable calendar popover triggered by a button as the cell data
       return (
         <Popover>
           <PopoverTrigger asChild>
@@ -202,6 +206,7 @@ export const getColumns = (jobs, setJobs) => [
             >
               <IoCalendar className="h-4 w-4 text-iconblue" />
 
+              {/* If the followUpDate exists, format it and apply color */}
               {followUpDate ? (
                 <div className={colorToDisplay}>{formatted}</div>
               ) : (
@@ -209,10 +214,12 @@ export const getColumns = (jobs, setJobs) => [
               )}
             </button>
           </PopoverTrigger>
+
           <PopoverContent className="w-auto p-0" align="start">
             <Calendar
               mode="single"
               selected={followUpDate}
+              // When the date is selected, call the post request and send the update date (e) as param and update the job state
               onSelect={(e) => {
                 followUpDateHandler(e);
                 setJobs((prevJobs) =>
@@ -221,7 +228,7 @@ export const getColumns = (jobs, setJobs) => [
                   ),
                 );
               }}
-              fromDate={job.applicationDate}
+              fromDate={job.applicationDate} // disables all dates before the application date on the calendar popover
               toDate={new Date()} // disables all future dates
               initialFocus
               required="true"
