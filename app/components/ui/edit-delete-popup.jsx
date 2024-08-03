@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
 
-function EditDeletePopup({ deleteJobHandler }) {
+function EditDeletePopup({ deleteRowHandler }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -26,7 +26,7 @@ function EditDeletePopup({ deleteJobHandler }) {
           Edit
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={deleteJobHandler}
+          onClick={deleteRowHandler}
           className="flex gap-2 text-xs text-error focus:bg-error/10 focus:text-error dark:focus:bg-error/10 dark:focus:text-error"
         >
           <FaTrash size={10} />

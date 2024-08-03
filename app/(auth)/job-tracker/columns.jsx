@@ -4,6 +4,8 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { toast } from "sonner";
 import axios from "axios";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 // Icons and ui components
 import {
@@ -12,8 +14,23 @@ import {
 } from "@/app/components/ui/dropdown-menu";
 import EditResponse from "@/app/components/ui/edit-response";
 import EditDeletePopup from "@/app/components/ui/edit-delete-popup";
+import { Calendar } from "@/app/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/app/components/ui/popover";
 
 import { IoCalendar } from "react-icons/io5";
+
+function displayToastError() {
+  toast.error("Oops! That didn't work", {
+    action: {
+      label: "OK",
+      onClick: () => toast.dismiss(),
+    },
+  });
+}
 
 // jobs and setJobs is taken as parameter from the main component to update the state of rendered jobs, this function returns an array of column definitions
 export const getColumns = (jobs, setJobs) => [
@@ -128,7 +145,7 @@ export const getColumns = (jobs, setJobs) => [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className={`w-fit rounded-full bg-${classColor}/10 p-2 px-4 text-xs text-${classColor}`}
+              className={`w-fit rounded-full ${classColor === "success" ? "bg-success/10 text-success" : classColor === "warning" ? "bg-warning/10 text-warning" : classColor === "error" ? "bg-error/10 text-error" : ""} p-2 px-4 text-xs`}
             >
               {response}
               <span className="sr-only">Job Response Actions</span>
@@ -144,6 +161,75 @@ export const getColumns = (jobs, setJobs) => [
   {
     accessorKey: "followUpDate",
     header: "Follow-up Date",
+    cell: ({ row }) => {
+      const followUpDate = row.getValue("followUpDate");
+      const job = row.original;
+      let colorToDisplay;
+      let formatted;
+
+      if (followUpDate) {
+        formatted = format(followUpDate, "PPP");
+        // Calculating the difference between followup date and application date to indicate the time since last follow up
+        const daysDiff = Math.round(
+          (new Date() - new Date(followUpDate)) / (24 * 60 * 60 * 1000),
+        );
+        console.log(daysDiff);
+        if (daysDiff < 7) colorToDisplay = "text-success";
+        else if (daysDiff < 14) colorToDisplay = "text-warning";
+        else colorToDisplay = "text-error";
+      }
+
+      const followUpDateHandler = async (e) => {
+        try {
+          console.log(e);
+          const response = axios.post("/api/jobs/edit-job/followup-date", {
+            jobId: job._id,
+            followUpDate: e,
+          });
+        } catch (err) {
+          displayToastError();
+        }
+      };
+
+      return (
+        <Popover>
+          <PopoverTrigger asChild>
+            <button
+              className={cn(
+                "flex w-3/4 items-center justify-between gap-1 rounded-lg border-2 border-transparent bg-forminput p-2 text-sm focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70",
+                followUpDate && "text-muted-foreground",
+              )}
+            >
+              <IoCalendar className="h-4 w-4 text-iconblue" />
+
+              {followUpDate ? (
+                <div className={colorToDisplay}>{formatted}</div>
+              ) : (
+                <span className="text-xs text-grey">Click to Add</span>
+              )}
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              mode="single"
+              selected={followUpDate}
+              onSelect={(e) => {
+                followUpDateHandler(e);
+                setJobs((prevJobs) =>
+                  prevJobs.map((j) =>
+                    j._id === job._id ? { ...j, followUpDate: e } : j,
+                  ),
+                );
+              }}
+              fromDate={job.applicationDate}
+              toDate={new Date()} // disables all future dates
+              initialFocus
+              required="true"
+            />
+          </PopoverContent>
+        </Popover>
+      );
+    },
   },
 
   // ROW ACTIONS
@@ -169,16 +255,11 @@ export const getColumns = (jobs, setJobs) => [
             });
           }
         } catch (err) {
-          toast.error("Oops! That didn't work", {
-            action: {
-              label: "OK",
-              onClick: () => toast.dismiss(),
-            },
-          });
+          displayToastError();
         }
       };
 
-      return <EditDeletePopup deleteJobHandler={deleteJobHandler} />;
+      return <EditDeletePopup deleteRowHandler={deleteJobHandler} />;
     },
   },
 ];
