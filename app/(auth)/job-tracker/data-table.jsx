@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/app/components/ui/table";
+import { Skeleton } from "@/app/components/ui/skeleton";
 
 export function DataTable({ columns, data }) {
   const table = useReactTable({
@@ -61,7 +62,18 @@ export function DataTable({ columns, data }) {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No job applications added yet.
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="m-1.5 flex h-12 items-center justify-between p-2"
+                  >
+                    <Skeleton className="h-full w-2/3" />
+                    <Skeleton className="h-full w-14 rounded-lg" />
+                    <Skeleton className="h-full w-20 rounded-full" />
+                    <Skeleton className="h-full w-40 rounded-lg" />
+                    <Skeleton className="h-5 w-5 rounded-full" />
+                  </div>
+                ))}
               </TableCell>
             </TableRow>
           )}

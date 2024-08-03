@@ -55,6 +55,7 @@ export async function POST(request) {
 
     response.cookies.set("userAuthToken", token, {
       httpOnly: true, // Ensures that the cookie is only accessible on the server side
+      maxAge: 24 * 60 * 60 * 1000, // Ensures that the cookie is deleted from the browser within 1 day
     });
 
     return response;
