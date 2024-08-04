@@ -16,11 +16,11 @@ const jobSchema = new mongoose.Schema({
   jobUrl: {
     type: String,
     required: [true, "Please provide a job url"],
-    unique: true,
   },
   salary: {
     type: Number,
     min: 0, // Expected salary can't be negative
+    default: undefined,
   },
   applicationDate: {
     type: Date,

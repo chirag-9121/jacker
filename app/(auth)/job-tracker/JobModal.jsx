@@ -9,7 +9,7 @@ import { IoCalendar } from "react-icons/io5";
 
 // ui components
 import {
-  DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -22,7 +22,14 @@ import {
   PopoverTrigger,
 } from "@/app/components/ui/popover";
 
-function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
+function JobModal({
+  jobId,
+  job,
+  setJob,
+  jobIsLoading,
+  addJobHandler,
+  editJobHandler,
+}) {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false); // To delay the popover calendar from closing
 
   // To clear form fields or job state on cancel
@@ -37,9 +44,13 @@ function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
   };
 
   return (
-    <DialogContent>
+    <div>
       <DialogHeader className="flex-row items-center justify-between">
-        <DialogTitle>Add a new job</DialogTitle>
+        <DialogTitle>
+          {/* If jobId is present, i.e. Modal is triggered by edit button, display Edit Job, else.. Add new job */}
+          {jobId ? "Edit Job" : "Add a new Job"}
+        </DialogTitle>
+        <DialogDescription />
         <DialogTrigger>
           <CrossButton />
         </DialogTrigger>
@@ -47,11 +58,13 @@ function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
 
       <form
         className="space-y-4 md:space-y-6"
-        onSubmit={(e) => addJobHandler(e, job)}
+        onSubmit={(e) =>
+          jobId ? editJobHandler(e, jobId, job) : addJobHandler(e, job)
+        }
       >
         <div>
           <label
-            htmlFor="job-title"
+            htmlFor="jobtitle"
             className="mb-2 block text-xs font-medium text-black dark:text-white"
           >
             Job Title <span className="text-sm text-error">*</span>
@@ -70,7 +83,7 @@ function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
 
         <div>
           <label
-            htmlFor="company-name"
+            htmlFor="companyname"
             className="mb-2 block text-xs font-medium text-black dark:text-white"
           >
             Company Name <span className="text-sm text-error">*</span>
@@ -89,7 +102,7 @@ function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
 
         <div>
           <label
-            htmlFor="job-url"
+            htmlFor="joburl"
             className="mb-2 block text-xs font-medium text-black dark:text-white"
           >
             Job URL <span className="text-sm text-error">*</span>
@@ -108,11 +121,8 @@ function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
 
         <div className="flex justify-between gap-4">
           <div className="w-full">
-            <label
-              htmlFor="application-date"
-              className="mb-2 block text-xs font-medium text-black dark:text-white"
-            >
-              Application Date{" "}
+            <label className="mb-2 block text-xs font-medium text-black dark:text-white">
+              Application Date
               {/* text-sm gives a certain line height to element, input fields were not aligned properly */}
               <span style={{ lineHeight: 0 }} className="text-sm text-error">
                 *
@@ -175,7 +185,8 @@ function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
         <div className="flex items-center justify-end gap-5">
           <DialogTrigger>
             <div
-              onClick={clearStateHandler}
+              // Only clearing the form on cancel, when form is triggered by add job, and not edit button
+              onClick={jobId ? null : clearStateHandler}
               className="flex h-9 w-20 cursor-pointer items-center justify-center rounded-lg bg-primary/20 text-sm font-semibold text-primary dark:bg-primary/20 dark:text-primary-light/80"
             >
               Cancel
@@ -186,14 +197,18 @@ function AddJobModal({ job, setJob, jobIsLoading, addJobHandler }) {
             className="h-9 w-20 rounded-lg bg-primary text-sm font-semibold text-white hover:bg-primary/80"
           >
             {/* Updating text in button based on jobIsLoading value */}
+            {/* If the jobId is present, i.e. Modal is triggered by edit button */}
+            {!jobIsLoading && jobId && "Save"}
+            {jobIsLoading && jobId && "Saving..."}
 
-            {!jobIsLoading && "Add"}
-            {jobIsLoading && "Adding..."}
+            {/* If the jobId is not present, i.e. Modal is triggered by add job button */}
+            {!jobIsLoading && !jobId && "Add"}
+            {jobIsLoading && !jobId && "Adding..."}
           </button>
         </div>
       </form>
-    </DialogContent>
+    </div>
   );
 }
 
-export default AddJobModal;
+export default JobModal;

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import useJobManager from "@/app/hooks/useJobManager"; // Custom hook that returns props to handle edit job functionality
 
 // Icons and ui components
 import {
@@ -58,21 +59,6 @@ export const getColumns = (jobs, setJobs) => [
     },
   },
 
-  // EXPECTED SALARY
-  {
-    accessorKey: "salary",
-    header: "Expected Salary",
-    cell: ({ row }) => {
-      const salary = parseFloat(row.getValue("salary"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "EUR",
-      }).format(salary);
-
-      return <div>{formatted}</div>;
-    },
-  },
-
   // APPLICATION DATE
   {
     accessorKey: "applicationDate",
@@ -99,6 +85,22 @@ export const getColumns = (jobs, setJobs) => [
       );
     },
   },
+
+  // EXPECTED SALARY
+  {
+    accessorKey: "salary",
+    header: "Expected Salary",
+    cell: ({ row }) => {
+      const salary = parseFloat(row.getValue("salary"));
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "EUR",
+      }).format(salary);
+
+      return <div>{salary ? formatted : ""}</div>;
+    },
+  },
+
   {
     accessorKey: "contact",
     header: "Contact",
@@ -162,7 +164,7 @@ export const getColumns = (jobs, setJobs) => [
     accessorKey: "followUpDate",
     header: "Follow-up Date",
     cell: ({ row }) => {
-      // Extracting follow up date from from and the job object
+      // Extracting follow up date and the job object
       const followUpDate = row.getValue("followUpDate");
       const job = row.original;
       let colorToDisplay;
@@ -175,7 +177,6 @@ export const getColumns = (jobs, setJobs) => [
         const daysDiff = Math.round(
           (new Date() - new Date(followUpDate)) / (24 * 60 * 60 * 1000),
         );
-        console.log(daysDiff);
         if (daysDiff < 7) colorToDisplay = "text-success";
         else if (daysDiff < 14) colorToDisplay = "text-warning";
         else colorToDisplay = "text-error";
@@ -184,7 +185,6 @@ export const getColumns = (jobs, setJobs) => [
       // Sending post request to update follow-up date
       const followUpDateHandler = async (e) => {
         try {
-          console.log(e);
           const response = axios.post("/api/jobs/edit-job/followup-date", {
             jobId: job._id,
             followUpDate: e,
@@ -243,17 +243,47 @@ export const getColumns = (jobs, setJobs) => [
   {
     id: "actions",
     cell: ({ row }) => {
-      const job = row.original;
+      const jobRow = row.original;
 
-      // Delete Job Application
+      // ***Edit Job Application***
+      // Creating an initial state consisting of current job details to be passed into edit job modal form
+      const [job, setJob] = useState({
+        jobTitle: jobRow.jobTitle,
+        company: jobRow.company,
+        jobUrl: jobRow.jobUrl,
+        applicationDate: jobRow.applicationDate,
+        salary: jobRow.salary ? jobRow.salary : undefined,
+      });
+
+      // Destructuring necessary props from custom hook
+      const {
+        open,
+        setOpen,
+        jobIsLoading,
+        editJobHandler,
+        // newJobAddedFlag,
+      } = useJobManager();
+
+      // Creating a prop object that consists all neccessary props to handle edit job functionality
+      const editJobProps = {
+        jobId: jobRow._id,
+        job,
+        setJob,
+        open,
+        setOpen,
+        jobIsLoading,
+        editJobHandler,
+      };
+
+      // ***Delete Job Application***
       const deleteJobHandler = async () => {
         try {
           const response = await axios.post("/api/jobs/delete-job", {
-            jobId: job._id,
+            jobId: jobRow._id,
           });
           if (response.status === 200) {
             // Once the job is deleted from backend, simply filtering it from the state
-            setJobs((prevJobs) => prevJobs.filter((j) => j._id !== job._id));
+            setJobs((prevJobs) => prevJobs.filter((j) => j._id !== jobRow._id));
             toast("Job application deleted", {
               action: {
                 label: "OK",
@@ -266,7 +296,13 @@ export const getColumns = (jobs, setJobs) => [
         }
       };
 
-      return <EditDeletePopup deleteRowHandler={deleteJobHandler} />;
+      // UI component consisting of edit and delete button
+      return (
+        <EditDeletePopup
+          editRowProps={editJobProps}
+          deleteRowHandler={deleteJobHandler}
+        />
+      );
     },
   },
 ];

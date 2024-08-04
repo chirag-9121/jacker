@@ -1,6 +1,6 @@
 "use client";
 
-import useAddJobManager from "@/app/hooks/useAddJobManager";
+import useJobManager from "@/app/hooks/useJobManager";
 import axios from "axios";
 import { useUserContext } from "@/app/components/UserProvider";
 import { useEffect, useState, useRef } from "react";
@@ -11,9 +11,13 @@ import { DataTable } from "./data-table";
 
 // ui components
 import { Toaster } from "@/app/components/ui/sonner";
-import AddJobModal from "@/app/(auth)/job-tracker/AddJobModal";
+import JobModal from "@/app/(auth)/job-tracker/JobModal";
 import AddButton from "@/app/components/ui/add-button";
-import { Dialog, DialogTrigger } from "@/app/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+} from "@/app/components/ui/dialog";
 
 function JobTracker() {
   const { user } = useUserContext();
@@ -26,7 +30,7 @@ function JobTracker() {
     jobIsLoading,
     addJobHandler,
     newJobAddedFlag,
-  } = useAddJobManager();
+  } = useJobManager();
 
   const [jobs, setJobs] = useState([]); // Jobs state to render all jobs
   const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
@@ -82,12 +86,14 @@ function JobTracker() {
             <DialogTrigger>
               <AddButton btnText=" Job" />
             </DialogTrigger>
-            <AddJobModal
-              job={job}
-              setJob={setJob}
-              jobIsLoading={jobIsLoading}
-              addJobHandler={addJobHandler}
-            />
+            <DialogContent>
+              <JobModal
+                job={job}
+                setJob={setJob}
+                jobIsLoading={jobIsLoading}
+                addJobHandler={addJobHandler}
+              />
+            </DialogContent>
           </Dialog>
         </div>
       </div>
