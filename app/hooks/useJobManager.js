@@ -30,7 +30,8 @@ const useJobManager = () => {
   const [jobIsLoading, setJobIsLoading] = useState(false); // to update button text while job is being added/ edited
   const [open, setOpen] = useState(false); // To close dialog after job is added/ edited
   const { user, userLoading } = useUserContext();
-  const [newJobAddedFlag, setNewJobAddedFlag] = useState(false); // Tracked by main page useEffect to update jobslist state whenever a new job is added
+  const [newJobAddedFlag, setNewJobAddedFlag] = useState(false); // Tracked by main page useEffect to update jobs list state whenever a new job is added
+  const [jobUpdatedFlag, setJobUpdatedFlag] = useState(false); // Tracked by columns component useEffect to update jobs list state whenever a job is updated
 
   // Initial state for adding a new job
   const [job, setJob] = useState({
@@ -51,7 +52,10 @@ const useJobManager = () => {
         jobId: jobId,
         job: job,
       });
-      displayToast("success", "Job application updated");
+      if (response.status === 200) {
+        displayToast("success", "Job application updated");
+        setJobUpdatedFlag((prev) => !prev);
+      }
     } catch (err) {
       displayToast("error", "Oops! That didn't work");
     } finally {
@@ -95,6 +99,7 @@ const useJobManager = () => {
     addJobHandler,
     newJobAddedFlag,
     editJobHandler,
+    jobUpdatedFlag,
   };
 };
 
