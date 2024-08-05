@@ -18,6 +18,7 @@ import {
   DialogTrigger,
   DialogContent,
 } from "@/app/components/ui/dialog";
+import { CiSearch } from "react-icons/ci";
 
 function JobTracker() {
   const { user } = useUserContext();
@@ -77,24 +78,34 @@ function JobTracker() {
         <p className="self-center text-2xl font-bold dark:text-white">
           Job Tracker
         </p>
+
         {/* Search and Add Job */}
-        <div>
-          {/* Initially open is false, i.e. modal is not open, when change is
+        <div className="flex gap-6">
+          <div className="relative">
+            <input
+              className="block w-56 rounded-md border border-transparent bg-white p-2 text-sm focus:border focus:border-black focus:outline-none focus:ring-0 dark:bg-cardcolor dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
+              placeholder="Search"
+            />
+            <CiSearch className="absolute end-0 top-0 m-2.5 fill-grey" />
+          </div>
+          <div>
+            {/* Initially open is false, i.e. modal is not open, when change is
           detected, open value set to true, and finally after handling the post
           request open is set to false again */}
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger>
-              <AddButton btnText=" Job" />
-            </DialogTrigger>
-            <DialogContent>
-              <JobModal
-                job={job}
-                setJob={setJob}
-                jobIsLoading={jobIsLoading}
-                addJobHandler={addJobHandler}
-              />
-            </DialogContent>
-          </Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger>
+                <AddButton btnText=" Job" />
+              </DialogTrigger>
+              <DialogContent>
+                <JobModal
+                  job={job}
+                  setJob={setJob}
+                  jobIsLoading={jobIsLoading}
+                  addJobHandler={addJobHandler}
+                />
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
       </div>
 

@@ -32,7 +32,7 @@ function SideNav() {
               })}
             />
             <span
-              className={clsx("font-semibold text-grey", {
+              className={clsx("text-sm font-semibold text-grey", {
                 "text-primary": pathName === "/job-tracker",
               })}
             >
@@ -55,7 +55,7 @@ function SideNav() {
               })}
             />
             <span
-              className={clsx("font-semibold text-grey", {
+              className={clsx("text-sm font-semibold text-grey", {
                 "text-primary": pathName === "/contacts",
               })}
             >
@@ -76,7 +76,7 @@ function SideNav() {
         </div>
       ) : user ? (
         <div className="flex items-center gap-3 pb-2">
-          <UserAvatar user={user} />
+          <UserAvatar className="h-8 w-8 text-xs" user={user} />
 
           <div className="flex w-full flex-col justify-between overflow-hidden">
             <div className="text-sm font-semibold dark:text-white">

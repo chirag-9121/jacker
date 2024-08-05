@@ -42,7 +42,8 @@ module.exports = {
       colors: {
         primary: "#685BFF",
         "primary-light": "#EFEFFF",
-        lightbackground: "#FAFAFB",
+        // lightbackground: "#FAFAFB",
+        lightbackground: "#F7F7F8",
         darkbackground: "#161616",
         cardcolor: "#212121",
         darkgrey: "#888888",
