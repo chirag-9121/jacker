@@ -137,7 +137,7 @@ function JobModal({
                   )}
                 >
                   {job.applicationDate ? (
-                    format(job.applicationDate, "PPP")
+                    format(job.applicationDate, "PPyy")
                   ) : (
                     <span className="text-grey">February 30th, 2024</span>
                   )}

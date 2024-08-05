@@ -21,8 +21,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/app/components/ui/popover";
+import { Button } from "@/app/components/ui/button";
 
 import { IoCalendar } from "react-icons/io5";
+import { LuChevronsUpDown } from "react-icons/lu";
 
 function displayToastError() {
   toast.error("Oops! That didn't work", {
@@ -62,11 +64,22 @@ export const getColumns = (jobs, setJobs) => [
   // APPLICATION DATE
   {
     accessorKey: "applicationDate",
-    header: "Application Date",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="p-0 text-xs"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Application Date
+          <LuChevronsUpDown className="ml-2 h-3 w-3" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       // Getting the application date and formatting it as needed
       const applicationDate = new Date(row.getValue("applicationDate"));
-      const formatted = format(applicationDate, "PPP");
+      const formatted = format(applicationDate, "PPyy");
 
       // Calculating the difference between today's date and application date to indicate the time since application
       const daysDiff = Math.round(
@@ -89,7 +102,19 @@ export const getColumns = (jobs, setJobs) => [
   // EXPECTED SALARY
   {
     accessorKey: "salary",
-    header: "Expected Salary",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="p-0 text-xs"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Expected Salary
+          <LuChevronsUpDown className="ml-2 h-3 w-3" />
+        </Button>
+      );
+    },
+    // header: "Expected Salary",
     cell: ({ row }) => {
       const salary = parseFloat(row.getValue("salary"));
       const formatted = new Intl.NumberFormat("en-US", {
@@ -97,7 +122,7 @@ export const getColumns = (jobs, setJobs) => [
         currency: "EUR",
       }).format(salary);
 
-      return <div>{salary ? formatted : ""}</div>;
+      return <div className="text-center">{salary ? formatted : ""}</div>;
     },
   },
 
@@ -162,7 +187,18 @@ export const getColumns = (jobs, setJobs) => [
   },
   {
     accessorKey: "followUpDate",
-    header: "Follow-up Date",
+    header: ({ column }) => {
+      return (
+        <Button
+          className="p-0 text-xs"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Follow-up Date
+          <LuChevronsUpDown className="ml-2 h-3 w-3" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       // Extracting follow up date and the job object
       const followUpDate = row.getValue("followUpDate");
@@ -172,7 +208,7 @@ export const getColumns = (jobs, setJobs) => [
 
       // If there is a date, format it and caclculate the time since last follow up to update tailwind class
       if (followUpDate) {
-        formatted = format(followUpDate, "PPP");
+        formatted = format(followUpDate, "PPyy");
         // Calculating the difference between today's date and follow-up date to indicate the time since last follow up
         const daysDiff = Math.round(
           (new Date() - new Date(followUpDate)) / (24 * 60 * 60 * 1000),
