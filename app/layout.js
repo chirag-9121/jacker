@@ -20,6 +20,12 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning={true}>
       {/* To avoid initial flash of default theme, fetching localstorage theme if available or system theme */}
       <head>
+        <link
+          rel="icon"
+          href="/icon?<generated>"
+          type="image/<generated>"
+          sizes="<generated>"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
