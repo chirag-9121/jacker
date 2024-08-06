@@ -18,10 +18,10 @@ import {
   DialogTrigger,
   DialogContent,
 } from "@/app/components/ui/dialog";
-import { CiSearch } from "react-icons/ci";
+import SearchBox from "@/app/components/ui/search-box";
 
 function JobTracker() {
-  const { user } = useUserContext();
+  const { user, userLoading } = useUserContext();
   // Add job props importing from AddJobManager hook to pass to AddJobModal
   const {
     job,
@@ -34,11 +34,15 @@ function JobTracker() {
   } = useJobManager();
 
   const [jobs, setJobs] = useState([]); // Jobs state to render all jobs
+  const [jobsLoading, setJobsLoading] = useState(false); // To track the status of jobs (for displaying skeleton in data table)
+  const [globalFilter, setGlobalFilter] = useState(""); // Defining the filterProps here to pass into search component and data table (This page acts as parent component to send this prop)
   const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
   const columns = getColumns(jobs, setJobs); // Calling the getColumns function that takes jobs and setJobs as param to update state of jobs, the returned array of column definitions is then passed in the data table component
+  const filterProps = { globalFilter, setGlobalFilter }; // Making an object of filterProps to send down to children
 
   // Getter function to retrieve jobs from backend
   const getJobs = async () => {
+    setJobsLoading(true);
     try {
       const response = await axios.get("/api/jobs/get-jobs", {
         params: { userId: user.id }, // Passing user id to fetch all jobs added by current user
@@ -46,7 +50,10 @@ function JobTracker() {
       if (response.status === 200) {
         setJobs(response.data.jobs);
       }
-    } catch (err) {}
+    } catch (err) {
+    } finally {
+      setJobsLoading(false);
+    }
   };
 
   // Updating jobs state when new job is added and resetting form fields to null
@@ -81,13 +88,8 @@ function JobTracker() {
 
         {/* Search and Add Job */}
         <div className="flex gap-6">
-          <div className="relative">
-            <input
-              className="block w-56 rounded-md border border-transparent bg-white p-2 text-sm focus:border focus:border-black focus:outline-none focus:ring-0 dark:bg-cardcolor dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
-              placeholder="Search"
-            />
-            <CiSearch className="absolute end-0 top-0 m-2.5 fill-grey" />
-          </div>
+          {/* Sending globalFilter and setGlobalFilter to search component */}
+          <SearchBox filterProps={filterProps} />
           <div>
             {/* Initially open is false, i.e. modal is not open, when change is
           detected, open value set to true, and finally after handling the post
@@ -110,11 +112,16 @@ function JobTracker() {
       </div>
 
       {/* Job application Table */}
-      {jobs && (
-        <div className="mx-auto py-10">
-          <DataTable columns={columns} data={jobs} />
-        </div>
-      )}
+      <div className="mx-auto py-10">
+        <DataTable
+          columns={columns}
+          data={jobs}
+          // To display the skeleton in data table when user and data are loading
+          userLoading={userLoading}
+          dataLoading={jobsLoading}
+          filterProps={filterProps} // Sending globalFilter and setGlobalFilter to search component
+        />
+      </div>
 
       {/* Sonner to display api related updates */}
       <Toaster richColors />

@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
   getSortedRowModel,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -18,16 +19,26 @@ import {
 import { Skeleton } from "@/app/components/ui/skeleton";
 import { useState } from "react";
 
-export function DataTable({ columns, data }) {
+export function DataTable({
+  columns,
+  data,
+  userLoading,
+  dataLoading,
+  filterProps,
+}) {
   const [sorting, setSorting] = useState([]);
+  const { globalFilter, setGlobalFilter } = filterProps;
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
+      globalFilter,
     },
   });
 
@@ -67,7 +78,7 @@ export function DataTable({ columns, data }) {
                 ))}
               </TableRow>
             ))
-          ) : (
+          ) : userLoading || dataLoading ? (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
                 {Array.from({ length: 4 }).map((_, index) => (
@@ -82,6 +93,12 @@ export function DataTable({ columns, data }) {
                     <Skeleton className="h-5 w-5 rounded-full" />
                   </div>
                 ))}
+              </TableCell>
+            </TableRow>
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
               </TableCell>
             </TableRow>
           )}
