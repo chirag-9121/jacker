@@ -19,6 +19,7 @@ import {
   DialogContent,
 } from "@/app/components/ui/dialog";
 import SearchBox from "@/app/components/ui/search-box";
+import { ScrollArea } from "@/app/components/ui/scroll-area";
 
 function JobTracker() {
   const { user, userLoading } = useUserContext();
@@ -79,7 +80,7 @@ function JobTracker() {
   }, [user]);
 
   return (
-    <div className="w-full p-7 pl-12 pr-12">
+    <div className="flex h-91v w-full flex-col gap-10 px-12 pt-7">
       {/* Header */}
       <div className="flex justify-between">
         <p className="self-center text-2xl font-bold dark:text-white">
@@ -112,16 +113,18 @@ function JobTracker() {
       </div>
 
       {/* Job application Table */}
-      <div className="mx-auto py-10">
-        <DataTable
-          columns={columns}
-          data={jobs}
-          // To display the skeleton in data table when user and data are loading
-          userLoading={userLoading}
-          dataLoading={jobsLoading}
-          filterProps={filterProps} // Sending globalFilter and setGlobalFilter to search component
-        />
-      </div>
+      <ScrollArea>
+        <div className="mx-auto h-full w-full rounded-md pb-7 pr-1">
+          <DataTable
+            columns={columns}
+            data={jobs}
+            // To display the skeleton in data table when user and data are loading
+            userLoading={userLoading}
+            dataLoading={jobsLoading}
+            filterProps={filterProps} // Sending globalFilter and setGlobalFilter to search component
+          />
+        </div>
+      </ScrollArea>
 
       {/* Sonner to display api related updates */}
       <Toaster richColors />

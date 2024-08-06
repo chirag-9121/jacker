@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
 
       <body
         suppressHydrationWarning={true}
-        className={`${nunito.className} h-screen bg-lightbackground dark:bg-darkbackground`}
+        className={`${nunito.className} h-screen overflow-hidden bg-lightbackground dark:bg-darkbackground`}
       >
         {/* Navbar and children components wrapped around global context providers */}
         <ThemeProvider>
