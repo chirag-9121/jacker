@@ -97,7 +97,7 @@ function JobTracker() {
           request open is set to false again */}
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger>
-                <AddButton btnText=" Job" />
+                <AddButton>Add Job</AddButton>
               </DialogTrigger>
               <DialogContent>
                 <JobModal

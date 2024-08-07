@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { IoAddOutline } from "react-icons/io5";
 
-function AddButton({ className, btnText }) {
+function AddButton({ className, children }) {
   return (
     <div
       className={cn(
@@ -10,7 +10,7 @@ function AddButton({ className, btnText }) {
       )}
     >
       <IoAddOutline className="text-lg" />
-      Add{btnText}
+      {children}
     </div>
   );
 }

@@ -10,7 +10,7 @@ function Contacts() {
         </p>
         {/* Search and Add Contacts */}
         <div>
-          <AddButton btnText=" Contact" />
+          <AddButton>Add Contact</AddButton>
         </div>
       </div>
     </div>

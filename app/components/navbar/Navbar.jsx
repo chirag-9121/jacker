@@ -16,6 +16,7 @@ import { Skeleton } from "@/app/components/ui/skeleton";
 
 // public assets and icons
 import Logo from "@/public/jacker-logo.png";
+import { IoNotifications } from "react-icons/io5";
 
 function Navbar() {
   // Extracting global context vars to dynamically update navbar on login/logout
@@ -64,7 +65,11 @@ function Navbar() {
           <Skeleton className="h-10 w-10 rounded-full bg-white/60 dark:bg-white/65" />
         </div>
       ) : user ? (
-        <UserPfp logoutHandler={logoutHandler} user={user} />
+        <div className="flex items-center justify-end gap-10">
+          {/* Notification icon */}
+          <IoNotifications size={20} className="fill-white" />
+          <UserPfp logoutHandler={logoutHandler} user={user} />
+        </div>
       ) : (
         // Login/sigup buttons
         <div className="flex items-center justify-end gap-5">
