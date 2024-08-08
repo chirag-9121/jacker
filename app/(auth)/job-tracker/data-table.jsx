@@ -17,9 +17,9 @@ import {
   TableRow,
 } from "@/app/components/ui/table";
 import { Skeleton } from "@/app/components/ui/skeleton";
-import { useState } from "react";
+import { memo, useState } from "react";
 
-export function DataTable({
+export const DataTable = memo(function ({
   columns,
   data,
   userLoading,
@@ -104,4 +104,4 @@ export function DataTable({
       </TableBody>
     </Table>
   );
-}
+});

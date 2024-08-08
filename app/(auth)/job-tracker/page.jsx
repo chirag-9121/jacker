@@ -3,7 +3,7 @@
 import useJobManager from "@/app/hooks/useJobManager";
 import axios from "axios";
 import { useUserContext } from "@/app/components/UserProvider";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 
 // Data Table components
 import { getColumns } from "./columns";
@@ -38,8 +38,16 @@ function JobTracker() {
   const [jobsLoading, setJobsLoading] = useState(false); // To track the status of jobs (for displaying skeleton in data table)
   const [globalFilter, setGlobalFilter] = useState(""); // Defining the filterProps here to pass into search component and data table (This page acts as parent component to send this prop)
   const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
-  const columns = getColumns(jobs, setJobs); // Calling the getColumns function that takes jobs and setJobs as param to update state of jobs, the returned array of column definitions is then passed in the data table component
-  const filterProps = { globalFilter, setGlobalFilter }; // Making an object of filterProps to send down to children
+
+  // Memoize columns to avoid recalculating on each render
+  const columns = useMemo(() => getColumns(jobs, setJobs), [jobs]); // Calling the getColumns function that takes jobs and setJobs as param to update state of jobs, the returned array of column definitions is then passed in the data table component
+  const filterProps = useMemo(
+    () => ({ globalFilter, setGlobalFilter }),
+    [globalFilter],
+  ); // Making an object of filterProps to send down to children
+
+  // const columns = getColumns(jobs, setJobs); // Calling the getColumns function that takes jobs and setJobs as param to update state of jobs, the returned array of column definitions is then passed in the data table component
+  // const filterProps = { globalFilter, setGlobalFilter };
 
   // Getter function to retrieve jobs from backend
   const getJobs = async () => {
