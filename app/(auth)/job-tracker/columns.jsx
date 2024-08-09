@@ -64,6 +64,7 @@ export const getColumns = (jobs, setJobs) => [
   // APPLICATION DATE
   {
     accessorKey: "applicationDate",
+    // Making the header return a button to sort asc and desc
     header: ({ column }) => {
       return (
         <Button
