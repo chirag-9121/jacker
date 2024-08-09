@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
 // To check if user is authenticated or not
@@ -19,10 +19,25 @@ export async function GET(request) {
     };
 
     return NextResponse.json({
+      success: true,
       message: "User found",
       data: user,
     });
   } catch (err) {
-    return NextResponse.json({ error: err }, { status: 400 });
+    // If token expiry error, set the usertoken to null and return 401 status response
+    if (err instanceof TokenExpiredError) {
+      const response = NextResponse.json(
+        {
+          message: "User token expired.",
+        },
+        { status: 401 },
+      );
+      response.cookies.set("userAuthToken", "", {
+        httpOnly: true,
+        expires: new Date(0),
+      });
+
+      return response;
+    } else return NextResponse.json({ error: err }, { status: 400 });
   }
 }
