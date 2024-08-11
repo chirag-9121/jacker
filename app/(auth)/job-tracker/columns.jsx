@@ -165,7 +165,32 @@ export const getColumns = (jobs, setJobs, setColumnFilters) => [
   },
   {
     accessorKey: "response",
-    header: "Response",
+    header: () => {
+      const uniqueResponses = ["Positive", "Pending", "Rejection"];
+      const [selectedResponses, setselectedResponses] = useState([]);
+
+      useEffect(() => {
+        if (selectedResponses.length > 0) {
+          setColumnFilters([{ id: "response", value: selectedResponses }]);
+        } else {
+          setColumnFilters([]);
+        }
+      }, [selectedResponses]);
+
+      return (
+        <MultiSelect
+          options={uniqueResponses}
+          onValueChange={setselectedResponses}
+          placeholder="Response"
+          addSearchBar={false}
+        />
+      );
+    },
+    filterFn: (row, columnId, filterValue) => {
+      return (
+        filterValue.length === 0 || filterValue.includes(row.getValue(columnId))
+      );
+    },
     cell: ({ row }) => {
       // Extracting the current response from row and its job id
       const response = row.getValue("response");

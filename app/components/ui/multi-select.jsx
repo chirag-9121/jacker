@@ -27,6 +27,7 @@ export const MultiSelect = React.forwardRef(
       onValueChange,
       defaultValue = [],
       placeholder = "Select options",
+      addSearchBar = true,
       modalPopover = false,
       asChild = false,
       className,
@@ -113,10 +114,13 @@ export const MultiSelect = React.forwardRef(
         >
           <Command>
             {/* Search input */}
-            <CommandInput
-              placeholder="Search..."
-              onKeyDown={handleInputKeyDown}
-            />
+            {addSearchBar && (
+              <CommandInput
+                placeholder="Search..."
+                onKeyDown={handleInputKeyDown}
+              />
+            )}
+
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
