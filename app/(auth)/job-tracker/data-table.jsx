@@ -3,6 +3,7 @@
 import { Skeleton } from "@/app/components/ui/skeleton";
 import { memo, useState } from "react";
 import { Button } from "@/app/components/ui/button";
+import { FaArrowsRotate } from "react-icons/fa6";
 
 import {
   flexRender,
@@ -27,6 +28,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/app/components/ui/tooltip";
 
 export const DataTable = memo(function ({
   columns,
@@ -61,10 +69,29 @@ export const DataTable = memo(function ({
     },
   });
 
+  const clearFilters = () => {
+    setSorting([]);
+    setColumnFilters([]);
+    setGlobalFilter("");
+  };
+
   return (
     <>
       {/* Column visibilty dropdown button*/}
-      <div className="flex justify-end">
+      <div className="flex items-center justify-end gap-3">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button onClick={clearFilters} className="h-8">
+                <FaArrowsRotate />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Reset Filters</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="text-xs">
