@@ -36,18 +36,23 @@ function JobTracker() {
 
   const [jobs, setJobs] = useState([]); // Jobs state to render all jobs
   const [jobsLoading, setJobsLoading] = useState(false); // To track the status of jobs (for displaying skeleton in data table)
+  const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState(""); // Defining the filterProps here to pass into search component and data table (This page acts as parent component to send this prop)
   const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
 
   // Memoize columns to avoid recalculating on each render
-  const columns = useMemo(() => getColumns(jobs, setJobs), [jobs]); // Calling the getColumns function that takes jobs and setJobs as param to update state of jobs, the returned array of column definitions is then passed in the data table component
-  const filterProps = useMemo(
+  const columns = useMemo(
+    () => getColumns(jobs, setJobs, setColumnFilters),
+    [jobs],
+  ); // Calling the getColumns function that takes jobs, setJobs and setColumnFilters as param to update state of jobs, the returned array of column definitions is then passed in the data table component
+  const columnFilterProps = useMemo(
+    () => ({ columnFilters, setColumnFilters }),
+    [columnFilters],
+  );
+  const globalFilterProps = useMemo(
     () => ({ globalFilter, setGlobalFilter }),
     [globalFilter],
-  ); // Making an object of filterProps to send down to children
-
-  // const columns = getColumns(jobs, setJobs); // Calling the getColumns function that takes jobs and setJobs as param to update state of jobs, the returned array of column definitions is then passed in the data table component
-  // const filterProps = { globalFilter, setGlobalFilter };
+  ); // Making an object of globalFilterProps to send down to children
 
   // Getter function to retrieve jobs from backend
   const getJobs = async () => {
@@ -98,7 +103,7 @@ function JobTracker() {
         {/* Search and Add Job */}
         <div className="flex gap-6">
           {/* Sending globalFilter and setGlobalFilter to search component */}
-          <SearchBox filterProps={filterProps} />
+          <SearchBox globalFilterProps={globalFilterProps} />
           <div>
             {/* Initially open is false, i.e. modal is not open, when change is
           detected, open value set to true, and finally after handling the post
@@ -129,7 +134,8 @@ function JobTracker() {
             // To display the skeleton in data table when user and data are loading
             userLoading={userLoading}
             dataLoading={jobsLoading}
-            filterProps={filterProps} // Sending globalFilter and setGlobalFilter to search component
+            columnFilterProps={columnFilterProps} // Sending columnFilters and setColumnFilters to data table component
+            globalFilterProps={globalFilterProps} // Sending globalFilter and setGlobalFilter to data table component
           />
         </div>
       </ScrollArea>

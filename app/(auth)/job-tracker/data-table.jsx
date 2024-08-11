@@ -33,11 +33,13 @@ export const DataTable = memo(function ({
   data,
   userLoading,
   dataLoading,
-  filterProps,
+  columnFilterProps,
+  globalFilterProps,
 }) {
   // Data table: Sorting, filtering and visibilty states setup
   const [sorting, setSorting] = useState([]);
-  const { globalFilter, setGlobalFilter } = filterProps;
+  const { columnFilters, setColumnFilters } = columnFilterProps;
+  const { globalFilter, setGlobalFilter } = globalFilterProps;
   const [columnVisibility, setColumnVisibility] = useState({});
 
   // Creating table by passing the columns, data, states and setter functions
@@ -46,12 +48,14 @@ export const DataTable = memo(function ({
     columns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
+      columnFilters,
       globalFilter,
       columnVisibility,
     },

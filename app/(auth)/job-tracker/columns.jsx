@@ -37,7 +37,7 @@ function displayToastError() {
 }
 
 // jobs and setJobs is taken as parameter from the main component to update the state of rendered jobs, this function returns an array of column definitions
-export const getColumns = (jobs, setJobs) => [
+export const getColumns = (jobs, setJobs, setColumnFilters) => [
   {
     accessorKey: "jobTitle",
     header: "Job Title",
@@ -45,18 +45,35 @@ export const getColumns = (jobs, setJobs) => [
   {
     accessorKey: "company",
     header: () => {
+      // Extracting unique values of the company column to send in the multi-select component as all options
       const uniqueCompanies = [
         ...new Set(jobs.map((job) => job.company.toLowerCase())),
       ];
+      const [selectedCompanies, setSelectedCompanies] = useState([]);
+
+      // Whenever selectedCompanies array is changed apply those values to column filters
+      useEffect(() => {
+        if (selectedCompanies.length > 0) {
+          setColumnFilters([{ id: "company", value: selectedCompanies }]);
+        } else {
+          setColumnFilters([]);
+        }
+      }, [selectedCompanies]);
+
       return (
-        <>
-          <MultiSelect
-            className=""
-            options={uniqueCompanies}
-            // onValueChange={}
-            placeholder="Company"
-          />
-        </>
+        <MultiSelect
+          options={uniqueCompanies}
+          // selectedCompanies is updated whenever any checkbox is checked or unchecked, which in turn triggers the useEffect and column filters are updated
+          onValueChange={setSelectedCompanies}
+          placeholder="Company"
+        />
+      );
+    },
+    // Custom filter function for company column as the filterValue is not a string now, but an array containing multiple strings
+    filterFn: (row, columnId, filterValue) => {
+      return (
+        filterValue.length === 0 ||
+        filterValue.includes(row.getValue(columnId).toLowerCase())
       );
     },
   },
@@ -69,7 +86,7 @@ export const getColumns = (jobs, setJobs) => [
       const jobUrl = row.getValue("jobUrl");
 
       return (
-        <Link href={`https://${jobUrl}`} className="text-primary">
+        <Link href={jobUrl} className="text-primary">
           {jobUrl}
         </Link>
       );

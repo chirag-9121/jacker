@@ -87,6 +87,7 @@ export const MultiSelect = React.forwardRef(
         onOpenChange={setIsPopoverOpen}
         modal={modalPopover}
       >
+        {/* The trigger element to open multi-select popover (The column header rendered as a button) */}
         <PopoverTrigger asChild>
           <Button
             ref={ref}
@@ -103,12 +104,15 @@ export const MultiSelect = React.forwardRef(
             </div>
           </Button>
         </PopoverTrigger>
+
+        {/* Whole popover multi-select component */}
         <PopoverContent
           className="w-auto p-0"
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
           <Command>
+            {/* Search input */}
             <CommandInput
               placeholder="Search..."
               onKeyDown={handleInputKeyDown}
@@ -116,6 +120,7 @@ export const MultiSelect = React.forwardRef(
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
               <CommandGroup>
+                {/* Select all checkbox */}
                 <CommandItem
                   key="all"
                   onSelect={toggleAll}
@@ -133,6 +138,8 @@ export const MultiSelect = React.forwardRef(
                   </div>
                   <span>(Select All)</span>
                 </CommandItem>
+
+                {/* List of checkboxes containing all the options */}
                 {options.map((option) => {
                   const isSelected = selectedValues.includes(option);
                   return (
@@ -157,7 +164,9 @@ export const MultiSelect = React.forwardRef(
                   );
                 })}
               </CommandGroup>
+
               <CommandSeparator />
+              {/* Clear and Close Action buttons */}
               <CommandGroup>
                 <div className="flex items-center justify-between">
                   {selectedValues.length > 0 && (
