@@ -22,6 +22,7 @@ import {
   PopoverTrigger,
 } from "@/app/components/ui/popover";
 import { Button } from "@/app/components/ui/button";
+import { MultiSelect } from "@/app/components/ui/multi-select";
 
 import { IoCalendar } from "react-icons/io5";
 import { LuChevronsUpDown } from "react-icons/lu";
@@ -43,7 +44,21 @@ export const getColumns = (jobs, setJobs) => [
   },
   {
     accessorKey: "company",
-    header: "Company",
+    header: () => {
+      const uniqueCompanies = [
+        ...new Set(jobs.map((job) => job.company.toLowerCase())),
+      ];
+      return (
+        <>
+          <MultiSelect
+            className=""
+            options={uniqueCompanies}
+            // onValueChange={}
+            placeholder="Company"
+          />
+        </>
+      );
+    },
   },
 
   // JOB URL

@@ -59,6 +59,7 @@ export const DataTable = memo(function ({
 
   return (
     <>
+      {/* Column visibilty dropdown button*/}
       <div className="flex justify-end">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -82,6 +83,7 @@ export const DataTable = memo(function ({
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
                     }
+                    onSelect={(e) => e.preventDefault()}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
