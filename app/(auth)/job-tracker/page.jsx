@@ -19,7 +19,7 @@ import {
   DialogContent,
 } from "@/app/components/ui/dialog";
 import SearchBox from "@/app/components/ui/search-box";
-import { ScrollArea } from "@/app/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/app/components/ui/scroll-area";
 
 function JobTracker() {
   const { user, userLoading } = useUserContext();
@@ -138,6 +138,7 @@ function JobTracker() {
             globalFilterProps={globalFilterProps} // Sending globalFilter and setGlobalFilter to data table component
           />
         </div>
+        <ScrollBar orientation="horizontal" />
       </ScrollArea>
 
       {/* Sonner to display success msg, errors, info, etc. */}

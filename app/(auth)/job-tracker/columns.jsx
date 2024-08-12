@@ -36,6 +36,13 @@ function displayToastError() {
   });
 }
 
+function truncateText(text, maxLength) {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return text.substring(0, maxLength) + "...";
+}
+
 // jobs and setJobs is taken as parameter from the main component to update the state of rendered jobs, this function returns an array of column definitions
 export const getColumns = (jobs, setJobs, setColumnFilters) => [
   {
@@ -87,7 +94,7 @@ export const getColumns = (jobs, setJobs, setColumnFilters) => [
 
       return (
         <Link href={jobUrl} className="text-primary">
-          {jobUrl}
+          {truncateText(jobUrl, 40)}
         </Link>
       );
     },
@@ -294,15 +301,15 @@ export const getColumns = (jobs, setJobs, setColumnFilters) => [
           <PopoverTrigger asChild>
             <button
               className={cn(
-                "flex w-3/4 items-center justify-between gap-1 rounded-lg border-2 border-transparent bg-forminput p-2 text-sm focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70",
+                "flex items-center justify-between gap-1.5 rounded-lg border-2 border-transparent bg-forminput p-2 text-sm focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70",
                 followUpDate && "text-muted-foreground",
               )}
             >
-              <IoCalendar className="h-4 w-4 text-iconblue" />
+              <IoCalendar className="text-iconblue" />
 
               {/* If the followUpDate exists, format it and apply color */}
               {followUpDate ? (
-                <div className={colorToDisplay}>{formatted}</div>
+                <div className={`text-xs ${colorToDisplay}`}>{formatted}</div>
               ) : (
                 <span className="text-xs text-grey">Click to Add</span>
               )}
