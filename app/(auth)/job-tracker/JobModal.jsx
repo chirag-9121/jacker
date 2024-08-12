@@ -175,7 +175,7 @@ function JobModal({
               id="salary"
               onChange={(e) => setJob({ ...job, salary: e.target.value })}
               value={job.salary}
-              placeholder="$672,000"
+              placeholder="672,000"
               className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
             />
           </div>

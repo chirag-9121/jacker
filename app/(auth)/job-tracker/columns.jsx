@@ -157,12 +157,9 @@ export const getColumns = (jobs, setJobs, setColumnFilters) => [
     // header: "Expected Salary",
     cell: ({ row }) => {
       const salary = parseFloat(row.getValue("salary"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "EUR",
-      }).format(salary);
+      const formatted = new Intl.NumberFormat("en-US").format(salary);
 
-      return <div className="text-center">{salary ? formatted : ""}</div>;
+      return <div>{salary ? formatted : null}</div>;
     },
   },
 
