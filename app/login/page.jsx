@@ -5,6 +5,7 @@ import axios from "axios"; // Used for making requests to server from browser
 import LoginForm from "./LoginForm";
 import { useState } from "react";
 import { useUserContext } from "../components/UserProvider";
+import { Toaster } from "@/app/components/ui/sonner";
 
 function Login() {
   const router = useRouter();
@@ -31,11 +32,10 @@ function Login() {
   };
 
   return (
-    <LoginForm
-      loginHandler={loginHandler}
-      isLoading={isLoading}
-      error={error}
-    />
+    <LoginForm loginHandler={loginHandler} isLoading={isLoading} error={error}>
+      {/* Sonner to display success msg, errors, info, etc. */}
+      <Toaster richColors />
+    </LoginForm>
   );
 }
 

@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { Toaster } from "@/app/components/ui/sonner";
 import { useRouter } from "next/navigation";
 
 const UserContext = createContext();
@@ -52,7 +51,6 @@ function UserProvider({ children }) {
   return (
     <UserContext.Provider value={{ user, setUser, userLoading }}>
       {children}
-      <Toaster />
     </UserContext.Provider>
   );
 }

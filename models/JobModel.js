@@ -7,15 +7,26 @@ const jobSchema = new mongoose.Schema({
   },
   jobTitle: {
     type: String,
+    trim: true,
     required: [true, "Please provide a job title"],
   },
   company: {
     type: String,
+    trim: true,
     required: [true, "Please provide a company name"],
   },
   jobUrl: {
     type: String,
+    trim: true,
     required: [true, "Please provide a job url"],
+    validate: {
+      validator: function (v) {
+        let re =
+          /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+        return re.test(v);
+      },
+      message: "Enter a valid URL",
+    },
   },
   salary: {
     type: Number,

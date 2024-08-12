@@ -140,7 +140,7 @@ function JobTracker() {
         </div>
       </ScrollArea>
 
-      {/* Sonner to display api related updates */}
+      {/* Sonner to display success msg, errors, info, etc. */}
       <Toaster richColors />
     </div>
   );

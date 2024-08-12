@@ -72,7 +72,7 @@ function Profile() {
         />
       </div>
 
-      {/* Sonner to display the update status */}
+      {/* Sonner to display success msg, errors, info, etc. */}
       <Toaster richColors />
     </section>
   );

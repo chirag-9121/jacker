@@ -55,12 +55,12 @@ const useJobManager = () => {
       if (response.status === 200) {
         displayToast("success", "Job application updated");
         setJobUpdatedFlag((prev) => !prev);
+        setOpen(false);
       }
     } catch (err) {
-      displayToast("error", "Oops! That didn't work");
+      displayToast("error", err.response.data.error);
     } finally {
       setJobIsLoading(false);
-      setOpen(false);
     }
   };
 
@@ -80,13 +80,13 @@ const useJobManager = () => {
           setJob(response.data.savedJob);
           displayToast("success", "Job application added");
           setNewJobAddedFlag((prev) => !prev);
+          setOpen(false);
         }
       }
     } catch (err) {
-      displayToast("error", "Oops! That didn't work");
+      displayToast("error", err.response.data.error);
     } finally {
       setJobIsLoading(false);
-      setOpen(false);
     }
   };
 
