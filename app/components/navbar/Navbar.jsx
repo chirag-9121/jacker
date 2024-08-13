@@ -32,10 +32,9 @@ function Navbar() {
   // Logout handler
   const logoutHandler = async () => {
     try {
-      const response = await axios.get("/api/users/logout");
+      const response = await axios.post("/api/users/logout");
       if (response.status === 200) {
         setUser(null);
-        router.refresh();
         router.push("/");
       }
     } catch (error) {
