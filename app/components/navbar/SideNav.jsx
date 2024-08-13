@@ -20,21 +20,31 @@ function SideNav() {
 
   return (
     // Whole side nav
-    <nav className="flex h-91v min-w-56 max-w-56 flex-col justify-between bg-white p-5 dark:bg-black">
+    <nav className="flex h-91v min-w-52 max-w-52 flex-col justify-between bg-white p-3 dark:bg-black">
       {/* Side Nav actions */}
-      <div className="flex w-fit flex-col gap-5 pl-4 pt-5">
+      <div className="flex w-full flex-col gap-2 pt-4">
         <Link href="/job-tracker">
-          <div className="flex items-center gap-4">
+          <div
+            className={clsx(
+              "group flex items-center gap-4 rounded-md px-4 py-3",
+              {
+                "bg-primary/10 dark:bg-white/10": pathName === "/job-tracker",
+              },
+            )}
+          >
             <FaBriefcase
               size={17}
-              className={clsx("fill-grey", {
+              className={clsx("fill-grey group-hover:fill-primary", {
                 "fill-primary": pathName === "/job-tracker",
               })}
             />
             <span
-              className={clsx("text-sm font-semibold text-grey", {
-                "text-primary": pathName === "/job-tracker",
-              })}
+              className={clsx(
+                "text-sm font-semibold text-grey group-hover:text-primary",
+                {
+                  "text-primary": pathName === "/job-tracker",
+                },
+              )}
             >
               Job Tracker
             </span>
@@ -47,17 +57,27 @@ function SideNav() {
         </div> */}
 
         <Link href="/contacts">
-          <div className="flex items-center gap-4">
+          <div
+            className={clsx(
+              "group flex items-center gap-4 rounded-md px-4 py-3",
+              {
+                "bg-primary/10 dark:bg-white/10": pathName === "/contacts",
+              },
+            )}
+          >
             <FaUserGroup
               size={17}
-              className={clsx("fill-grey", {
+              className={clsx("fill-grey group-hover:fill-primary", {
                 "fill-primary": pathName === "/contacts",
               })}
             />
             <span
-              className={clsx("text-sm font-semibold text-grey", {
-                "text-primary": pathName === "/contacts",
-              })}
+              className={clsx(
+                "text-sm font-semibold text-grey group-hover:text-primary",
+                {
+                  "text-primary": pathName === "/contacts",
+                },
+              )}
             >
               Contacts
             </span>
@@ -78,13 +98,13 @@ function SideNav() {
         <div className="flex items-center gap-3 pb-2">
           <UserAvatar className="h-8 w-8 text-xs" user={user} />
 
-          <div className="flex w-full flex-col justify-between overflow-hidden">
+          <div className="flex w-full flex-col flex-wrap justify-between">
             <div className="text-sm font-semibold dark:text-white">
               <span>
                 {user.fname} {user.lname}
               </span>
             </div>
-            <div className="text-xs text-grey">{user.email}</div>
+            <div className="break-all text-xs text-grey">{user.email}</div>
           </div>
         </div>
       ) : null}

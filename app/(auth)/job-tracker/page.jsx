@@ -98,7 +98,7 @@ function JobTracker() {
   }, [user]);
 
   return (
-    <div className="flex h-91v w-full flex-col gap-10 px-12 pt-7">
+    <div className="flex h-91v w-full flex-col gap-10 px-8 pt-7">
       {/* Header */}
       <div className="flex justify-between">
         <p className="self-center text-2xl font-bold dark:text-white">
