@@ -4,9 +4,7 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { toast } from "sonner";
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
 import { cn } from "@/lib/utils";
-import useJobManager from "@/app/hooks/useJobManager"; // Custom hook that returns props to handle edit job functionality
 
 // Icons and ui components
 import {
@@ -14,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
 import EditResponse from "@/app/components/ui/edit-response";
-import EditDeletePopup from "@/app/components/ui/edit-delete-popup";
+import DataTableRowActions from "@/app/(auth)/job-tracker/DataTableRowActions";
 import { Calendar } from "@/app/components/ui/calendar";
 import {
   Popover,
@@ -44,7 +42,12 @@ function truncateText(text, maxLength) {
 }
 
 // jobs and setJobs is taken as parameter from the main component to update the state of rendered jobs, this function returns an array of column definitions
-export const getColumns = (jobs, setJobs, setColumnFilters) => [
+export const getColumns = (
+  jobs,
+  setJobs,
+  setSelectedCompanies,
+  setselectedResponses,
+) => [
   {
     accessorKey: "jobTitle",
     header: "Job Title",
@@ -56,16 +59,6 @@ export const getColumns = (jobs, setJobs, setColumnFilters) => [
       const uniqueCompanies = [
         ...new Set(jobs.map((job) => job.company.toLowerCase())),
       ];
-      const [selectedCompanies, setSelectedCompanies] = useState([]);
-
-      // Whenever selectedCompanies array is changed apply those values to column filters
-      useEffect(() => {
-        if (selectedCompanies.length > 0) {
-          setColumnFilters([{ id: "company", value: selectedCompanies }]);
-        } else {
-          setColumnFilters([]);
-        }
-      }, [selectedCompanies]);
 
       return (
         <MultiSelect
@@ -171,15 +164,6 @@ export const getColumns = (jobs, setJobs, setColumnFilters) => [
     accessorKey: "response",
     header: () => {
       const uniqueResponses = ["Positive", "Pending", "Rejection"];
-      const [selectedResponses, setselectedResponses] = useState([]);
-
-      useEffect(() => {
-        if (selectedResponses.length > 0) {
-          setColumnFilters([{ id: "response", value: selectedResponses }]);
-        } else {
-          setColumnFilters([]);
-        }
-      }, [selectedResponses]);
 
       return (
         <MultiSelect
@@ -343,78 +327,8 @@ export const getColumns = (jobs, setJobs, setColumnFilters) => [
     cell: ({ row }) => {
       const jobRow = row.original;
 
-      // ***Edit Job Application***
-      const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
-
-      // Creating an initial state consisting of current job details to be passed into edit job modal form
-      const [job, setJob] = useState({
-        jobTitle: jobRow.jobTitle,
-        company: jobRow.company,
-        jobUrl: jobRow.jobUrl,
-        applicationDate: jobRow.applicationDate,
-        salary: jobRow.salary ? jobRow.salary : undefined,
-      });
-
-      // Destructuring necessary props from custom hook
-      const { open, setOpen, jobIsLoading, editJobHandler, jobUpdatedFlag } =
-        useJobManager();
-
-      // Creating a prop object that consists all neccessary props to handle edit job functionality
-      const editJobProps = {
-        jobId: jobRow._id,
-        job,
-        setJob,
-        open,
-        setOpen,
-        jobIsLoading,
-        editJobHandler,
-      };
-
-      // Updating jobs state when a job update is successful
-      useEffect(() => {
-        // Bypasses initial run
-        if (hasPageBeenRendered.current) {
-          // If the mapped id and current row id is same: edit the job object by updating every property that is set in the edit form,
-          // else return the the whole row as it is
-          // ...j = {contact, response, follow-up date} (Everything that is not in the edit form)
-          // ...job = {jobTitle, company, jobUrl...} (The job state which is created above and passed to the form)
-          // This job state is not returned from the post response, the values are simply used which are set by the setJob in edit form
-          // No, this doesn't mean that job row can be updated without post request, this useEffect only runs when jobUpdated flag is changed when the post request is successful
-          setJobs((prevJobs) =>
-            prevJobs.map((j) => (j._id === jobRow._id ? { ...j, ...job } : j)),
-          );
-        }
-        hasPageBeenRendered.current = true;
-      }, [jobUpdatedFlag]);
-
-      // ***Delete Job Application***
-      const deleteJobHandler = async () => {
-        try {
-          const response = await axios.post("/api/jobs/delete-job", {
-            jobId: jobRow._id,
-          });
-          if (response.status === 200) {
-            // Once the job is deleted from backend, simply filtering it from the state
-            setJobs((prevJobs) => prevJobs.filter((j) => j._id !== jobRow._id));
-            toast("Job application deleted", {
-              action: {
-                label: "OK",
-                onClick: () => toast.dismiss(),
-              },
-            });
-          }
-        } catch (err) {
-          displayToastError();
-        }
-      };
-
-      // UI component consisting of edit and delete button
-      return (
-        <EditDeletePopup
-          editRowProps={editJobProps}
-          deleteRowHandler={deleteJobHandler}
-        />
-      );
+      // Returning a component which handles edit and delete row functionality with all necessary states
+      return <DataTableRowActions row={jobRow} setJobs={setJobs} />;
     },
   },
 ];

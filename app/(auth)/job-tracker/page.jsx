@@ -1,6 +1,7 @@
 "use client";
 
 import useJobManager from "@/app/hooks/useJobManager";
+import useJobColumnsManager from "@/app/hooks/useJobColumnsManager";
 import axios from "axios";
 import { useUserContext } from "@/app/components/UserProvider";
 import { useEffect, useState, useRef, useMemo } from "react";
@@ -22,6 +23,12 @@ import SearchBox from "@/app/components/ui/search-box";
 import { ScrollArea, ScrollBar } from "@/app/components/ui/scroll-area";
 
 function JobTracker() {
+  const [jobs, setJobs] = useState([]); // Jobs state to render all jobs
+  const [jobsLoading, setJobsLoading] = useState(false); // To track the status of jobs (for displaying skeleton in data table)
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState(""); // Defining the filterProps here to pass into search component and data table (This page acts as parent component to send this prop)
+  const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
+
   const { user, userLoading } = useUserContext();
   // Add job props importing from AddJobManager hook to pass to AddJobModal
   const {
@@ -34,15 +41,13 @@ function JobTracker() {
     newJobAddedFlag,
   } = useJobManager();
 
-  const [jobs, setJobs] = useState([]); // Jobs state to render all jobs
-  const [jobsLoading, setJobsLoading] = useState(false); // To track the status of jobs (for displaying skeleton in data table)
-  const [columnFilters, setColumnFilters] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState(""); // Defining the filterProps here to pass into search component and data table (This page acts as parent component to send this prop)
-  const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
+  // Filter table props importing from JobColumnsManager hook to pass as params to getColumns
+  const { setSelectedCompanies, setselectedResponses } =
+    useJobColumnsManager(setColumnFilters);
 
   // Memoize columns to avoid recalculating on each render
   const columns = useMemo(
-    () => getColumns(jobs, setJobs, setColumnFilters),
+    () => getColumns(jobs, setJobs, setSelectedCompanies, setselectedResponses),
     [jobs],
   ); // Calling the getColumns function that takes jobs, setJobs and setColumnFilters as param to update state of jobs, the returned array of column definitions is then passed in the data table component
   const columnFilterProps = useMemo(

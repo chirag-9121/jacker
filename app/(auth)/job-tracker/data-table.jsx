@@ -36,7 +36,7 @@ import {
   TooltipTrigger,
 } from "@/app/components/ui/tooltip";
 
-export const DataTable = memo(function ({
+export const DataTable = memo(function DataTable({
   columns,
   data,
   userLoading,
