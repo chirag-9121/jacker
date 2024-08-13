@@ -33,10 +33,11 @@ function Navbar() {
   const logoutHandler = async () => {
     try {
       const response = await axios.get("/api/users/logout");
-      console.log(response.data.message);
-      setUser(null);
-      router.refresh();
-      router.push("/");
+      if (response.status === 200) {
+        setUser(null);
+        router.refresh();
+        router.push("/");
+      }
     } catch (error) {
       console.log(error.message);
     }
