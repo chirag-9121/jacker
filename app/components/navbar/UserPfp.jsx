@@ -20,7 +20,7 @@ function UserPfp({ logoutHandler, user }) {
     <DropdownMenu>
       {/* Setting the trigger on the PFP */}
       <DropdownMenuTrigger>
-        <UserAvatar user={user} />
+        <UserAvatar name={user} />
       </DropdownMenuTrigger>
 
       {/* The actual dropdown containing action buttons */}

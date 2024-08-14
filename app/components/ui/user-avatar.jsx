@@ -11,8 +11,8 @@ function UserAvatar({ className, ...props }) {
       <AvatarImage src="" alt="PFP" />
 
       <AvatarFallback className="dark:text-white">
-        {props.user.fname[0]}
-        {props.user.lname[0]}
+        {props.name.fname[0]}
+        {props.name.lname[0]}
       </AvatarFallback>
     </Avatar>
   );

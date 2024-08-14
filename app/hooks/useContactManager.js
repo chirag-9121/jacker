@@ -11,6 +11,7 @@ const useContactManager = () => {
   const { user, userLoading } = useUserContext();
   const [contactIsLoading, setContactIsLoading] = useState(false); // to update button text while contact is being added/ edited
   const [open, setOpen] = useState(false); // to handle open state for contact sheet
+  const [newContact, setNewContact] = useState();
 
   // New contact handler
   // Takes the default event and countryIso2 for the phonenumber field from the form submission
@@ -43,6 +44,7 @@ const useContactManager = () => {
 
         if (response.status === 200) {
           setOpen(false);
+          setNewContact({ fullName, company, email, countryIso2, number });
           displayToast("Contact added");
         }
       }
@@ -53,7 +55,7 @@ const useContactManager = () => {
       setContactIsLoading(false);
     }
   };
-  return { contactIsLoading, addContactHandler, open, setOpen };
+  return { contactIsLoading, addContactHandler, open, setOpen, newContact };
 };
 
 export default useContactManager;

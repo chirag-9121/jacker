@@ -59,7 +59,7 @@ function Profile() {
           ) : authuser ? (
             <UserAvatar
               className="absolute -bottom-9 left-14 h-20 w-20 border-8 border-lightbackground dark:border-darkbackground"
-              user={authuser}
+              name={authuser}
             />
           ) : null}
         </div>

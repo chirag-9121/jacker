@@ -96,7 +96,7 @@ function SideNav() {
         </div>
       ) : user ? (
         <div className="flex items-center gap-3 pb-2">
-          <UserAvatar className="h-8 w-8 text-xs" user={user} />
+          <UserAvatar className="h-8 w-8 text-xs" name={user} />
 
           <div className="flex w-full flex-col flex-wrap justify-between">
             <div className="text-sm font-semibold dark:text-white">
