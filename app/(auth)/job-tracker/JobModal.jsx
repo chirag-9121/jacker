@@ -44,7 +44,7 @@ function JobModal({
   };
 
   return (
-    <div>
+    <>
       <DialogHeader className="flex-row items-center justify-between">
         <DialogTitle>
           {/* If jobId is present, i.e. Modal is triggered by edit button, display Edit Job, else.. Add new job */}
@@ -207,7 +207,7 @@ function JobModal({
           </button>
         </div>
       </form>
-    </div>
+    </>
   );
 }
 

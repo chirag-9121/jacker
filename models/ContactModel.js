@@ -3,23 +3,22 @@ import { mongoose } from "mongoose";
 const contactSchema = new mongoose.Schema({
   fullName: {
     type: String,
+    trim: true,
     required: [true, "Please provide a name"],
   },
   company: {
     type: String,
+    trim: true,
     required: [true, "Please provide a company name"],
   },
   email: {
     type: String,
+    trim: true,
     unique: true,
   },
   phoneNumber: {
     type: String,
-  },
-  gender: {
-    type: String,
-    enum: ["Male", "Female"],
-    default: "Male",
+    trim: true,
   },
 });
 
