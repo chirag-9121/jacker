@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import useContactManager from "@/app/hooks/useContactManager";
 
 // Custom ui components
 import AddButton from "@/app/components/ui/add-button";
@@ -9,10 +10,11 @@ import ContactSheet from "@/app/(auth)/contacts/ContactSheet";
 
 // Shadcn ui components
 import { Sheet, SheetContent, SheetTrigger } from "@/app/components/ui/sheet";
+import { Toaster } from "@/app/components/ui/sonner";
 
 function Contacts() {
-  const [globalFilter, setGlobalFilter] = useState("");
-  const globalFilterProps = { globalFilter, setGlobalFilter };
+  const { contactIsLoading, addContactHandler, open, setOpen } =
+    useContactManager();
 
   return (
     <div className="flex h-91v w-full flex-col gap-10 px-8 pt-7">
@@ -23,18 +25,26 @@ function Contacts() {
         </p>
         {/* Search and Add Contacts */}
         <div className="flex gap-6">
-          <SearchBox globalFilterProps={globalFilterProps} />
+          {/* <SearchBox globalFilterProps={globalFilterProps} /> */}
 
-          <Sheet>
+          {/* Add contact form sheet */}
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger>
               <AddButton>Add Contact</AddButton>
             </SheetTrigger>
             <SheetContent className="flex flex-col gap-5 rounded-s-md border-none">
-              <ContactSheet />
+              {/* Contact Sheet component containing the form */}
+              <ContactSheet
+                contactIsLoading={contactIsLoading}
+                addContactHandler={addContactHandler}
+              />
             </SheetContent>
           </Sheet>
         </div>
       </div>
+
+      {/* Sonner to display success msg, errors, info, etc. */}
+      <Toaster richColors />
     </div>
   );
 }

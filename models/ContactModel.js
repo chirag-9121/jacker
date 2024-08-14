@@ -1,6 +1,10 @@
 import { mongoose } from "mongoose";
 
 const contactSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   fullName: {
     type: String,
     trim: true,
@@ -14,16 +18,15 @@ const contactSchema = new mongoose.Schema({
   email: {
     type: String,
     trim: true,
-    unique: true,
   },
-  phoneNumber: {
-    type: String,
-    trim: true,
-  },
+  phoneNumber: new mongoose.Schema({
+    countryIso2: String,
+    number: String,
+  }),
 });
 
 // If Contact model already exists, dont create a new one
 const Contact =
-  mongoose.models.jobs || mongoose.model("Contact", contactSchema);
+  mongoose.models.Contact || mongoose.model("Contact", contactSchema);
 
 export default Contact;

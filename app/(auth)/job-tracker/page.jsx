@@ -8,7 +8,7 @@ import { useEffect, useState, useRef, useMemo } from "react";
 
 // Data Table components
 import { getColumns } from "./columns";
-import { DataTable } from "./data-table";
+import { DataTable } from "@/app/components/ui/data-table";
 
 // ui components
 import { Toaster } from "@/app/components/ui/sonner";

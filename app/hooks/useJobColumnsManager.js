@@ -2,7 +2,7 @@
 
 // This custom hook is used to handle states and effects to be sent down to getColumns function
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 const useJobColumnsManager = (setColumnFilters) => {
   // Company and Response column state to manage column filters
