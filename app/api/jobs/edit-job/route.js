@@ -38,7 +38,7 @@ export async function POST(request) {
       //   };
 
       return NextResponse.json({
-        message: "Profile updated!",
+        message: "Job updated!",
         success: true,
         updatedJob,
       });

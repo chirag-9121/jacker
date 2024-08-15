@@ -12,6 +12,29 @@ const useContactManager = () => {
   const [contactIsLoading, setContactIsLoading] = useState(false); // to update button text while contact is being added/ edited
   const [open, setOpen] = useState(false); // to handle open state for contact sheet
   const [newContact, setNewContact] = useState();
+  const [contactUpdatedFlag, setContactUpdatedFlag] = useState(false); // Tracked by columns component useEffect to update contacts list state whenever a contact is updated
+
+  // Edit contact handler, Takes contact id and contact object as params
+  const editContactHandler = async (e, contactId, contact) => {
+    e.preventDefault();
+    setContactIsLoading(true);
+    try {
+      // Contact id along with edited details is sent to backend for searching and updating
+      const response = await axios.post("/api/contacts/edit-contact", {
+        contactId: contactId,
+        contact: contact,
+      });
+      if (response.status === 200) {
+        displayToast("Contact updated");
+        setContactUpdatedFlag((prev) => !prev);
+        setOpen(false);
+      }
+    } catch (err) {
+      displayToast("Oops that didn't work", "error");
+    } finally {
+      setContactIsLoading(false);
+    }
+  };
 
   // New contact handler
   // Takes the default event and countryIso2 for the phonenumber field from the form submission
@@ -44,7 +67,14 @@ const useContactManager = () => {
 
         if (response.status === 200) {
           setOpen(false);
-          setNewContact({ fullName, company, email, countryIso2, number });
+          setNewContact({
+            _id: response.data.savedContact._id,
+            fullName,
+            company,
+            email,
+            countryIso2,
+            number,
+          });
           displayToast("Contact added");
         }
       }
@@ -55,7 +85,15 @@ const useContactManager = () => {
       setContactIsLoading(false);
     }
   };
-  return { contactIsLoading, addContactHandler, open, setOpen, newContact };
+  return {
+    contactIsLoading,
+    addContactHandler,
+    editContactHandler,
+    open,
+    setOpen,
+    newContact,
+    contactUpdatedFlag,
+  };
 };
 
 export default useContactManager;

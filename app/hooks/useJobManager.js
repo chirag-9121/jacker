@@ -58,7 +58,7 @@ const useJobManager = () => {
         setOpen(false);
       }
     } catch (err) {
-      displayToast("error", err.response.data.error);
+      displayToast("error", "Oops that didn't work");
     } finally {
       setJobIsLoading(false);
     }

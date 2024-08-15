@@ -10,11 +10,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
+import { Sheet, SheetTrigger, SheetContent } from "@/app/components/ui/sheet";
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from "@/app/components/ui/dialog";
+import ContactSheet from "@/app/(auth)/contacts/ContactSheet";
 import JobModal from "@/app/(auth)/job-tracker/JobModal";
 
 // Returns ui component to handle edit and delete functionality of a row
@@ -28,6 +30,30 @@ function EditDeletePopup({ editRowProps, deleteRowHandler }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-16" align="end">
+        {editRowProps.contactId && (
+          <Sheet open={editRowProps.open} onOpenChange={editRowProps.setOpen}>
+            {/* Setting the sheet trigger on the edit dropdown menu item */}
+            <SheetTrigger className="w-full">
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()} // To stop dropdown from closing
+                className="mb-0.5 flex gap-2 text-xs text-iconblue focus:bg-iconblue/10 focus:text-iconblue dark:focus:bg-iconblue/10 dark:focus:text-iconblue"
+              >
+                <RiEditFill />
+                Edit
+              </DropdownMenuItem>
+            </SheetTrigger>
+            <SheetContent className="flex flex-col gap-5 rounded-s-md border-none">
+              {/* Contact Sheet component containing the form */}
+              <ContactSheet
+                contactId={editRowProps.contactId}
+                contact={editRowProps.contact}
+                setContact={editRowProps.setContact}
+                contactIsLoading={editRowProps.contactIsLoading}
+                editContactHandler={editRowProps.editContactHandler}
+              />
+            </SheetContent>
+          </Sheet>
+        )}
         {editRowProps.jobId && (
           // Edit Row Dialog box for edit job
           <Dialog open={editRowProps.open} onOpenChange={editRowProps.setOpen}>

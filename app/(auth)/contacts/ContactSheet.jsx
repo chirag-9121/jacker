@@ -13,19 +13,29 @@ import {
 } from "@/app/components/ui/sheet";
 
 // Add/ Edit contact form sheet, params from custom hook
-function ContactSheet({ contactIsLoading, addContactHandler }) {
+function ContactSheet({
+  contactId,
+  contact,
+  setContact,
+  contactIsLoading,
+  addContactHandler,
+  editContactHandler,
+}) {
   // Plain JS variable and handler to set country iso2 for phoneNumber instead of useState
   let countryIso2 = "";
-  const setCountryIso2 = (iso2) => {
+  const setPhoneNumber = (iso2, phone) => {
     // Update the variable only if iso2 has changed
     countryIso2 = countryIso2 === iso2 ? countryIso2 : iso2;
+    if (contactId) {
+      setContact({ ...contact, countryIso2: countryIso2, number: phone });
+    }
   };
 
   return (
     <>
       {/* Sheet Header with title and close button */}
       <SheetHeader className="flex-row items-center justify-between">
-        <SheetTitle>Add Contact</SheetTitle>
+        <SheetTitle>{contactId ? "Edit Contact" : "Add Contact"}</SheetTitle>
         <SheetDescription />
         <SheetTrigger>
           <CrossButton />
@@ -36,7 +46,11 @@ function ContactSheet({ contactIsLoading, addContactHandler }) {
       <form
         className="flex h-full flex-col justify-between space-y-4 md:space-y-6"
         // Sending the countryIso2 string as param to handler
-        onSubmit={(e) => addContactHandler(e, countryIso2)}
+        onSubmit={(e) =>
+          contactId
+            ? editContactHandler(e, contactId, contact)
+            : addContactHandler(e, countryIso2)
+        }
       >
         {/* Full Name Field */}
         <div className="space-y-4 md:space-y-6">
@@ -53,6 +67,12 @@ function ContactSheet({ contactIsLoading, addContactHandler }) {
               id="fullName"
               className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
               placeholder="Jane Doe"
+              value={contactId ? contact.fullName : undefined}
+              onChange={
+                contactId
+                  ? (e) => setContact({ ...contact, fullName: e.target.value })
+                  : undefined
+              }
               required={true}
             />
           </div>
@@ -71,6 +91,12 @@ function ContactSheet({ contactIsLoading, addContactHandler }) {
               id="company"
               className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
               placeholder="Jacker"
+              value={contactId ? contact.company : undefined}
+              onChange={
+                contactId
+                  ? (e) => setContact({ ...contact, company: e.target.value })
+                  : undefined
+              }
               required={true}
             />
           </div>
@@ -89,6 +115,12 @@ function ContactSheet({ contactIsLoading, addContactHandler }) {
               id="email"
               className="block w-full rounded-lg border-2 border-transparent bg-forminput p-2.5 text-sm text-black focus:border-2 focus:border-primary focus:outline-none focus:ring-0 dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus:border-white/70"
               placeholder="janedoe@gmail.com"
+              value={contactId ? contact.email : undefined}
+              onChange={
+                contactId
+                  ? (e) => setContact({ ...contact, email: e.target.value })
+                  : undefined
+              }
             />
           </div>
 
@@ -106,7 +138,10 @@ function ContactSheet({ contactIsLoading, addContactHandler }) {
               disableDialCodePrefill={true} // removes the prefix of +91 set to the input value
               // Main div styles containing the select button and phone number input
               className="w-full rounded-lg border-2 border-transparent bg-forminput px-2.5 py-1 focus-within:border-2 focus-within:border-primary dark:bg-forminput/10 dark:text-white dark:placeholder-white/50 dark:focus-within:border-white/70"
-              onChange={(phone, meta) => setCountryIso2(meta.country.iso2)} // onChange call countryIso2 handler and pass iso2 value as param
+              onChange={(phone, meta) =>
+                setPhoneNumber(meta.country.iso2, phone)
+              } // onChange call phoneNumber handler and pass iso2 value as param
+              value={contactId ? contact.number : undefined}
               // Select button styles
               countrySelectorStyleProps={{
                 buttonStyle: { background: "transparent", border: "none" },
@@ -127,8 +162,14 @@ function ContactSheet({ contactIsLoading, addContactHandler }) {
           type="submit"
           className="h-9 w-full rounded-md bg-primary text-sm font-semibold text-white hover:bg-primary/80"
         >
-          {!contactIsLoading && "Add Contact"}
-          {contactIsLoading && "Adding Contact.."}
+          {/* Updating text in button based on contactIsLoading value */}
+          {/* If the contactId is present, i.e. Sheet is triggered by edit button */}
+          {!contactIsLoading && contactId && "Save"}
+          {contactIsLoading && contactId && "Saving..."}
+
+          {/* If the contactId is not present, i.e. Sheet is triggered by add contact button */}
+          {!contactIsLoading && !contactId && "Add Contact"}
+          {contactIsLoading && !contactId && "Adding Contact..."}
         </button>
       </form>
     </>
