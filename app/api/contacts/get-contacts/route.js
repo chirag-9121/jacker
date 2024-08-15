@@ -35,8 +35,6 @@ export async function GET(request) {
         { status: 404 },
       );
 
-    console.log(contacts);
-
     // Returning 200 response with contacts object
     return NextResponse.json({
       success: true,
