@@ -28,30 +28,33 @@ function EditDeletePopup({ editRowProps, deleteRowHandler }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-16" align="end">
-        {/* Edit Row Dialog box */}
-        <Dialog open={editRowProps.open} onOpenChange={editRowProps.setOpen}>
-          {/* Setting the dialog trigger on the edit dropdown menu item */}
-          <DialogTrigger className="w-full">
-            <DropdownMenuItem
-              onSelect={(e) => e.preventDefault()} // To stop dropdown from closing
-              className="mb-0.5 flex gap-2 text-xs text-iconblue focus:bg-iconblue/10 focus:text-iconblue dark:focus:bg-iconblue/10 dark:focus:text-iconblue"
-            >
-              <RiEditFill />
-              Edit
-            </DropdownMenuItem>
-          </DialogTrigger>
+        {editRowProps.jobId && (
+          // Edit Row Dialog box for edit job
+          <Dialog open={editRowProps.open} onOpenChange={editRowProps.setOpen}>
+            {/* Setting the dialog trigger on the edit dropdown menu item */}
+            <DialogTrigger className="w-full">
+              <DropdownMenuItem
+                onSelect={(e) => e.preventDefault()} // To stop dropdown from closing
+                className="mb-0.5 flex gap-2 text-xs text-iconblue focus:bg-iconblue/10 focus:text-iconblue dark:focus:bg-iconblue/10 dark:focus:text-iconblue"
+              >
+                <RiEditFill />
+                Edit
+              </DropdownMenuItem>
+            </DialogTrigger>
 
-          {/* The dialog box that contains the edit job modal */}
-          <DialogContent>
-            <JobModal
-              jobId={editRowProps.jobId}
-              job={editRowProps.job}
-              setJob={editRowProps.setJob}
-              jobIsLoading={editRowProps.jobIsLoading}
-              editJobHandler={editRowProps.editJobHandler}
-            />
-          </DialogContent>
-        </Dialog>
+            {/* The dialog box that contains the edit job modal */}
+            <DialogContent>
+              <JobModal
+                jobId={editRowProps.jobId}
+                job={editRowProps.job}
+                setJob={editRowProps.setJob}
+                jobIsLoading={editRowProps.jobIsLoading}
+                editJobHandler={editRowProps.editJobHandler}
+              />
+            </DialogContent>
+          </Dialog>
+        )}
+
         <DropdownMenuItem
           onClick={deleteRowHandler}
           className="flex gap-2 text-xs text-error focus:bg-error/10 focus:text-error dark:focus:bg-error/10 dark:focus:text-error"

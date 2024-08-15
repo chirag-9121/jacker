@@ -1,10 +1,11 @@
 "use client";
 
 import { UserAvatar } from "@/app/components/ui/user-avatar";
+import DataTableRowActions from "./DataTableRowActions";
 import { FlagImage } from "react-international-phone";
 import { MdEmail } from "react-icons/md";
 
-export const getColumns = () => [
+export const getColumns = (setContacts) => [
   {
     accessorKey: "fullName",
     header: "Full Name",
@@ -66,6 +67,17 @@ export const getColumns = () => [
             {number}
           </div>
         );
+    },
+  },
+
+  // ROW ACTIONS
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const contactRow = row.original;
+
+      // Returning a component which handles edit and delete row functionality with all necessary states
+      return <DataTableRowActions row={contactRow} setContacts={setContacts} />;
     },
   },
 ];

@@ -31,7 +31,7 @@ function Contacts() {
   const columnFilterProps = { columnFilters, setColumnFilters };
   const globalFilterProps = { globalFilter, setGlobalFilter };
 
-  const columns = getColumns();
+  const columns = getColumns(setContacts);
 
   // Getter function to retrieve contacts from backend
   const getContacts = async () => {
