@@ -61,7 +61,7 @@ function DataTableRowActions({ row, setContacts }) {
         setContacts((prevContacts) =>
           prevContacts.filter((c) => c._id !== row._id),
         );
-        displayToast("Contact delted");
+        displayToast("Contact deleted");
       }
     } catch (err) {
       displayToast("Oops! That didn't work", "error");

@@ -1,14 +1,33 @@
 "use client";
 
-import { UserAvatar } from "@/app/components/ui/user-avatar";
 import DataTableRowActions from "./DataTableRowActions";
-import { FlagImage } from "react-international-phone";
+
+// icons
+import { LuChevronsUpDown } from "react-icons/lu";
 import { MdEmail } from "react-icons/md";
 
-export const getColumns = (setContacts) => [
+// ui components
+import { UserAvatar } from "@/app/components/ui/user-avatar";
+import { Button } from "@/app/components/ui/button";
+import { FlagImage } from "react-international-phone";
+import { MultiSelect } from "@/app/components/ui/multi-select";
+
+export const getColumns = (contacts, setContacts, setSelectedCompanies) => [
   {
     accessorKey: "fullName",
-    header: "Full Name",
+    // Making the header return a button to sort asc and desc
+    header: ({ column }) => {
+      return (
+        <Button
+          className="p-0 text-xs"
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Full Name
+          <LuChevronsUpDown className="ml-2 h-3 w-3" />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       // Extracting contact name initials to send to UserAvatar component as props
       const fullName = row.getValue("fullName");
@@ -34,7 +53,28 @@ export const getColumns = (setContacts) => [
 
   {
     accessorKey: "company",
-    header: "Company",
+    header: () => {
+      // Extracting unique values of the company column to send in the multi-select component as all options
+      const uniqueCompanies = [
+        ...new Set(contacts.map((contact) => contact.company.toLowerCase())),
+      ].sort();
+
+      return (
+        <MultiSelect
+          options={uniqueCompanies}
+          // selectedCompanies is updated whenever any checkbox is checked or unchecked, which in turn triggers the useEffect and column filters are updated
+          onValueChange={setSelectedCompanies}
+          placeholder="Company"
+        />
+      );
+    },
+    // Custom filter function for company column as the filterValue is not a string now, but an array containing multiple strings
+    filterFn: (row, columnId, filterValue) => {
+      return (
+        filterValue.length === 0 ||
+        filterValue.includes(row.getValue(columnId).toLowerCase())
+      );
+    },
   },
 
   {

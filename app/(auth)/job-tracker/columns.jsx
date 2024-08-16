@@ -58,7 +58,7 @@ export const getColumns = (
       // Extracting unique values of the company column to send in the multi-select component as all options
       const uniqueCompanies = [
         ...new Set(jobs.map((job) => job.company.toLowerCase())),
-      ];
+      ].sort();
 
       return (
         <MultiSelect

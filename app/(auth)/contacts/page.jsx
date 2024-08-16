@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
+import axios from "axios";
+
+// Custom hooks and global context provider
 import { useUserContext } from "@/app/components/UserProvider";
 import useContactManager from "@/app/hooks/useContactManager";
-import axios from "axios";
+import useContactColumnsManager from "@/app/hooks/useContactColumnsManager";
 
 // Data Table components
 import { getColumns } from "./columns";
@@ -21,17 +24,27 @@ import { Toaster } from "@/app/components/ui/sonner";
 
 function Contacts() {
   const { user, userLoading } = useUserContext();
+  // Props to handle new contact from custom hook to be sent down to Contact Sheet form
   const { contactIsLoading, addContactHandler, open, setOpen, newContact } =
     useContactManager();
   const [contactsLoading, setContactsLoading] = useState(false); // To track the status of contacts (for displaying skeleton in data table)
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState([]); // The main contacts list
   const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
-  const [columnFilters, setColumnFilters] = useState();
-  const [globalFilter, setGlobalFilter] = useState();
-  const columnFilterProps = { columnFilters, setColumnFilters };
-  const globalFilterProps = { globalFilter, setGlobalFilter };
 
-  const columns = getColumns(setContacts);
+  // Column and Global filter state set
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const globalFilterProps = { globalFilter, setGlobalFilter };
+  const columnFilterProps = { columnFilters, setColumnFilters };
+
+  // Filter table props importing from JobColumnsManager hook to pass as params to getColumns
+  const { setSelectedCompanies } = useContactColumnsManager(setColumnFilters);
+
+  // Returns array of objects of table columns(including how header and row ui should be rendered) to be passed down to data table component
+  const columns = useMemo(
+    () => getColumns(contacts, setContacts, setSelectedCompanies),
+    [contacts],
+  );
 
   // Getter function to retrieve contacts from backend
   const getContacts = async () => {
@@ -72,7 +85,7 @@ function Contacts() {
         </p>
         {/* Search and Add Contacts */}
         <div className="flex gap-6">
-          {/* <SearchBox globalFilterProps={globalFilterProps} /> */}
+          <SearchBox globalFilterProps={globalFilterProps} />
 
           {/* Add contact form sheet */}
           <Sheet open={open} onOpenChange={setOpen}>
