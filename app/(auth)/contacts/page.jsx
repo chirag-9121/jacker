@@ -24,11 +24,12 @@ import { Toaster } from "@/app/components/ui/sonner";
 
 function Contacts() {
   const { user, userLoading } = useUserContext();
+  const [contacts, setContacts] = useState([]); // The main contacts list
+  const [contactsLoading, setContactsLoading] = useState(false); // To track the status of contacts (for displaying skeleton in data table)
   // Props to handle new contact from custom hook to be sent down to Contact Sheet form
   const { contactIsLoading, addContactHandler, open, setOpen, newContact } =
     useContactManager();
-  const [contactsLoading, setContactsLoading] = useState(false); // To track the status of contacts (for displaying skeleton in data table)
-  const [contacts, setContacts] = useState([]); // The main contacts list
+
   const hasPageBeenRendered = useRef(false); // To bypass initial run of useEffect causing flash
 
   // Column and Global filter state set

@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import CrossButton from "@/app/components/ui/cross-button";
 
 // A react component library for phone number input along with country codes
@@ -12,15 +15,36 @@ import {
   SheetTrigger,
 } from "@/app/components/ui/sheet";
 
-// Add/ Edit contact form sheet, params from custom hook
+// Add/ Edit contact form sheet, params from custom hook and row actions
 function ContactSheet({
   contactId,
-  contact,
-  setContact,
+  row,
   contactIsLoading,
   addContactHandler,
   editContactHandler,
 }) {
+  // Maintaining contact state for edit contact functionality
+  const [contact, setContact] = useState({
+    fullName: "",
+    company: "",
+    email: "",
+    countryIso2: "",
+    number: "",
+  });
+
+  useEffect(() => {
+    // If form is triggered by edit button, contact id is present
+    if (contactId) {
+      setContact({
+        fullName: row.fullName,
+        company: row.company,
+        email: row.email,
+        countryIso2: row.countryIso2,
+        number: row.number,
+      });
+    }
+  }, [contactId]);
+
   // Plain JS variable and handler to set country iso2 for phoneNumber instead of useState
   let countryIso2 = "";
   const setPhoneNumber = (iso2, phone) => {

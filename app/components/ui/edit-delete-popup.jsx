@@ -46,8 +46,7 @@ function EditDeletePopup({ editRowProps, deleteRowHandler }) {
               {/* Contact Sheet component containing the form */}
               <ContactSheet
                 contactId={editRowProps.contactId}
-                contact={editRowProps.contact}
-                setContact={editRowProps.setContact}
+                row={editRowProps.row}
                 contactIsLoading={editRowProps.contactIsLoading}
                 editContactHandler={editRowProps.editContactHandler}
               />

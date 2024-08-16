@@ -1,18 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useUserContext } from "@/app/components/UserProvider";
 import axios from "axios";
 import { displayToast } from "@/lib/utils";
 
 // A custom hook to provide states and handlers to add and edit contacts
 
-const useContactManager = () => {
+const useContactManager = (setContacts) => {
   const { user, userLoading } = useUserContext();
   const [contactIsLoading, setContactIsLoading] = useState(false); // to update button text while contact is being added/ edited
   const [open, setOpen] = useState(false); // to handle open state for contact sheet
   const [newContact, setNewContact] = useState();
-  const [contactUpdatedFlag, setContactUpdatedFlag] = useState(false); // Tracked by columns component useEffect to update contacts list state whenever a contact is updated
 
   // Edit contact handler, Takes contact id and contact object as params
   const editContactHandler = async (e, contactId, contact) => {
@@ -26,10 +25,15 @@ const useContactManager = () => {
       });
       if (response.status === 200) {
         displayToast("Contact updated");
-        setContactUpdatedFlag((prev) => !prev);
+        setContacts((prevContacts) =>
+          prevContacts.map((c) =>
+            c._id === contactId ? { ...c, ...contact } : c,
+          ),
+        );
         setOpen(false);
       }
     } catch (err) {
+      console.log(err);
       displayToast("Oops that didn't work", "error");
     } finally {
       setContactIsLoading(false);
@@ -92,7 +96,6 @@ const useContactManager = () => {
     open,
     setOpen,
     newContact,
-    contactUpdatedFlag,
   };
 };
 
