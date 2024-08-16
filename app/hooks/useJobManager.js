@@ -4,27 +4,9 @@
 
 import axios from "axios";
 import { useState } from "react";
-import { toast } from "sonner";
+import { displayToast } from "@/lib/utils";
 import { useUserContext } from "@/app/components/UserProvider";
-
-// Function for displaying sonner
-function displayToast(toastType, message) {
-  if (toastType === "success") {
-    toast(message, {
-      action: {
-        label: "OK",
-        onClick: () => toast.dismiss(),
-      },
-    });
-  } else {
-    toast.error(message, {
-      action: {
-        label: "OK",
-        onClick: () => toast.dismiss(),
-      },
-    });
-  }
-}
+import { TOAST_ERROR_DESCR, TOAST_ERROR_MSG } from "@/lib/constants";
 
 const useJobManager = () => {
   const [jobIsLoading, setJobIsLoading] = useState(false); // to update button text while job is being added/ edited
@@ -53,12 +35,12 @@ const useJobManager = () => {
         job: job,
       });
       if (response.status === 200) {
-        displayToast("success", "Job application updated");
+        displayToast("Job application updated", "success");
         setJobUpdatedFlag((prev) => !prev);
         setOpen(false);
       }
     } catch (err) {
-      displayToast("error", "Oops that didn't work");
+      displayToast(err.response.data.error, "error");
     } finally {
       setJobIsLoading(false);
     }
@@ -78,13 +60,13 @@ const useJobManager = () => {
         // If new job is added successfully, update the job state which is used by main page to add job to joblist state
         if (response.status === 200) {
           setJob(response.data.savedJob);
-          displayToast("success", "Job application added");
+          displayToast("Job application added");
           setNewJobAddedFlag((prev) => !prev);
           setOpen(false);
         }
       }
     } catch (err) {
-      displayToast("error", err.response.data.error);
+      displayToast(err.response.data.error, "error");
     } finally {
       setJobIsLoading(false);
     }

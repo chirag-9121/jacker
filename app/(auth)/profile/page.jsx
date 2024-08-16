@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useUserContext } from "@/app/components/UserProvider";
 import axios from "axios";
-import { toast } from "sonner";
 
 // ui components
 import { UserAvatar } from "@/app/components/ui/user-avatar";
 import ProfileUpdateForm from "./ProfileUpdateForm";
 import { Skeleton } from "@/app/components/ui/skeleton";
 import { Toaster } from "@/app/components/ui/sonner";
+import { displayToast } from "@/lib/utils";
+import { TOAST_ERROR_DESCR } from "@/lib/constants";
 
 function Profile() {
   const { user: authuser, setUser, userLoading } = useUserContext(); // Global context user to display preloaded data in form
@@ -24,22 +25,11 @@ function Profile() {
       if (response.status === 200) {
         // Update global context user and display success sonner
         setUser(response.data.data);
-        toast.success("Profile Updated", {
-          action: {
-            label: "OK",
-            onClick: () => toast.dismiss(),
-          },
-        });
+        displayToast("Profile Updated", "success");
       }
     } catch (err) {
       // Displaying error sonner
-      toast.error("Profile Update Failed", {
-        description: "Try again later",
-        action: {
-          label: "OK",
-          onClick: () => toast.dismiss(),
-        },
-      });
+      displayToast("Profile Updated Failed", "error", TOAST_ERROR_DESCR);
     } finally {
       setIsLoading(false);
     }

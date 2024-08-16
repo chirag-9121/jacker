@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useUserContext } from "@/app/components/UserProvider";
 import axios from "axios";
 import { displayToast } from "@/lib/utils";
+import { TOAST_ERROR_DESCR, TOAST_ERROR_MSG } from "@/lib/constants";
 
 // A custom hook to provide states and handlers to add and edit contacts
 
@@ -24,7 +25,7 @@ const useContactManager = (setContacts) => {
         contact: contact,
       });
       if (response.status === 200) {
-        displayToast("Contact updated");
+        displayToast("Contact updated", "success");
         setContacts((prevContacts) =>
           prevContacts.map((c) =>
             c._id === contactId ? { ...c, ...contact } : c,
@@ -34,7 +35,7 @@ const useContactManager = (setContacts) => {
       }
     } catch (err) {
       console.log(err);
-      displayToast("Oops that didn't work", "error");
+      displayToast(TOAST_ERROR_MSG, "error", TOAST_ERROR_DESCR);
     } finally {
       setContactIsLoading(false);
     }
@@ -84,7 +85,7 @@ const useContactManager = (setContacts) => {
       }
     } catch (err) {
       console.log(err);
-      displayToast(err.response.data.error, "error");
+      displayToast(TOAST_ERROR_MSG, "error", TOAST_ERROR_DESCR);
     } finally {
       setContactIsLoading(false);
     }

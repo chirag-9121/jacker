@@ -2,6 +2,7 @@ import axios from "axios";
 import EditDeletePopup from "@/app/components/ui/edit-delete-popup";
 import { displayToast } from "@/lib/utils";
 import useContactManager from "@/app/hooks/useContactManager";
+import { TOAST_ERROR_DESCR, TOAST_ERROR_MSG } from "@/lib/constants";
 
 function DataTableRowActions({ row, setContacts }) {
   // ***Edit Job Application***
@@ -34,7 +35,7 @@ function DataTableRowActions({ row, setContacts }) {
         displayToast("Contact deleted");
       }
     } catch (err) {
-      displayToast("Oops! That didn't work", "error");
+      displayToast(TOAST_ERROR_MSG, "error", TOAST_ERROR_DESCR);
     }
   };
 

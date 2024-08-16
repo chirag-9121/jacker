@@ -2,9 +2,10 @@
 
 import { format } from "date-fns";
 import Link from "next/link";
-import { toast } from "sonner";
 import axios from "axios";
 import { cn } from "@/lib/utils";
+import { displayToast } from "@/lib/utils";
+import { TOAST_ERROR_MSG, TOAST_ERROR_DESCR } from "@/lib/constants";
 
 // Icons and ui components
 import {
@@ -24,15 +25,6 @@ import { MultiSelect } from "@/app/components/ui/multi-select";
 
 import { IoCalendar } from "react-icons/io5";
 import { LuChevronsUpDown } from "react-icons/lu";
-
-function displayToastError() {
-  toast.error("Oops! That didn't work", {
-    action: {
-      label: "OK",
-      onClick: () => toast.dismiss(),
-    },
-  });
-}
 
 function truncateText(text, maxLength) {
   if (text.length <= maxLength) {
@@ -272,7 +264,7 @@ export const getColumns = (
             followUpDate: e,
           });
         } catch (err) {
-          displayToastError();
+          displayToast(TOAST_ERROR_MSG, "error", TOAST_ERROR_DESCR);
         }
       };
 

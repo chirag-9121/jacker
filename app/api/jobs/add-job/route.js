@@ -49,7 +49,7 @@ export async function POST(request) {
     }
     // else might be some server error/bug
     return NextResponse.json(
-      { error: "Oops that didn't work" },
+      { error: "Oops! that didn't work" },
       { status: 500 },
     );
   }

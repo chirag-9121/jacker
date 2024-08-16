@@ -2,7 +2,8 @@ import EditDeletePopup from "@/app/components/ui/edit-delete-popup";
 import useJobManager from "@/app/hooks/useJobManager"; // Custom hook that returns props to handle edit job functionality
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { toast } from "sonner";
+import { displayToast } from "@/lib/utils";
+import { TOAST_ERROR_MSG, TOAST_ERROR_DESCR } from "@/lib/constants";
 
 function DataTableRowActions({ row, setJobs }) {
   // ***Edit Job Application***
@@ -58,20 +59,10 @@ function DataTableRowActions({ row, setJobs }) {
       if (response.status === 200) {
         // Once the job is deleted from backend, simply filtering it from the state
         setJobs((prevJobs) => prevJobs.filter((j) => j._id !== row._id));
-        toast("Job application deleted", {
-          action: {
-            label: "OK",
-            onClick: () => toast.dismiss(),
-          },
-        });
+        displayToast("Job application deleted");
       }
     } catch (err) {
-      toast.error("Oops! That didn't work", {
-        action: {
-          label: "OK",
-          onClick: () => toast.dismiss(),
-        },
-      });
+      displayToast(TOAST_ERROR_MSG, "error", TOAST_ERROR_DESCR);
     }
   };
 
