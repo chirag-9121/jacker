@@ -84,10 +84,10 @@ function LinkContactSheet() {
         </SheetTrigger>
       </SheetHeader>
 
-      <div className="flex flex-col gap-4 rounded-md bg-forminput p-3">
+      <div className="flex flex-col gap-4 rounded-md bg-forminput p-3 dark:bg-forminput/10">
         <p className="text-sm font-bold text-darkgrey">Contact Details</p>
         <div className="flex items-center gap-5 px-2">
-          <div className="flex flex-col justify-center gap-2 text-xs font-bold">
+          <div className="flex flex-col justify-center gap-2 text-xs font-bold dark:text-white">
             <p>Name</p>
             <p>Company</p>
             <p>Email</p>
@@ -100,19 +100,19 @@ function LinkContactSheet() {
             <p>+353 899709976</p>
           </div>
         </div>
-        <Button className="h-5 w-fit self-end bg-error text-xs text-white">
+        <Button className="h-5 w-fit self-end bg-error text-xs text-white dark:bg-error dark:text-white">
           Unlink
         </Button>
       </div>
 
-      <Command className="gap-2">
+      <Command className="gap-2 dark:bg-transparent">
         <CommandInput
           placeholder="Search"
-          wrapperClassName="bg-forminput border-none rounded-md"
-          className="h-9 bg-forminput"
+          wrapperClassName="bg-forminput dark:bg-forminput/10 border-none rounded-md"
+          className="h-9 bg-transparent"
         />
         <ScrollArea>
-          <CommandList className="max-h-fit rounded-md bg-forminput">
+          <CommandList className="max-h-fit rounded-md bg-forminput dark:bg-forminput/10">
             <CommandEmpty>No contacts found.</CommandEmpty>
             <CommandGroup>
               {contact.map((contact) => (
@@ -130,7 +130,9 @@ function LinkContactSheet() {
           </CommandList>
         </ScrollArea>
 
-        <Button className="bg-primary">New Contact</Button>
+        <Button className="bg-primary dark:bg-primary dark:text-white">
+          New Contact
+        </Button>
       </Command>
     </>
   );
