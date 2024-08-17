@@ -7,22 +7,27 @@ import { cn } from "@/lib/utils";
 import { displayToast } from "@/lib/utils";
 import { TOAST_ERROR_MSG, TOAST_ERROR_DESCR } from "@/lib/constants";
 
-// Icons and ui components
+// ui components
+import EditResponse from "@/app/components/ui/edit-response";
+import LinkContactSheet from "./LinkContactSheet";
+import DataTableRowActions from "@/app/(auth)/job-tracker/DataTableRowActions";
+import { MultiSelect } from "@/app/components/ui/multi-select";
+
+// ShadCn ui components
 import {
   DropdownMenu,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
-import EditResponse from "@/app/components/ui/edit-response";
-import DataTableRowActions from "@/app/(auth)/job-tracker/DataTableRowActions";
 import { Calendar } from "@/app/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/app/components/ui/popover";
+import { Sheet, SheetTrigger, SheetContent } from "@/app/components/ui/sheet";
 import { Button } from "@/app/components/ui/button";
-import { MultiSelect } from "@/app/components/ui/multi-select";
 
+// icons
 import { IoCalendar } from "react-icons/io5";
 import { LuChevronsUpDown } from "react-icons/lu";
 
@@ -151,6 +156,22 @@ export const getColumns = (
   {
     accessorKey: "contact",
     header: "Contact",
+    cell: ({ row }) => {
+      return (
+        // Link contact form sheet
+        <Sheet className="flex flex-col gap-10">
+          <SheetTrigger>
+            <Button className="h-8 w-12 bg-cardcolor dark:bg-white/90">
+              Add
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="flex flex-col gap-5 rounded-s-md border-none">
+            {/* Link Contact Sheet component */}
+            <LinkContactSheet />
+          </SheetContent>
+        </Sheet>
+      );
+    },
   },
   {
     accessorKey: "response",
@@ -210,7 +231,7 @@ export const getColumns = (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className={`w-fit rounded-full ${classColor === "success" ? "bg-success/10 text-success" : classColor === "warning" ? "bg-warning/10 text-warning" : classColor === "error" ? "bg-error/10 text-error" : ""} p-2 px-4 text-xs`}
+              className={`w-fit rounded-full ${classColor === "success" ? "border border-success bg-success/10 text-success" : classColor === "warning" ? "border border-warning bg-warning/10 text-warning" : classColor === "error" ? "border border-error bg-error/10 text-error" : ""} p-2 px-4 text-xs`}
             >
               {response}
               <span className="sr-only">Job Response Actions</span>
@@ -284,7 +305,9 @@ export const getColumns = (
               {followUpDate ? (
                 <div className={`text-xs ${colorToDisplay}`}>{formatted}</div>
               ) : (
-                <span className="text-xs text-grey">Click to Add</span>
+                <span className="text-xs dark:text-forminput">
+                  Click to Add
+                </span>
               )}
             </button>
           </PopoverTrigger>
