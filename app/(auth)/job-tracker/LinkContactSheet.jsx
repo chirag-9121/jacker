@@ -3,7 +3,7 @@
 import CrossButton from "@/app/components/ui/cross-button";
 import { UserAvatar } from "@/app/components/ui/user-avatar";
 import { IoMdLink } from "react-icons/io";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Shadcn ui components
 import {
@@ -24,8 +24,25 @@ import { ScrollArea } from "@/app/components/ui/scroll-area";
 import { Button } from "@/app/components/ui/button";
 
 // Link contact form sheet, params from main page jobs component
-function LinkContactSheet({ contacts, linkUnlinkContactHandler }) {
+function LinkContactSheet({
+  contacts,
+  linkContactHandler,
+  unlinkContactHandler,
+  linkedContact,
+}) {
   const [selectedContact, setSelectedContact] = useState();
+
+  useEffect(() => {
+    if (linkedContact) {
+      setSelectedContact({
+        fullName: linkedContact.fullName,
+        company: linkedContact.company,
+        email: linkedContact.email,
+        number: linkedContact.phoneNumber.number,
+      });
+    }
+  }, [linkedContact]);
+
   return (
     <>
       {/* Sheet Header with title and close button */}
@@ -57,7 +74,10 @@ function LinkContactSheet({ contacts, linkUnlinkContactHandler }) {
               <p>{selectedContact.number}</p>
             </div>
           </div>
-          <Button className="flex h-5 w-fit items-center justify-center gap-1 self-end bg-error p-2 text-xs text-white dark:bg-error dark:text-white">
+          <Button
+            onClick={unlinkContactHandler}
+            className="flex h-5 w-fit items-center justify-center gap-1 self-end bg-error p-2 text-xs text-white dark:bg-error dark:text-white"
+          >
             Unlink
             <IoMdLink className="h-4 w-4" />
           </Button>
@@ -101,7 +121,7 @@ function LinkContactSheet({ contacts, linkUnlinkContactHandler }) {
                     </div>
 
                     <Button
-                      onClick={() => linkUnlinkContactHandler(contact)}
+                      onClick={() => linkContactHandler(contact)}
                       className="flex h-5 w-fit items-center justify-center gap-1 p-2 text-xs hover:bg-success dark:hover:bg-success dark:hover:text-white"
                     >
                       Link

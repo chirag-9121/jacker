@@ -10,6 +10,7 @@ import EditResponse from "@/app/components/ui/edit-response";
 import LinkContactSheet from "./LinkContactSheet";
 import DataTableRowActions from "@/app/(auth)/job-tracker/DataTableRowActions";
 import { MultiSelect } from "@/app/components/ui/multi-select";
+import { UserAvatar } from "@/app/components/ui/user-avatar";
 
 // ShadCn ui components
 import {
@@ -157,10 +158,36 @@ export const getColumns = (
     header: "Contact",
     cell: ({ row }) => {
       const contact = row.getValue("contact");
-      console.log(contact);
       const jobId = row.original._id;
-      // Link/ Unlink contact to job handler
-      const linkUnlinkContactHandler = async (contact) => {
+
+      // Unlink contact from job handler
+      const unlinkContactHandler = async () => {
+        try {
+          const response = await axios.delete(
+            "/api/jobs/edit-job/link-contact",
+            {
+              data: { jobId: jobId },
+            },
+          );
+          if (response.status === 200) {
+            setJobs((prevJobs) =>
+              prevJobs.map((job) =>
+                job._id === jobId
+                  ? {
+                      ...job,
+                      contact: null,
+                    }
+                  : job,
+              ),
+            );
+          }
+        } catch (err) {
+          displayToast(TOAST_ERROR_MSG, "error");
+        }
+      };
+
+      // Link contact to job handler
+      const linkContactHandler = async (contact) => {
         try {
           const response = await axios.post("/api/jobs/edit-job/link-contact", {
             jobId: jobId,
@@ -171,7 +198,22 @@ export const getColumns = (
           if (response.status === 200) {
             setJobs((prevJobs) =>
               prevJobs.map((job) =>
-                job._id === jobId ? { ...job, contact: contact } : job,
+                job._id === jobId
+                  ? {
+                      ...job,
+                      // Setting the contact subdocument of job to match the projected contacts fetched from api to avoid discrepancy
+                      contact: {
+                        _id: contact._id,
+                        fullName: contact.fullName,
+                        company: contact.company,
+                        email: contact.email,
+                        phoneNumber: {
+                          countryIso2: contact.countryIso2,
+                          number: contact.number,
+                        },
+                      },
+                    }
+                  : job,
               ),
             );
           }
@@ -183,15 +225,34 @@ export const getColumns = (
         // Link contact form sheet
         <Sheet className="flex flex-col gap-10">
           <SheetTrigger>
-            <Button className="h-8 w-12 bg-cardcolor dark:bg-white/90">
-              Add
-            </Button>
+            {contact ? (
+              <Button className="flex gap-2 bg-transparent p-2 text-black shadow-none hover:bg-black/10 dark:bg-transparent dark:shadow-none dark:hover:bg-white/10">
+                <UserAvatar
+                  className="h-6 w-6 text-xs"
+                  avatarFallbackClassName="text-white bg-slate-800 dark:text-black dark:bg-primary-light"
+                  name={{
+                    fname: contact.fullName.split(" ")[0],
+                    lname: contact.fullName.split(" ")[1],
+                  }}
+                />
+
+                <div className="text-xs font-semibold dark:text-white">
+                  <span>{contact.fullName}</span>
+                </div>
+              </Button>
+            ) : (
+              <Button className="h-8 w-12 bg-cardcolor dark:bg-white/90">
+                Add
+              </Button>
+            )}
           </SheetTrigger>
           <SheetContent className="flex flex-col gap-5 rounded-s-md border-none">
             {/* Link Contact Sheet component */}
             <LinkContactSheet
               contacts={contacts}
-              linkUnlinkContactHandler={linkUnlinkContactHandler}
+              linkContactHandler={linkContactHandler}
+              unlinkContactHandler={unlinkContactHandler}
+              linkedContact={contact}
             />
           </SheetContent>
         </Sheet>
