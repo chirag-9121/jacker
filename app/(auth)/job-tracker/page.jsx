@@ -24,6 +24,7 @@ import { ScrollArea, ScrollBar } from "@/app/components/ui/scroll-area";
 
 function JobTracker() {
   const [jobs, setJobs] = useState([]); // Jobs state to render all jobs
+  const [contacts, setContacts] = useState([]); // The main contacts list to be send down to link contact sheet via columns
   const [jobsLoading, setJobsLoading] = useState(false); // To track the status of jobs (for displaying skeleton in data table)
   const [columnFilters, setColumnFilters] = useState([]);
   const [globalFilter, setGlobalFilter] = useState(""); // Defining the filterProps here to pass into search component and data table (This page acts as parent component to send this prop)
@@ -47,8 +48,15 @@ function JobTracker() {
 
   // Memoize columns to avoid recalculating on each render
   const columns = useMemo(
-    () => getColumns(jobs, setJobs, setSelectedCompanies, setselectedResponses),
-    [jobs],
+    () =>
+      getColumns(
+        jobs,
+        setJobs,
+        setSelectedCompanies,
+        setselectedResponses,
+        contacts,
+      ),
+    [jobs, contacts],
   ); // Calling the getColumns function that takes jobs, setJobs and setColumnFilters as param to update state of jobs, the returned array of column definitions is then passed in the data table component
   const columnFilterProps = useMemo(
     () => ({ columnFilters, setColumnFilters }),
@@ -75,6 +83,20 @@ function JobTracker() {
     }
   };
 
+  // Getter function to retrieve contacts from backend
+  const getContacts = async () => {
+    try {
+      const response = await axios.get("/api/contacts/get-contacts", {
+        params: { userId: user.id }, // Passing user id to fetch all contacts added by current user
+      });
+      if (response.status === 200) {
+        setContacts(response.data.contacts);
+      }
+    } catch (err) {
+    } finally {
+    }
+  };
+
   // Updating jobs state when new job is added and resetting form fields to null
   useEffect(() => {
     // Bypasses initial run
@@ -94,7 +116,10 @@ function JobTracker() {
 
   // Retrieving jobs when user is loaded
   useEffect(() => {
-    if (user) getJobs();
+    if (user) {
+      getJobs();
+      getContacts();
+    }
   }, [user]);
 
   return (

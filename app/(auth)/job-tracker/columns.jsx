@@ -1,5 +1,3 @@
-"use client";
-
 import { format } from "date-fns";
 import Link from "next/link";
 import axios from "axios";
@@ -44,6 +42,7 @@ export const getColumns = (
   setJobs,
   setSelectedCompanies,
   setselectedResponses,
+  contacts,
 ) => [
   {
     accessorKey: "jobTitle",
@@ -167,7 +166,7 @@ export const getColumns = (
           </SheetTrigger>
           <SheetContent className="flex flex-col gap-5 rounded-s-md border-none">
             {/* Link Contact Sheet component */}
-            <LinkContactSheet />
+            <LinkContactSheet contacts={contacts} />
           </SheetContent>
         </Sheet>
       );

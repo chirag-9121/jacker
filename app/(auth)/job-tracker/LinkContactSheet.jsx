@@ -1,6 +1,6 @@
-"use client";
-
 import CrossButton from "@/app/components/ui/cross-button";
+import { UserAvatar } from "@/app/components/ui/user-avatar";
+import { IoMdLink } from "react-icons/io";
 
 // Shadcn ui components
 import {
@@ -17,62 +17,11 @@ import {
   CommandItem,
   CommandList,
 } from "@/app/components/ui/command";
-import { useState } from "react";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
 import { Button } from "@/app/components/ui/button";
 
-// Add/ Edit contact form sheet, params from custom hook and row actions
-function LinkContactSheet() {
-  const [contact, setContact] = useState([
-    {
-      id: "1",
-      value: "John",
-    },
-    {
-      id: "2",
-      value: "Jane",
-    },
-    {
-      id: "3",
-      value: "Joe",
-    },
-    {
-      id: "4",
-      value: "John",
-    },
-    {
-      id: "5",
-      value: "Jane",
-    },
-    {
-      id: "6",
-      value: "Joe",
-    },
-    {
-      id: "7",
-      value: "John",
-    },
-    {
-      id: "8",
-      value: "Jane",
-    },
-    {
-      id: "9",
-      value: "Joe",
-    },
-    {
-      id: "10",
-      value: "John",
-    },
-    {
-      id: "11",
-      value: "Jane",
-    },
-    {
-      id: "12",
-      value: "Joe",
-    },
-  ]);
+// Link contact form sheet, params from main page jobs component
+function LinkContactSheet({ contacts }) {
   return (
     <>
       {/* Sheet Header with title and close button */}
@@ -100,8 +49,9 @@ function LinkContactSheet() {
             <p>+353 899709976</p>
           </div>
         </div>
-        <Button className="h-5 w-fit self-end bg-error text-xs text-white dark:bg-error dark:text-white">
+        <Button className="flex h-5 w-fit items-center justify-center gap-1 self-end bg-error p-2 text-xs text-white dark:bg-error dark:text-white">
           Unlink
+          <IoMdLink className="h-4 w-4" />
         </Button>
       </div>
 
@@ -115,22 +65,41 @@ function LinkContactSheet() {
           <CommandList className="max-h-fit rounded-md bg-forminput dark:bg-forminput/10">
             <CommandEmpty>No contacts found.</CommandEmpty>
             <CommandGroup>
-              {contact.map((contact) => (
-                <CommandItem
-                  key={contact.id}
-                  value={contact.value}
-                  // onSelect={(currentValue) => {
-                  //   setValue(currentValue === value ? "" : currentValue);
-                  // }}
-                >
-                  {contact.value}
+              {contacts.map((contact, index) => (
+                <CommandItem key={index}>
+                  <div className="flex w-full items-center justify-between p-2">
+                    <div className="flex items-center gap-4">
+                      <UserAvatar
+                        className="h-8 w-8 text-xs"
+                        avatarFallbackClassName="text-white bg-slate-800 dark:text-black dark:bg-primary-light"
+                        name={{
+                          fname: contact.fullName.split(" ")[0],
+                          lname: contact.fullName.split(" ")[1],
+                        }}
+                      />
+
+                      <div className="flex w-full flex-col flex-wrap justify-between">
+                        <div className="text-sm font-semibold dark:text-white">
+                          <span>{contact.fullName}</span>
+                        </div>
+                        <div className="break-all text-xs text-grey">
+                          {contact.company}
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button className="flex h-5 w-fit items-center justify-center gap-1 p-2 text-xs hover:bg-success dark:hover:bg-success dark:hover:text-white">
+                      Link
+                      <IoMdLink className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>
           </CommandList>
         </ScrollArea>
 
-        <Button className="bg-primary dark:bg-primary dark:text-white">
+        <Button className="bg-primary hover:bg-primary/80 dark:bg-primary dark:text-white dark:hover:bg-primary/80">
           New Contact
         </Button>
       </Command>
