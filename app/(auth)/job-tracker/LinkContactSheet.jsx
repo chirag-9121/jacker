@@ -1,6 +1,9 @@
+"use client";
+
 import CrossButton from "@/app/components/ui/cross-button";
 import { UserAvatar } from "@/app/components/ui/user-avatar";
 import { IoMdLink } from "react-icons/io";
+import { useState } from "react";
 
 // Shadcn ui components
 import {
@@ -21,7 +24,8 @@ import { ScrollArea } from "@/app/components/ui/scroll-area";
 import { Button } from "@/app/components/ui/button";
 
 // Link contact form sheet, params from main page jobs component
-function LinkContactSheet({ contacts }) {
+function LinkContactSheet({ contacts, linkUnlinkContactHandler }) {
+  const [selectedContact, setSelectedContact] = useState();
   return (
     <>
       {/* Sheet Header with title and close button */}
@@ -33,27 +37,32 @@ function LinkContactSheet({ contacts }) {
         </SheetTrigger>
       </SheetHeader>
 
-      <div className="flex flex-col gap-4 rounded-md bg-forminput p-3 dark:bg-forminput/10">
-        <p className="text-sm font-bold text-darkgrey">Contact Details</p>
-        <div className="flex items-center gap-5 px-2">
-          <div className="flex flex-col justify-center gap-2 text-xs font-bold dark:text-white">
-            <p>Name</p>
-            <p>Company</p>
-            <p>Email</p>
-            <p>Phone number</p>
+      {selectedContact && (
+        <div className="flex flex-col gap-4 rounded-md bg-forminput p-3 dark:bg-forminput/10">
+          <p className="text-sm font-bold text-darkgrey dark:text-forminput/70">
+            Contact Details
+          </p>
+          <div className="flex items-center gap-5 px-2">
+            <div className="flex flex-col justify-center gap-2 text-xs font-bold dark:text-white">
+              <p>Name</p>
+              <p>Company</p>
+              <p>Email</p>
+              <p>Phone number</p>
+            </div>
+            <div className="flex h-full flex-col gap-2 text-xs text-darkgrey dark:text-forminput/70">
+              <p>{selectedContact.fullName}</p>
+              <p>{selectedContact.company}</p>
+              {/* Setting the min height to 1 rem(16px) i.e. the line height for text-xs if no text is present */}
+              <p className="min-h-4">{selectedContact.email}</p>
+              <p>{selectedContact.number}</p>
+            </div>
           </div>
-          <div className="flex flex-col justify-center gap-2 text-xs text-darkgrey">
-            <p>John Doe</p>
-            <p>Google</p>
-            <p>johndoe@gmail.com</p>
-            <p>+353 899709976</p>
-          </div>
+          <Button className="flex h-5 w-fit items-center justify-center gap-1 self-end bg-error p-2 text-xs text-white dark:bg-error dark:text-white">
+            Unlink
+            <IoMdLink className="h-4 w-4" />
+          </Button>
         </div>
-        <Button className="flex h-5 w-fit items-center justify-center gap-1 self-end bg-error p-2 text-xs text-white dark:bg-error dark:text-white">
-          Unlink
-          <IoMdLink className="h-4 w-4" />
-        </Button>
-      </div>
+      )}
 
       <Command className="gap-2 dark:bg-transparent">
         <CommandInput
@@ -66,7 +75,10 @@ function LinkContactSheet({ contacts }) {
             <CommandEmpty>No contacts found.</CommandEmpty>
             <CommandGroup>
               {contacts.map((contact, index) => (
-                <CommandItem key={index}>
+                <CommandItem
+                  key={index}
+                  onSelect={() => setSelectedContact(contact)}
+                >
                   <div className="flex w-full items-center justify-between p-2">
                     <div className="flex items-center gap-4">
                       <UserAvatar
@@ -82,13 +94,16 @@ function LinkContactSheet({ contacts }) {
                         <div className="text-sm font-semibold dark:text-white">
                           <span>{contact.fullName}</span>
                         </div>
-                        <div className="break-all text-xs text-grey">
+                        <div className="break-all text-xs text-grey dark:text-forminput/70">
                           {contact.company}
                         </div>
                       </div>
                     </div>
 
-                    <Button className="flex h-5 w-fit items-center justify-center gap-1 p-2 text-xs hover:bg-success dark:hover:bg-success dark:hover:text-white">
+                    <Button
+                      onClick={() => linkUnlinkContactHandler(contact)}
+                      className="flex h-5 w-fit items-center justify-center gap-1 p-2 text-xs hover:bg-success dark:hover:bg-success dark:hover:text-white"
+                    >
                       Link
                       <IoMdLink className="h-4 w-4" />
                     </Button>

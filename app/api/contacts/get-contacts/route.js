@@ -19,6 +19,7 @@ export async function GET(request) {
       {
         // Project the results in the below format
         $project: {
+          _id: 1,
           fullName: 1, // Include the fullName field
           company: 1,
           email: 1,

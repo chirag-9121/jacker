@@ -11,7 +11,7 @@ export async function GET(request) {
     const userId = searchParams.get("userId");
 
     // Fetching all jobs associated with a specific user
-    const jobs = await Job.find({ userId: userId });
+    const jobs = await Job.find({ userId: userId }).populate("contact");
 
     // Returning 404 response if there are no jobs
     if (!jobs)

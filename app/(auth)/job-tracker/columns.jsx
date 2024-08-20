@@ -156,6 +156,29 @@ export const getColumns = (
     accessorKey: "contact",
     header: "Contact",
     cell: ({ row }) => {
+      const contact = row.getValue("contact");
+      console.log(contact);
+      const jobId = row.original._id;
+      // Link/ Unlink contact to job handler
+      const linkUnlinkContactHandler = async (contact) => {
+        try {
+          const response = await axios.post("/api/jobs/edit-job/link-contact", {
+            jobId: jobId,
+            contactId: contact._id,
+          });
+
+          // If new job is added successfully, update the job state which is used by main page to add job to joblist state
+          if (response.status === 200) {
+            setJobs((prevJobs) =>
+              prevJobs.map((job) =>
+                job._id === jobId ? { ...job, contact: contact } : job,
+              ),
+            );
+          }
+        } catch (err) {
+          displayToast(TOAST_ERROR_MSG, "error");
+        }
+      };
       return (
         // Link contact form sheet
         <Sheet className="flex flex-col gap-10">
@@ -166,7 +189,10 @@ export const getColumns = (
           </SheetTrigger>
           <SheetContent className="flex flex-col gap-5 rounded-s-md border-none">
             {/* Link Contact Sheet component */}
-            <LinkContactSheet contacts={contacts} />
+            <LinkContactSheet
+              contacts={contacts}
+              linkUnlinkContactHandler={linkUnlinkContactHandler}
+            />
           </SheetContent>
         </Sheet>
       );
