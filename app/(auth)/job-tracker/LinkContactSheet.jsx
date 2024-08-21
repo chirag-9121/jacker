@@ -4,6 +4,7 @@ import CrossButton from "@/app/components/ui/cross-button";
 import { UserAvatar } from "@/app/components/ui/user-avatar";
 import { IoMdLink } from "react-icons/io";
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 // Shadcn ui components
 import {
@@ -23,6 +24,29 @@ import {
 import { ScrollArea } from "@/app/components/ui/scroll-area";
 import { Button } from "@/app/components/ui/button";
 
+function DynamicLinkButton({ btnType, onClickHandler, linkBtnClassName }) {
+  return btnType === "link" ? (
+    <Button
+      onClick={onClickHandler}
+      className={cn(
+        "flex h-5 w-fit items-center justify-center gap-1 self-end p-2 text-xs text-white hover:bg-success/80 dark:text-black dark:hover:bg-success/80 dark:hover:text-white",
+        linkBtnClassName,
+      )}
+    >
+      Link
+      <IoMdLink className="h-4 w-4" />
+    </Button>
+  ) : (
+    <Button
+      onClick={onClickHandler}
+      className="flex h-5 w-fit items-center justify-center gap-1 self-end bg-error p-2 text-xs text-white hover:bg-error/80 dark:bg-error dark:text-white dark:hover:bg-error/80"
+    >
+      Unlink
+      <IoMdLink className="h-4 w-4" />
+    </Button>
+  );
+}
+
 // Link contact form sheet, params from main page jobs component
 function LinkContactSheet({
   contacts,
@@ -34,7 +58,9 @@ function LinkContactSheet({
 
   useEffect(() => {
     if (linkedContact) {
+      console.log(linkedContact);
       setSelectedContact({
+        _id: linkedContact._id,
         fullName: linkedContact.fullName,
         company: linkedContact.company,
         email: linkedContact.email,
@@ -74,13 +100,18 @@ function LinkContactSheet({
               <p>{selectedContact.number}</p>
             </div>
           </div>
-          <Button
-            onClick={unlinkContactHandler}
-            className="flex h-5 w-fit items-center justify-center gap-1 self-end bg-error p-2 text-xs text-white dark:bg-error dark:text-white"
-          >
-            Unlink
-            <IoMdLink className="h-4 w-4" />
-          </Button>
+          {linkedContact && linkedContact._id === selectedContact._id ? (
+            <DynamicLinkButton
+              btnType="unlink"
+              onClickHandler={() => unlinkContactHandler()}
+            />
+          ) : (
+            <DynamicLinkButton
+              btnType="link"
+              onClickHandler={() => linkContactHandler(selectedContact)}
+              linkBtnClassName="bg-success dark:bg-success dark:text-white"
+            />
+          )}
         </div>
       )}
 
@@ -120,13 +151,17 @@ function LinkContactSheet({
                       </div>
                     </div>
 
-                    <Button
-                      onClick={() => linkContactHandler(contact)}
-                      className="flex h-5 w-fit items-center justify-center gap-1 p-2 text-xs hover:bg-success dark:hover:bg-success dark:hover:text-white"
-                    >
-                      Link
-                      <IoMdLink className="h-4 w-4" />
-                    </Button>
+                    {linkedContact && linkedContact._id === contact._id ? (
+                      <DynamicLinkButton
+                        btnType="unlink"
+                        onClickHandler={() => unlinkContactHandler()}
+                      />
+                    ) : (
+                      <DynamicLinkButton
+                        btnType="link"
+                        onClickHandler={() => linkContactHandler(contact)}
+                      />
+                    )}
                   </div>
                 </CommandItem>
               ))}
