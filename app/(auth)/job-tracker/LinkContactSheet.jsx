@@ -5,13 +5,17 @@ import { UserAvatar } from "@/app/components/ui/user-avatar";
 import { IoMdLink } from "react-icons/io";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import useContactManager from "@/app/hooks/useContactManager";
+import ContactSheet from "@/app/(auth)/contacts/ContactSheet";
 
 // Shadcn ui components
 import {
+  Sheet,
   SheetHeader,
   SheetTitle,
   SheetDescription,
   SheetTrigger,
+  SheetContent,
 } from "@/app/components/ui/sheet";
 import {
   Command,
@@ -53,12 +57,15 @@ function LinkContactSheet({
   linkContactHandler,
   unlinkContactHandler,
   linkedContact,
+  jobId,
+  addAndLinkContactHandler,
 }) {
   const [selectedContact, setSelectedContact] = useState();
+  const { contactIsLoading, addContactHandler, open, setOpen } =
+    useContactManager();
 
   useEffect(() => {
     if (linkedContact) {
-      console.log(linkedContact);
       setSelectedContact({
         _id: linkedContact._id,
         fullName: linkedContact.fullName,
@@ -169,9 +176,24 @@ function LinkContactSheet({
           </CommandList>
         </ScrollArea>
 
-        <Button className="bg-primary hover:bg-primary/80 dark:bg-primary dark:text-white dark:hover:bg-primary/80">
-          New Contact
-        </Button>
+        {/* Add contact form sheet */}
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger>
+            <Button className="w-full bg-primary hover:bg-primary/80 dark:bg-primary dark:text-white dark:hover:bg-primary/80">
+              New Contact
+            </Button>
+          </SheetTrigger>
+          <SheetContent className="flex flex-col gap-5 rounded-s-md border-none">
+            {/* Contact Sheet component containing the form */}
+            {/* Passing jobId (will identify that form is triggered from link contact sheet) and addAndLinkContactHandler to new contact form */}
+            <ContactSheet
+              contactIsLoading={contactIsLoading}
+              addContactHandler={addContactHandler}
+              jobId={jobId}
+              addAndLinkContactHandler={addAndLinkContactHandler}
+            />
+          </SheetContent>
+        </Sheet>
       </Command>
     </>
   );

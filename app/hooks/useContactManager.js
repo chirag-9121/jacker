@@ -43,7 +43,7 @@ const useContactManager = (setContacts) => {
 
   // New contact handler
   // Takes the default event and countryIso2 for the phonenumber field from the form submission
-  const addContactHandler = async (e, countryIso2) => {
+  const addContactHandler = async (e, countryIso2, jobId) => {
     e.preventDefault();
     setContactIsLoading(true);
 
@@ -71,15 +71,18 @@ const useContactManager = (setContacts) => {
         });
 
         if (response.status === 200) {
-          setOpen(false);
-          setNewContact({
-            _id: response.data.savedContact._id,
-            fullName,
-            company,
-            email,
-            countryIso2,
-            number,
-          });
+          if (jobId) return response.data.savedContact;
+          else {
+            setOpen(false);
+            setNewContact({
+              _id: response.data.savedContact._id,
+              fullName,
+              company,
+              email,
+              countryIso2,
+              number,
+            });
+          }
           displayToast("Contact added");
         }
       }

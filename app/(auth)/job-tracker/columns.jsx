@@ -44,6 +44,7 @@ export const getColumns = (
   setSelectedCompanies,
   setselectedResponses,
   contacts,
+  setContacts,
 ) => [
   {
     accessorKey: "jobTitle",
@@ -208,8 +209,13 @@ export const getColumns = (
                         company: contact.company,
                         email: contact.email,
                         phoneNumber: {
-                          countryIso2: contact.countryIso2,
-                          number: contact.number,
+                          // Whether the contact is linked from existing (will contain the phoneNumber subdoc) or by creating a new contact
+                          countryIso2: contact.phoneNumber
+                            ? contact.phoneNumber.countryIso2
+                            : contact.countryIso2,
+                          number: contact.phoneNumber
+                            ? contact.phoneNumber.number
+                            : contact.number,
                         },
                       },
                     }
@@ -221,6 +227,15 @@ export const getColumns = (
           displayToast(TOAST_ERROR_MSG, "error");
         }
       };
+
+      // To handle add new contact and link to job
+      // First links the new contact to the current job by sending contact object recieved from add contact handler in custom hook
+      // Then updates the contacts list to add the new contact to display in CommandGroup
+      const addAndLinkContactHandler = async (contact) => {
+        linkContactHandler(contact);
+        setContacts((prev) => [...prev, contact]);
+      };
+
       return (
         // Link contact form sheet
         <Sheet className="flex flex-col gap-10">
@@ -253,6 +268,8 @@ export const getColumns = (
               linkContactHandler={linkContactHandler}
               unlinkContactHandler={unlinkContactHandler}
               linkedContact={contact}
+              jobId={jobId}
+              addAndLinkContactHandler={addAndLinkContactHandler}
             />
           </SheetContent>
         </Sheet>

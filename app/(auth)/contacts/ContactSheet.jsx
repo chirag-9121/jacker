@@ -22,6 +22,8 @@ function ContactSheet({
   contactIsLoading,
   addContactHandler,
   editContactHandler,
+  jobId,
+  addAndLinkContactHandler,
 }) {
   // Maintaining contact state for edit contact functionality
   const [contact, setContact] = useState({
@@ -70,11 +72,14 @@ function ContactSheet({
       <form
         className="flex h-full flex-col justify-between space-y-4 md:space-y-6"
         // Sending the countryIso2 string as param to handler
-        onSubmit={(e) =>
-          contactId
-            ? editContactHandler(e, contactId, contact)
-            : addContactHandler(e, countryIso2)
-        }
+        onSubmit={async (e) => {
+          if (contactId) editContactHandler(e, contactId, contact);
+          // if jobId is present, form is triggered from link contact sheet, add the new contact and link it to the job that triggered it
+          else if (jobId) {
+            let contact = await addContactHandler(e, countryIso2, jobId);
+            addAndLinkContactHandler(contact);
+          } else addContactHandler(e, countryIso2);
+        }}
       >
         {/* Full Name Field */}
         <div className="space-y-4 md:space-y-6">

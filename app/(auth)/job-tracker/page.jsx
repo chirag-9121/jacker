@@ -55,6 +55,7 @@ function JobTracker() {
         setSelectedCompanies,
         setselectedResponses,
         contacts,
+        setContacts,
       ),
     [jobs, contacts],
   ); // Calling the getColumns function that takes jobs, setJobs and setColumnFilters as param to update state of jobs, the returned array of column definitions is then passed in the data table component
