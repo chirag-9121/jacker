@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUserContext } from "@/app/components/UserProvider";
 import axios from "axios";
 
@@ -15,27 +15,29 @@ import {
 } from "@/app/components/ui/tabs";
 
 function Analytics() {
-  const { user: authuser, setUser, userLoading } = useUserContext(); // Global context user to display preloaded data in form
-  const [isLoading, setIsLoading] = useState(false); // To change button text to Saving...
+  const { user } = useUserContext(); // Global context user
+  const [basicMetricsLoading, setBasicMetricsLoading] = useState(false);
+  const [basicMetrics, setBasicMetrics] = useState();
 
-  // Profile update form submit handler function. Sends the user object to the server for processing.
-  const profileUpdateHandler = async (e, user) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const getBasicMetrics = async () => {
+    setBasicMetricsLoading(true);
     try {
-      const response = await axios.post("/api/users/profile-update", user);
+      const response = await axios.get("/api/analytics/basic/get-metrics", {
+        params: { userId: user.id },
+      });
       if (response.status === 200) {
-        // Update global context user and display success sonner
-        setUser(response.data.data);
-        displayToast("Profile Updated", "success");
+        setBasicMetrics(response.data.basicMetrics);
       }
     } catch (err) {
-      // Displaying error sonner
-      displayToast("Profile Updated Failed", "error", TOAST_ERROR_DESCR);
     } finally {
-      setIsLoading(false);
+      setBasicMetricsLoading(false);
     }
   };
+
+  // Retrieving analytics when user is loaded
+  useEffect(() => {
+    if (user) getBasicMetrics();
+  }, [user]);
 
   return (
     <section className="flex w-full flex-col gap-8 px-8 pt-7">
@@ -51,8 +53,19 @@ function Analytics() {
         </Tabs>
       </div>
 
-      <Tabs defaultValue="overview" className="w-[400px]">
-        <TabsContent value="overview"></TabsContent>
+      <Tabs defaultValue="overview">
+        <TabsContent value="overview">
+          {basicMetricsLoading ? (
+            <>Loading</>
+          ) : basicMetrics ? (
+            <>
+              {basicMetrics.tiles.totalJobApplications}
+              {basicMetrics.tiles.totalPositiveResponses}
+              {basicMetrics.tiles.uniqueCompaniesAppliedTo}
+              {basicMetrics.tiles.totalContacts}
+            </>
+          ) : null}
+        </TabsContent>
         <TabsContent value="advanced"></TabsContent>
       </Tabs>
     </section>
