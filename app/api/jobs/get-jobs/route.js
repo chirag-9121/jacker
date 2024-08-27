@@ -26,6 +26,7 @@ export async function GET(request) {
       jobs,
     });
   } catch (err) {
+    console.log(err);
     return NextResponse.json({ error: err }, { status: 500 });
   }
 }

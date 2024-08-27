@@ -136,6 +136,7 @@ function LinkContactSheet({
                 <CommandItem
                   key={index}
                   onSelect={() => setSelectedContact(contact)}
+                  className="cursor-pointer"
                 >
                   <div className="flex w-full items-center justify-between p-2">
                     <div className="flex items-center gap-4">

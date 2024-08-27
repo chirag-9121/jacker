@@ -7,7 +7,7 @@ import Link from "next/link";
 
 // public assets and icons
 import { FaBriefcase } from "react-icons/fa6";
-// import { MdAnalytics } from "react-icons/md";
+import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { FaUserGroup } from "react-icons/fa6";
 
 // ui components
@@ -23,6 +23,34 @@ function SideNav() {
     <nav className="flex h-91v min-w-52 max-w-52 flex-col justify-between bg-white p-3 dark:bg-black">
       {/* Side Nav actions */}
       <div className="flex w-full flex-col gap-2 pt-4">
+        <Link href="/analytics">
+          <div
+            className={clsx(
+              "group flex items-center gap-4 rounded-md px-4 py-3",
+              {
+                "bg-primary/10 dark:bg-white/10": pathName === "/analytics",
+              },
+            )}
+          >
+            <TbLayoutDashboardFilled
+              size={20}
+              className={clsx("fill-grey group-hover:fill-primary", {
+                "fill-primary": pathName === "/analytics",
+              })}
+            />
+            <span
+              className={clsx(
+                "text-sm font-semibold text-grey group-hover:text-primary",
+                {
+                  "text-primary": pathName === "/analytics",
+                },
+              )}
+            >
+              Analytics
+            </span>
+          </div>
+        </Link>
+
         <Link href="/job-tracker">
           <div
             className={clsx(
@@ -50,11 +78,6 @@ function SideNav() {
             </span>
           </div>
         </Link>
-
-        {/* <div className="flex items-center gap-4">
-          <MdAnalytics size={25} className="fill-grey" />
-          <span className="text-grey font-semibold">Analytics</span>
-        </div> */}
 
         <Link href="/contacts">
           <div
