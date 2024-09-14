@@ -3,6 +3,14 @@ import Contact from "@/models/ContactModel";
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 
+const barChartClassNames = [
+  "fill-primary", // First element gets full opacity
+  "fill-primary/80", // Second element gets slightly faded
+  "fill-primary/60", // and so on...
+  "fill-primary/40",
+  "fill-primary/20",
+];
+
 export async function GET(request) {
   try {
     // Parsing userId from search parameter
@@ -20,7 +28,7 @@ export async function GET(request) {
     });
     const totalContacts = await Contact.countDocuments({ userId: userId });
 
-    // Craeting tiles object to add to metrics object
+    // Creating tiles object to add to metrics object
     const tiles = {
       totalJobApplications,
       totalPositiveResponses,
@@ -42,7 +50,7 @@ export async function GET(request) {
       {
         $group: {
           _id: {
-            $dateToString: { format: "%d-%b", date: "$applicationDate" },
+            $dateToString: { format: "%b-%d", date: "$applicationDate" },
           },
           count: { $sum: 1 },
         },
@@ -50,11 +58,61 @@ export async function GET(request) {
       { $sort: { _id: 1 } },
     ]);
 
-    console.log(applicationsOverLast30Days);
+    // Bar Chart (Top Job Titles applied to)
+    const top5JobTitles = await Job.aggregate([
+      {
+        $match: { userId: new mongoose.Types.ObjectId(userId) },
+      },
+      {
+        $group: {
+          _id: "$jobTitle",
+          count: { $sum: 1 }, // Counting number of applications for each job title
+        },
+      },
+      {
+        $sort: { count: -1 }, // Sorts in desc order
+      },
+      {
+        $limit: 5,
+      },
+    ]);
+
+    const topJobTitles = top5JobTitles.map((job, index) => ({
+      ...job, // Spreading the original job data
+      className: barChartClassNames[index], // Assigning className based on index
+    }));
+
+    // Distribution of application responses (positive, pending, rejection)
+    const responseDistribution = await Job.aggregate([
+      {
+        $match: { userId: new mongoose.Types.ObjectId(userId) },
+      },
+      {
+        $group: {
+          _id: "$response",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Just the way shadcn charts work, have to have the some property that links to the chartConfig to render colors
+    const applicationResponseDistribution = responseDistribution.map(
+      (response) => ({
+        ...response, // Spreading the original response data
+        fill:
+          response._id === "Pending"
+            ? "var(--color-Pending)"
+            : response._id === "Positive"
+              ? "var(--color-Positive)"
+              : "var(--color-Rejection)",
+      }),
+    );
 
     const metrics = {
       tiles,
       applicationsOverLast30Days,
+      topJobTitles,
+      applicationResponseDistribution,
     };
     // Returning 200 response with metrics object
     return NextResponse.json({

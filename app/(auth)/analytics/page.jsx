@@ -24,7 +24,12 @@ import ApplicationResponseDonutChart from "./ApplicationResponseDonutChart";
 function Analytics() {
   const { user } = useUserContext(); // Global context user
   const [metricLoading, setMetricsLoading] = useState(false);
-  const [metrics, setMetrics] = useState();
+  const [metrics, setMetrics] = useState({
+    tiles: "",
+    applicationsOverLast30Days: "",
+    topJobTitles: "",
+    applicationResponseDistribution: "",
+  });
 
   const getMetrics = async () => {
     setMetricsLoading(true);
@@ -42,9 +47,9 @@ function Analytics() {
   };
 
   // Retrieving analytics when user is loaded
-  // useEffect(() => {
-  //   if (user) getMetrics();
-  // }, [user]);
+  useEffect(() => {
+    if (user) getMetrics();
+  }, [user]);
 
   return (
     <section className="flex h-91v w-full flex-col gap-4 overflow-auto px-8 py-7">
@@ -69,13 +74,17 @@ function Analytics() {
       <>
         {/* Basic Analytics Container */}
         <div className="grid h-full grid-cols-12 grid-rows-16 gap-4">
-          <KpiTiles />
+          <KpiTiles chartData={metrics.tiles} />
 
-          <JobsOverTimeLineChart />
+          <JobsOverTimeLineChart
+            chartData={metrics.applicationsOverLast30Days}
+          />
 
-          <Top5BarChart />
+          <Top5BarChart chartData={metrics.topJobTitles} />
 
-          <ApplicationResponseDonutChart />
+          <ApplicationResponseDonutChart
+            chartData={metrics.applicationResponseDistribution}
+          />
         </div>
       </>
       {/* ) : null} */}
