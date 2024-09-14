@@ -55,6 +55,11 @@ module.exports = {
         iconblue: "#4285F4",
       },
 
+      gridTemplateRows: {
+        // Simple 16 row grid
+        16: "repeat(16, minmax(0, 1fr))",
+      },
+
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
