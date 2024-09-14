@@ -7,7 +7,7 @@ import { PiHandshakeFill } from "react-icons/pi";
 function KpiTiles() {
   return (
     <>
-      <div className="group col-span-3 row-span-3 flex flex-col justify-between rounded-md border-l-[6px] border-primary bg-white/70 p-3 shadow-md dark:bg-cardcolor">
+      <div className="group col-span-3 row-span-3 flex flex-col justify-between rounded-md border-l-[6px] border-black bg-white/70 p-3 shadow-md hover:border-primary dark:border-white dark:bg-cardcolor dark:hover:border-primary">
         <p className="text-sm font-semibold dark:text-primary-light">
           Total Job Applications
         </p>
@@ -21,7 +21,7 @@ function KpiTiles() {
         </div>
       </div>
 
-      <div className="group col-span-3 row-span-3 flex flex-col justify-between rounded-md border-l-[6px] border-primary bg-white/70 p-3 shadow-md dark:bg-cardcolor">
+      <div className="group col-span-3 row-span-3 flex flex-col justify-between rounded-md border-l-[6px] border-black bg-white/70 p-3 shadow-md hover:border-primary dark:border-white dark:bg-cardcolor dark:hover:border-primary">
         <p className="text-sm font-semibold dark:text-primary-light">
           Positive Responses
         </p>
@@ -34,7 +34,7 @@ function KpiTiles() {
         </div>
       </div>
 
-      <div className="group col-span-3 row-span-3 flex flex-col justify-between rounded-md border-l-[6px] border-primary bg-white/70 p-3 shadow-md dark:bg-cardcolor">
+      <div className="group col-span-3 row-span-3 flex flex-col justify-between rounded-md border-l-[6px] border-black bg-white/70 p-3 shadow-md hover:border-primary dark:border-white dark:bg-cardcolor dark:hover:border-primary">
         <p className="text-sm font-semibold dark:text-primary-light">
           Companies Applied to
         </p>
@@ -47,7 +47,7 @@ function KpiTiles() {
         </div>
       </div>
 
-      <div className="group col-span-3 row-span-3 flex flex-col justify-between rounded-md border-l-[6px] border-primary bg-white/70 p-3 shadow-md dark:bg-cardcolor">
+      <div className="group col-span-3 row-span-3 flex flex-col justify-between rounded-md border-l-[6px] border-black bg-white/70 p-3 shadow-md hover:border-primary dark:border-white dark:bg-cardcolor dark:hover:border-primary">
         <p className="text-sm font-semibold dark:text-primary-light">
           Total Contacts
         </p>

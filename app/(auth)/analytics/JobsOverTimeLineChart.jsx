@@ -62,7 +62,11 @@ function JobsOverTimeLineChart() {
               tickMargin={5}
               // tickFormatter={(value) => value.slice(0, 3)}
             />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartTooltip
+              className="dark:text-white"
+              cursor={false}
+              content={<ChartTooltipContent />}
+            />
             <defs>
               <linearGradient id="fillCount" x1="0" y1="0" x2="0" y2="1">
                 <stop

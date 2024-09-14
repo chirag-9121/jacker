@@ -5,12 +5,13 @@ import { useUserContext } from "@/app/components/UserProvider";
 import axios from "axios";
 
 import { Skeleton } from "@/app/components/ui/skeleton";
-import { TrendingUp } from "lucide-react";
 
 // icons
 
 import JobsOverTimeLineChart from "./JobsOverTimeLineChart";
 import KpiTiles from "./KpiTiles";
+import Top5BarChart from "./Top5BarChart";
+import ApplicationResponseDonutChart from "./ApplicationResponseDonutChart";
 
 // shadcn ui components
 // import {
@@ -72,13 +73,9 @@ function Analytics() {
 
           <JobsOverTimeLineChart />
 
-          {/* Bar and Donut Chart  */}
-          <div className="col-span-4 row-span-6 rounded-md bg-white/70 p-4 shadow-md dark:bg-cardcolor">
-            {" bar"}
-          </div>
-          <div className="col-span-4 row-span-6 rounded-md bg-white/70 p-4 shadow-md dark:bg-cardcolor">
-            {" donut"}
-          </div>
+          <Top5BarChart />
+
+          <ApplicationResponseDonutChart />
         </div>
       </>
       {/* ) : null} */}
