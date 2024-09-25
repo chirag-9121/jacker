@@ -84,7 +84,10 @@ export const getColumns = (
       const jobUrl = row.getValue("jobUrl");
 
       return (
-        <Link href={jobUrl} className="text-primary">
+        <Link
+          href={jobUrl}
+          className="break-all text-primary dark:text-[#9990FF]"
+        >
           {truncateText(jobUrl, 40)}
         </Link>
       );
@@ -239,7 +242,7 @@ export const getColumns = (
       return (
         // Link contact form sheet
         <Sheet className="flex flex-col gap-10">
-          <SheetTrigger>
+          <SheetTrigger asChild>
             {contact ? (
               <Button className="flex gap-2 bg-transparent p-2 text-black shadow-none hover:bg-black/10 dark:bg-transparent dark:shadow-none dark:hover:bg-white/10">
                 <UserAvatar

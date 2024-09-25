@@ -24,9 +24,9 @@ function LoginForm({ loginHandler, isLoading, error }) {
   return (
     <section className="h-91v">
       <div className="mx-auto flex h-full flex-col items-center justify-center px-6 py-8 lg:py-0">
-        <div className="w-full rounded-lg bg-white shadow-md sm:max-w-md md:mt-0 xl:p-0 dark:bg-cardcolor">
+        <div className="w-full rounded-lg bg-white shadow-md dark:bg-cardcolor sm:max-w-md md:mt-0 xl:p-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-black md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-black dark:text-white md:text-2xl">
               Sign in to your account
             </h1>
 
@@ -98,14 +98,14 @@ function LoginForm({ loginHandler, isLoading, error }) {
               </div>
 
               {/* Forgot Password */}
-              <div className="flex items-center justify-end">
+              {/* <div className="flex items-center justify-end">
                 <Link
                   href="#"
                   className="text-sm font-medium text-primary hover:underline dark:text-primary-light"
                 >
                   Forgot password?
                 </Link>
-              </div>
+              </div> */}
 
               <button
                 type="submit"

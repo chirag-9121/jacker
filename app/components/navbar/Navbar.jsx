@@ -45,15 +45,15 @@ function Navbar() {
   return (
     <nav className="flex h-9v justify-between bg-primary px-24 py-1.5">
       {/* Jacker Logo  */}
-      <Link href={href()}>
+      <Link className="h-[7vh] w-auto" href={href()}>
         <Image
           src={Logo}
+          width="auto"
+          height="auto"
           alt="Jacker Logo"
-          width={150}
-          height={50}
           placeholder="blur"
           quality={100}
-          className="h-auto"
+          className="h-full w-full"
         />
       </Link>
 
@@ -67,7 +67,7 @@ function Navbar() {
       ) : user ? (
         <div className="flex items-center justify-end gap-10">
           {/* Notification icon */}
-          <IoNotifications size={20} className="fill-white" />
+          {/* <IoNotifications size={20} className="fill-white" /> */}
           <UserPfp logoutHandler={logoutHandler} user={user} />
         </div>
       ) : (
