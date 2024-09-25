@@ -35,9 +35,9 @@ function Navbar() {
       const response = await axios.post("/api/users/logout");
       if (response.status === 200) {
         setUser(null);
-        router.push("/");
         // router.reload();
         window.location.reload();
+        router.push("/");
       }
     } catch (error) {
       console.log(error.message);
