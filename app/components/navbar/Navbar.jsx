@@ -36,8 +36,7 @@ function Navbar() {
       if (response.status === 200) {
         setUser(null);
         // router.reload();
-        window.location.reload();
-        router.push("/");
+        window.location.href = "/";
       }
     } catch (error) {
       console.log(error.message);
