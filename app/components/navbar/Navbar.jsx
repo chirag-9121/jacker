@@ -4,9 +4,6 @@ import { useUserContext } from "@/app/components/UserProvider";
 import UserPfp from "./UserPfp";
 import axios from "axios";
 
-// next.js functions
-import { useRouter } from "next/navigation";
-
 // next.js components
 import Link from "next/link";
 import Image from "next/image";
@@ -16,7 +13,6 @@ import { Skeleton } from "@/app/components/ui/skeleton";
 
 // public assets and icons
 import Logo from "@/public/jacker-logo.png";
-import { IoNotifications } from "react-icons/io5";
 
 function Navbar() {
   // Extracting global context vars to dynamically update navbar on login/logout
@@ -27,15 +23,12 @@ function Navbar() {
     return user ? "/job-tracker" : "/";
   };
 
-  const router = useRouter();
-
   // Logout handler
   const logoutHandler = async () => {
     try {
       const response = await axios.post("/api/users/logout");
       if (response.status === 200) {
         setUser(null);
-        // router.reload();
         window.location.href = "/";
       }
     } catch (error) {
