@@ -37,9 +37,9 @@ function Navbar() {
   };
 
   return (
-    <nav className="flex h-9v justify-between bg-primary px-24 py-1.5">
+    <nav className="flex h-9v items-center justify-between bg-primary px-3 py-1.5 md:px-24">
       {/* Jacker Logo  */}
-      <Link className="h-[7vh] w-auto" href={href()}>
+      <Link className="h-[4vh] w-auto md:h-[7vh]" href={href()}>
         <Image
           src={Logo}
           width="auto"
@@ -66,14 +66,14 @@ function Navbar() {
         </div>
       ) : (
         // Login/sigup buttons
-        <div className="flex items-center justify-end gap-5">
+        <div className="flex items-center justify-end gap-2 md:gap-5">
           <Link href="/signup">
-            <button className="h-9 w-20 rounded-lg border border-primary-light text-sm font-semibold text-white hover:bg-primary-light hover:text-primary">
+            <button className="h-7 w-16 rounded-lg border border-primary-light text-xs font-semibold text-white hover:bg-primary-light hover:text-primary md:h-9 md:w-20 md:text-sm">
               Sign Up
             </button>
           </Link>
           <Link href="/login">
-            <button className="h-9 w-20 rounded-lg bg-primary-light text-sm font-semibold text-primary hover:shadow-md hover:shadow-black/30">
+            <button className="h-7 w-16 rounded-lg bg-primary-light text-xs font-semibold text-primary hover:shadow-md hover:shadow-black/30 md:h-9 md:w-20 md:text-sm">
               Login
             </button>
           </Link>

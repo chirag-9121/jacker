@@ -3,6 +3,7 @@ import { AnalyticsFeatures } from "@/app/components/landingpage/AnalyticsFeature
 import { ContactAndProfileFeatures } from "@/app/components/landingpage/ContactAndProfileFeatures";
 import { JobTrackingFeatures } from "@/app/components/landingpage/JobTrackingFeatures";
 import { HeroSection } from "@/app/components/landingpage/HeroSection";
+import Navbar from "./components/navbar/Navbar";
 
 export default function Home() {
   return (
