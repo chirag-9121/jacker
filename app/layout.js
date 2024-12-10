@@ -1,4 +1,5 @@
 import { Nunito } from "next/font/google"; // Defining global font
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 // Components
@@ -17,40 +18,42 @@ export const metadata = {
 // App starts here in the root layout and children pages gets appended
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
-      {/* To avoid initial flash of default theme, fetching localstorage theme if available or system theme */}
-      <head>
-        <link
-          rel="icon"
-          href="/icon?<generated>"
-          type="image/<generated>"
-          sizes="<generated>"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning={true}>
+        {/* To avoid initial flash of default theme, fetching localstorage theme if available or system theme */}
+        <head>
+          <link
+            rel="icon"
+            href="/icon?<generated>"
+            type="image/<generated>"
+            sizes="<generated>"
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
                 (function() {
                   const theme = localStorage.getItem('theme');
                   const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
                   document.documentElement.className = theme || systemTheme;
                 })();
               `,
-          }}
-        />
-      </head>
+            }}
+          />
+        </head>
 
-      <body
-        suppressHydrationWarning={true}
-        className={`${nunito.className} h-screen bg-lightbackground dark:bg-darkbackground`}
-      >
-        {/* Navbar and children components wrapped around global context providers */}
-        <ThemeProvider>
-          <UserProvider>
-            <Navbar />
-            <div className="overflow-hidden">{children}</div>
-          </UserProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+        <body
+          suppressHydrationWarning={true}
+          className={`${nunito.className} h-screen bg-lightbackground dark:bg-darkbackground`}
+        >
+          {/* Navbar and children components wrapped around global context providers */}
+          <ThemeProvider>
+            <UserProvider>
+              <Navbar />
+              <div className="overflow-hidden">{children}</div>
+            </UserProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

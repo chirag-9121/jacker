@@ -13,7 +13,7 @@ export function HeroSection() {
           <span className="text-primary"> one place.</span>
         </p>
 
-        <Link href="/signup">
+        <Link href="/login">
           <button className="w-full rounded-lg bg-black px-3 py-2 text-center text-xs font-medium text-white hover:bg-cardcolor dark:bg-primary-light dark:text-black dark:hover:bg-primary-light/90 md:px-5 md:py-2.5 md:text-sm">
             Get Started
           </button>

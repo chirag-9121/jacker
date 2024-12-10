@@ -12,7 +12,7 @@ export function AnalyticsFeatures() {
           <span> your</span> <span className="text-primary">progress</span>
         </p>
 
-        <Link href="/signup">
+        <Link href="/login">
           <button className="rounded-lg bg-black px-2 py-2 text-center text-xs font-medium text-white hover:bg-cardcolor dark:bg-primary-light dark:text-black dark:hover:bg-primary-light/90 sm:px-6 sm:py-2.5 sm:text-sm">
             Get Started Now
           </button>

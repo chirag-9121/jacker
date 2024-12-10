@@ -3,6 +3,7 @@
 import { useUserContext } from "@/app/components/UserProvider";
 import UserPfp from "./UserPfp";
 import axios from "axios";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 // next.js components
 import Link from "next/link";
@@ -51,8 +52,29 @@ function Navbar() {
         />
       </Link>
 
-      {/* To dynamically display skeleton/profile picture/login buttons  */}
       {userLoading ? (
+        // Circle skeleton
+        <div className="flex items-center justify-end gap-8">
+          <Skeleton className="h-8 w-8 rounded-full bg-white/60 dark:bg-white/65" />
+        </div>
+      ) : (
+        <>
+          <SignedOut>
+            <SignInButton asChild>
+              <button className="h-7 w-16 rounded-lg border border-primary-light text-xs font-semibold text-white hover:bg-primary-light hover:text-primary md:h-9 md:w-20 md:text-sm">
+                Sign In
+              </button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </>
+      )}
+
+      {/* To dynamically display skeleton/profile picture/login buttons  */}
+
+      {/* {userLoading ? (
         // Circle skeleton
         <div className="flex items-center justify-end gap-8">
           <Skeleton className="h-10 w-10 rounded-full bg-white/60 dark:bg-white/65" />
@@ -60,8 +82,6 @@ function Navbar() {
         </div>
       ) : user ? (
         <div className="flex items-center justify-end gap-10">
-          {/* Notification icon */}
-          {/* <IoNotifications size={20} className="fill-white" /> */}
           <UserPfp logoutHandler={logoutHandler} user={user} />
         </div>
       ) : (
@@ -78,7 +98,7 @@ function Navbar() {
             </button>
           </Link>
         </div>
-      )}
+      )} */}
     </nav>
   );
 }
