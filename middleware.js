@@ -6,7 +6,12 @@ const isProtectedRoute = createRouteMatcher([
   "/profile(.*)",
   "/contacts(.*)",
 ]);
-const isPublicRoute = createRouteMatcher(["/", "/signup(.*)", "/login(.*)"]);
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/signup(.*)",
+  "/login(.*)",
+  "/api/webhooks(.*)",
+]);
 
 export default clerkMiddleware(async (auth, request) => {
   const token = request.cookies.get("userAuthToken")?.value || "";

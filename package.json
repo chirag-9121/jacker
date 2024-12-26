@@ -42,6 +42,7 @@
     "react-international-phone": "^4.3.0",
     "recharts": "^2.12.7",
     "sonner": "^1.5.0",
+    "svix": "^1.44.0",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
