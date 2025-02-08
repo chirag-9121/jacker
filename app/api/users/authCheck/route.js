@@ -1,43 +1,41 @@
-import jwt, { TokenExpiredError } from "jsonwebtoken";
 import { NextResponse } from "next/server";
+import User from "@/models/UserModel";
+import { currentUser } from "@clerk/nextjs/server";
 
 // To check if user is authenticated or not
 export async function GET(request) {
   try {
-    // Retrieve the user auth token from the cookies
-    const token = request.cookies.get("userAuthToken")?.value || "";
+    const user = await currentUser(); // Get Clerk's authenticated user
 
-    // Verify and decode the token using the secret key
-    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET);
+    console.log("CURRENT USER:", user);
+    if (!user) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+
+    const userEmail = user.emailAddresses[0].emailAddress;
+    // Fetch user from database
+    const dbUser = await User.findOne({ email: userEmail });
+
+    console.log("DB USER:", dbUser);
+
+    if (!dbUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
 
     // Extract user data from the authentication token
-    const user = {
-      id: decodedToken.id,
-      fname: decodedToken.fname,
-      lname: decodedToken.lname,
-      email: decodedToken.email,
+    const userDetails = {
+      id: dbUser._id,
+      fname: dbUser.fname,
+      lname: dbUser.lname,
+      email: dbUser.email,
     };
 
     return NextResponse.json({
       success: true,
       message: "User found",
-      data: user,
+      data: userDetails,
     });
   } catch (err) {
-    // If token expiry error, set the usertoken to null and return 401 status response
-    if (err instanceof TokenExpiredError) {
-      const response = NextResponse.json(
-        {
-          message: "User token expired.",
-        },
-        { status: 401 },
-      );
-      response.cookies.set("userAuthToken", "", {
-        httpOnly: true,
-        expires: new Date(0),
-      });
-
-      return response;
-    } else return NextResponse.json({ error: err }, { status: 400 });
+    return NextResponse.json({ error: err }, { status: 400 });
   }
 }

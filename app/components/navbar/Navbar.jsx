@@ -60,7 +60,7 @@ function Navbar() {
       ) : (
         <>
           <SignedOut>
-            <SignInButton asChild>
+            <SignInButton>
               <button className="h-7 w-16 rounded-lg border border-primary-light text-xs font-semibold text-white hover:bg-primary-light hover:text-primary md:h-9 md:w-20 md:text-sm">
                 Sign In
               </button>

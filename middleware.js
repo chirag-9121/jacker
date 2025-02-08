@@ -14,14 +14,13 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, request) => {
-  const token = request.cookies.get("userAuthToken")?.value || "";
+  const { userId, redirectToSignIn } = await auth();
 
   // // if accessing protected paths without login/token
-  if (isProtectedRoute(request) && !token)
-    return NextResponse.redirect(new URL("/login", request.nextUrl));
+  if (isProtectedRoute(request) && !userId) return redirectToSignIn();
 
   // // If accessing public paths while logged in
-  if (isPublicRoute(request) && token)
+  if (isPublicRoute(request) && userId)
     return NextResponse.redirect(new URL("/job-tracker", request.nextUrl));
 });
 

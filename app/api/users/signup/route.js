@@ -10,7 +10,7 @@ export async function POST(request) {
   try {
     // Extracting values from post request
     const reqBody = await request.json();
-    const { fname, lname, email, password } = reqBody;
+    const { fname, lname, email } = reqBody;
 
     // If user already exists in DB
     const user = await User.findOne({ email });
@@ -21,16 +21,11 @@ export async function POST(request) {
       );
     }
 
-    // Hashing password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
     // Creating and Saving new user
     const newUser = new User({
       fname,
       lname,
       email,
-      password: hashedPassword,
     });
 
     const savedUser = await newUser.save();

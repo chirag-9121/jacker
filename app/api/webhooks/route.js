@@ -1,8 +1,16 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
+import { createClerkClient } from "@clerk/nextjs/server";
+import User from "@/models/UserModel";
+import connectDb from "@/config/connectDB";
+
+connectDb();
 
 export async function POST(req) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET;
+  const clerkClient = createClerkClient({
+    secretKey: process.env.CLERK_SECRET_KEY,
+  });
 
   if (!SIGNING_SECRET) {
     throw new Error(
@@ -46,15 +54,38 @@ export async function POST(req) {
     });
   }
 
-  // Do something with payload
-  // For this guide, log payload to console
-  const { id } = evt.data;
   const eventType = evt.type;
-  console.log(`Received webhook with ID ${id} and event type of ${eventType}`);
-  //   console.log("Webhook payload:", body);
 
   if (eventType === "user.created") {
-    console.log("userId:", id);
+    console.log("user created, userId:", evt.data.id);
+    const userDetails = {
+      fname: evt.data.first_name,
+      lname: evt.data.last_name,
+      email: evt.data.email_addresses[0].email_address,
+    };
+
+    // If user already exists in DB
+    const user = await User.findOne({ email: userDetails.email });
+    if (user) {
+      return new Response("User already exists", { status: 400 });
+    }
+
+    // Creating and Saving new user
+    const newUser = new User(userDetails);
+
+    await newUser.save();
+    console.log("New user created:");
+  }
+
+  if (eventType === "session.created") {
+    console.log("session created, userId:", evt.data.user_id);
+    // const response = await clerkClient.users.getUser(evt.data.user_id);
+    return new Response("User login successful.", { status: 200 });
+  }
+
+  if (eventType === "session.removed") {
+    console.log("session removed, userId:", evt.data.user_id);
+    // const response = await clerkClient.users.getUser(evt.data.user_id);
   }
 
   return new Response("Webhook received", { status: 200 });

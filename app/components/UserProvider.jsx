@@ -21,31 +21,32 @@ function UserProvider({ children }) {
 
   // Calling API to check if user is authenticated and passing global user state accordingly
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUser = async () => {
       try {
         // Retreiving user info from userAuthToken if it exists in browser
         const res = await axios.get("/api/users/authCheck");
         setUser(res.data.data);
       } catch (err) {
         // If token is expired, redirect to login page with a toast to display
-        if (err.response.status === 401) {
-          router.refresh();
-          router.push("/login");
-          toast.info("Your session has expired.", {
-            description: "One session expire a day keeps the hackers away!",
-            action: {
-              label: "OK",
-              onClick: () => toast.dismiss(),
-            },
-            duration: 10 * 1000, // 10 seconds
-          });
-        } else console.log("User not authenticated", err);
+        // if (err.response.status === 401) {
+        //   router.refresh();
+        //   router.push("/login");
+        //   toast.info("Your session has expired.", {
+        //     description: "One session expire a day keeps the hackers away!",
+        //     action: {
+        //       label: "OK",
+        //       onClick: () => toast.dismiss(),
+        //     },
+        //     duration: 10 * 1000, // 10 seconds
+        //   });
+        // } else console.log("User not authenticated", err);
+        console.log("User not authenticated", err);
       } finally {
         setUserLoading(false);
       }
     };
 
-    fetchData();
+    fetchUser();
   }, []);
 
   return (
