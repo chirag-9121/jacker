@@ -5,8 +5,7 @@
 import { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 import axios from "axios";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@clerk/clerk-react";
 
 const UserContext = createContext();
 
@@ -15,9 +14,9 @@ export function useUserContext() {
 }
 
 function UserProvider({ children }) {
+  const { isSignedIn } = useAuth();
   const [user, setUser] = useState(null);
   const [userLoading, setUserLoading] = useState(true);
-  const router = useRouter();
 
   // Calling API to check if user is authenticated and passing global user state accordingly
   useEffect(() => {
@@ -27,27 +26,13 @@ function UserProvider({ children }) {
         const res = await axios.get("/api/users/authCheck");
         setUser(res.data.data);
       } catch (err) {
-        // If token is expired, redirect to login page with a toast to display
-        // if (err.response.status === 401) {
-        //   router.refresh();
-        //   router.push("/login");
-        //   toast.info("Your session has expired.", {
-        //     description: "One session expire a day keeps the hackers away!",
-        //     action: {
-        //       label: "OK",
-        //       onClick: () => toast.dismiss(),
-        //     },
-        //     duration: 10 * 1000, // 10 seconds
-        //   });
-        // } else console.log("User not authenticated", err);
-        console.log("User not authenticated", err);
       } finally {
         setUserLoading(false);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [isSignedIn]);
 
   return (
     <UserContext.Provider value={{ user, setUser, userLoading }}>

@@ -52,6 +52,7 @@ function Navbar() {
         />
       </Link>
 
+      {/* To dynamically display skeleton/profile picture/login buttons  */}
       {userLoading ? (
         // Circle skeleton
         <div className="flex items-center justify-end gap-8">
@@ -71,34 +72,6 @@ function Navbar() {
           </SignedIn>
         </>
       )}
-
-      {/* To dynamically display skeleton/profile picture/login buttons  */}
-
-      {/* {userLoading ? (
-        // Circle skeleton
-        <div className="flex items-center justify-end gap-8">
-          <Skeleton className="h-10 w-10 rounded-full bg-white/60 dark:bg-white/65" />
-          <Skeleton className="h-10 w-10 rounded-full bg-white/60 dark:bg-white/65" />
-        </div>
-      ) : user ? (
-        <div className="flex items-center justify-end gap-10">
-          <UserPfp logoutHandler={logoutHandler} user={user} />
-        </div>
-      ) : (
-        // Login/sigup buttons
-        <div className="flex items-center justify-end gap-2 md:gap-5">
-          <Link href="/signup">
-            <button className="h-7 w-16 rounded-lg border border-primary-light text-xs font-semibold text-white hover:bg-primary-light hover:text-primary md:h-9 md:w-20 md:text-sm">
-              Sign Up
-            </button>
-          </Link>
-          <Link href="/login">
-            <button className="h-7 w-16 rounded-lg bg-primary-light text-xs font-semibold text-primary hover:shadow-md hover:shadow-black/30 md:h-9 md:w-20 md:text-sm">
-              Login
-            </button>
-          </Link>
-        </div>
-      )} */}
     </nav>
   );
 }

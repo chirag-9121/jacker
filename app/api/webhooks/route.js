@@ -57,7 +57,6 @@ export async function POST(req) {
   const eventType = evt.type;
 
   if (eventType === "user.created") {
-    console.log("user created, userId:", evt.data.id);
     const userDetails = {
       fname: evt.data.first_name,
       lname: evt.data.last_name,
@@ -74,18 +73,13 @@ export async function POST(req) {
     const newUser = new User(userDetails);
 
     await newUser.save();
-    console.log("New user created:");
+    const response = await clerkClient.users.getUser(evt.data.id);
+    return new Response("New user created.", { status: 200 });
   }
 
   if (eventType === "session.created") {
-    console.log("session created, userId:", evt.data.user_id);
-    // const response = await clerkClient.users.getUser(evt.data.user_id);
+    const response = await clerkClient.users.getUser(evt.data.user_id);
     return new Response("User login successful.", { status: 200 });
-  }
-
-  if (eventType === "session.removed") {
-    console.log("session removed, userId:", evt.data.user_id);
-    // const response = await clerkClient.users.getUser(evt.data.user_id);
   }
 
   return new Response("Webhook received", { status: 200 });

@@ -7,7 +7,6 @@ export async function GET(request) {
   try {
     const user = await currentUser(); // Get Clerk's authenticated user
 
-    console.log("CURRENT USER:", user);
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
@@ -15,8 +14,6 @@ export async function GET(request) {
     const userEmail = user.emailAddresses[0].emailAddress;
     // Fetch user from database
     const dbUser = await User.findOne({ email: userEmail });
-
-    console.log("DB USER:", dbUser);
 
     if (!dbUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
