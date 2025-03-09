@@ -3,7 +3,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher([
   "/job-tracker(.*)",
-  "/profile(.*)",
+  "/analytics(.*)",
   "/contacts(.*)",
 ]);
 const isPublicRoute = createRouteMatcher([

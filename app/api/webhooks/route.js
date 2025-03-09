@@ -82,5 +82,30 @@ export async function POST(req) {
     return new Response("User login successful.", { status: 200 });
   }
 
+  if (eventType === "user.updated") {
+    // Collecting all email addresses from `evt.data.email_addresses`
+    const emailAddresses = evt.data.email_addresses.map(
+      (email) => email.email_address,
+    );
+
+    // Identify the primary email address
+    const primaryEmail = evt.data.email_addresses.find(
+      (email) => email.id === evt.data.primary_email_address_id,
+    )?.email_address;
+
+    const updatedData = {
+      fname: evt.data.first_name,
+      lname: evt.data.last_name,
+      email: primaryEmail,
+    };
+
+    await User.findOneAndUpdate(
+      { email: { $in: emailAddresses } },
+      { $set: updatedData },
+    );
+
+    return new Response("User updated.", { status: 200 });
+  }
+
   return new Response("Webhook received", { status: 200 });
 }

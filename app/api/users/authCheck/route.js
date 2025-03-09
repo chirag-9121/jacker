@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import User from "@/models/UserModel";
 import { currentUser } from "@clerk/nextjs/server";
+import connectDb from "@/config/connectDB";
+
+connectDb();
 
 // To check if user is authenticated or not
 export async function GET(request) {
@@ -11,9 +14,12 @@ export async function GET(request) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    const userEmail = user.emailAddresses[0].emailAddress;
+    const userPrimaryEmail = user.emailAddresses.find(
+      (email) => email.id === user.primaryEmailAddressId,
+    )?.emailAddress;
+
     // Fetch user from database
-    const dbUser = await User.findOne({ email: userEmail });
+    const dbUser = await User.findOne({ email: userPrimaryEmail });
 
     if (!dbUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

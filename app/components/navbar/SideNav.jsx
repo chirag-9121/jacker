@@ -109,7 +109,7 @@ function SideNav() {
       </div>
 
       {/* User Profile Details Display */}
-      {userLoading ? (
+      {/* {userLoading ? (
         <div className="flex items-center gap-3 pb-2">
           <Skeleton className="min-h-10 min-w-10 rounded-full" />
           <div className="w-full space-y-2">
@@ -130,7 +130,7 @@ function SideNav() {
             <div className="break-all text-xs text-grey">{user.email}</div>
           </div>
         </div>
-      ) : null}
+      ) : null} */}
     </nav>
   );
 }

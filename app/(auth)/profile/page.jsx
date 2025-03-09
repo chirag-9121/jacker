@@ -17,23 +17,25 @@ function Profile() {
   const [isLoading, setIsLoading] = useState(false); // To change button text to Saving...
 
   // Profile update form submit handler function. Sends the user object to the server for processing.
-  const profileUpdateHandler = async (e, user) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const response = await axios.post("/api/users/profile-update", user);
-      if (response.status === 200) {
-        // Update global context user and display success sonner
-        setUser(response.data.data);
-        displayToast("Profile Updated", "success");
-      }
-    } catch (err) {
-      // Displaying error sonner
-      displayToast("Profile Updated Failed", "error", TOAST_ERROR_DESCR);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // const profileUpdateHandler = async (e, user) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await axios.post("/api/users/profile-update", user);
+  //     if (response.status === 200) {
+  //       // Update global context user and display success sonner
+  //       setUser(response.data.data);
+  //       displayToast("Profile Updated", "success");
+  //     }
+  //   } catch (err) {
+  //     // Displaying error sonner
+  //     displayToast("Profile Updated Failed", "error", TOAST_ERROR_DESCR);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  return null;
 
   return (
     <section className="flex w-full flex-col items-center p-7 pl-12">
