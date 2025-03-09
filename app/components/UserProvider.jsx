@@ -26,6 +26,7 @@ function UserProvider({ children }) {
         const res = await axios.get("/api/users/authCheck");
         setUser(res.data.data);
       } catch (err) {
+        setUser(null);
       } finally {
         setUserLoading(false);
       }

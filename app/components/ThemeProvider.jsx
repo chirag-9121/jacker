@@ -35,7 +35,8 @@ function ThemeProvider({ children }) {
     const root = window.document.documentElement;
 
     root.classList.remove(colorTheme);
-    root.classList.add(theme);
+    if (theme === "system") root.classList.add(systemTheme);
+    else root.classList.add(theme);
 
     if (typeof window !== "undefined") localStorage.setItem("theme", theme);
   }, [theme]);
