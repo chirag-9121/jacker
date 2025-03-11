@@ -6,7 +6,7 @@ Designed and built for job seekers who are tired of tracking jobs in Excel but a
 Just like me.
 
 ## Website Link
-https://jacker-vault.vercel.app/
+https://jacker.club/
 
 ## Sneak peek
 ![Screenshot (397)](https://github.com/user-attachments/assets/a090f7cd-12cd-45a0-8a08-0576d11cc905)
