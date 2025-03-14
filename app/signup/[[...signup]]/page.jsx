@@ -48,17 +48,21 @@ function Signup() {
     <div className="flex h-91v w-full items-center justify-center">
       <SignUp
         appearance={{
-          layout: {
-            socialButtonsVariant: "iconButton",
-          },
+          // layout: {
+          //   socialButtonsVariant: "iconButton",
+          // },
           elements: {
             cardBox: "rounded-lg shadow-md",
-            card: "bg-white dark:bg-cardcolor",
+            card: "bg-white dark:bg-cardcolor gap-5 py-5",
+            header: "gap-2",
             headerTitle: "dark:text-white",
-            headerSubtitle: "dark:text-white/50",
+            headerSubtitle: "dark:text-white/50 hidden",
             socialButtonsIconButton: "dark:bg-forminput/10",
+            socialButtonsBlockButton: "dark:bg-forminput/10",
+            socialButtonsBlockButtonText: "dark:text-gray-100",
             socialButtonsProviderIcon__linkedin_oidc:
               "dark:bg-white dark:rounded-[3px]",
+            main: "gap-3",
             dividerLine: "dark:bg-white/10",
             dividerText: "dark:text-gray-400",
             formFieldLabel: "dark:text-gray-100",

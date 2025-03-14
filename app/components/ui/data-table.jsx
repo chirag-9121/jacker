@@ -4,6 +4,7 @@ import { Skeleton } from "@/app/components/ui/skeleton";
 import { memo, useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import { FaArrowsRotate } from "react-icons/fa6";
+import NoDataFound from "./nodatafound";
 
 import {
   flexRender,
@@ -43,6 +44,7 @@ export const DataTable = memo(function DataTable({
   dataLoading,
   columnFilterProps,
   globalFilterProps,
+  entityName,
 }) {
   // Data table: Sorting, filtering and visibilty states setup
   const [sorting, setSorting] = useState([]);
@@ -188,7 +190,7 @@ export const DataTable = memo(function DataTable({
             // When no data is fetched
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                <NoDataFound entityName={entityName} />
               </TableCell>
             </TableRow>
           )}

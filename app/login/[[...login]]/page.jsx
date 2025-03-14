@@ -48,15 +48,17 @@ function Login() {
     <div className="flex h-91v w-full items-center justify-center">
       <SignIn
         appearance={{
-          layout: {
-            socialButtonsVariant: "iconButton",
-          },
+          // layout: {
+          //   socialButtonsVariant: "iconButton",
+          // },
           elements: {
             cardBox: "rounded-lg shadow-md",
             card: "bg-white dark:bg-cardcolor",
             headerTitle: "dark:text-white",
             headerSubtitle: "dark:text-white/50",
             socialButtonsIconButton: "dark:bg-forminput/10",
+            socialButtonsBlockButton: "dark:bg-forminput/10",
+            socialButtonsBlockButtonText: "dark:text-gray-100",
             socialButtonsProviderIcon__linkedin_oidc:
               "dark:bg-white dark:rounded-[3px]",
             dividerLine: "dark:bg-white/10",

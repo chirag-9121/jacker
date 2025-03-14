@@ -115,6 +115,7 @@ function Contacts() {
             dataLoading={contactsLoading}
             columnFilterProps={columnFilterProps} // Sending columnFilters and setColumnFilters to data table component
             globalFilterProps={globalFilterProps} // Sending globalFilter and setGlobalFilter to data table component
+            entityName="contact"
           />
         </div>
         <ScrollBar orientation="horizontal" />

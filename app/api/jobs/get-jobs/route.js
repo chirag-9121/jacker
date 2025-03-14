@@ -1,4 +1,5 @@
 import connectDb from "@/config/connectDB";
+import Contact from "@/models/ContactModel";
 import Job from "@/models/JobModel";
 import { NextResponse } from "next/server";
 

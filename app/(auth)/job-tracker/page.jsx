@@ -167,6 +167,7 @@ function JobTracker() {
             dataLoading={jobsLoading}
             columnFilterProps={columnFilterProps} // Sending columnFilters and setColumnFilters to data table component
             globalFilterProps={globalFilterProps} // Sending globalFilter and setGlobalFilter to data table component
+            entityName="job"
           />
         </div>
         <ScrollBar orientation="horizontal" />
