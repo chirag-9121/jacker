@@ -6,6 +6,7 @@ import "./globals.css";
 import Navbar from "@/app/components/navbar/Navbar";
 import UserProvider from "@/app/components/UserProvider";
 import ThemeProvider from "@/app/components/ThemeProvider";
+import ProgressBarProvider from "@/app/ProgressBarProvider";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
@@ -46,12 +47,14 @@ export default function RootLayout({ children }) {
           className={`${nunito.className} h-screen bg-lightbackground dark:bg-darkbackground`}
         >
           {/* Navbar and children components wrapped around global context providers */}
-          <ThemeProvider>
-            <UserProvider>
-              <Navbar />
-              <div className="overflow-hidden">{children}</div>
-            </UserProvider>
-          </ThemeProvider>
+          <ProgressBarProvider>
+            <ThemeProvider>
+              <UserProvider>
+                <Navbar />
+                <div className="overflow-hidden">{children}</div>
+              </UserProvider>
+            </ThemeProvider>
+          </ProgressBarProvider>
         </body>
       </html>
     </ClerkProvider>
